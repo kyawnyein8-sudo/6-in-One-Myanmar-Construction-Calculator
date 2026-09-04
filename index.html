@@ -96,6 +96,10 @@
       background: #6c757d; margin-bottom: 12px;
     }
 
+    .btn-save {
+      background: var(--accent-blue); margin-top: 8px;
+    }
+
     .result-box {
       background: #f0f7f2;
       border-left: 4px solid var(--primary-green);
@@ -145,6 +149,82 @@
       padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; text-decoration: none;
     }
 
+    /* History Items */
+    .history-item {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid var(--border-color);
+      font-size: 0.85rem;
+    }
+
+    .history-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .history-calc-type {
+      font-weight: bold;
+      color: var(--primary-green);
+    }
+
+    .history-date {
+      font-size: 0.75rem;
+      color: #666;
+    }
+
+    .history-total {
+      font-weight: bold;
+      color: #d93025;
+      font-size: 0.95rem;
+    }
+
+    .btn-delete {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .btn-clear-all {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      width: 100%;
+      margin-top: 12px;
+      cursor: pointer;
+    }
+
+    .history-total-box {
+      background: var(--light-green);
+      border: 2px solid var(--primary-green);
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .history-total-label {
+      font-size: 0.85rem;
+      color: var(--primary-green);
+      margin-bottom: 4px;
+    }
+
+    .history-total-amount {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #d93025;
+    }
+
     /* Bottom Navigation */
     .bottom-nav {
       position: fixed; bottom: 0; left: 0; right: 0;
@@ -154,6 +234,17 @@
     }
     .nav-item { text-align: center; font-size: 0.75rem; color: #777; text-decoration: none; cursor: pointer; flex: 1; }
     .nav-item.active { color: var(--primary-green); font-weight: bold; }
+
+    .empty-history {
+      text-align: center;
+      padding: 40px 20px;
+      color: #999;
+    }
+
+    .empty-history-icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+    }
   </style>
 </head>
 <body>
@@ -208,6 +299,20 @@
       </div>
     </div>
 
+    <!-- HISTORY VIEW -->
+    <div id="historyView" class="calc-page">
+      <h3 style="margin-bottom: 16px; color: var(--primary-green);">📋 တွက်ချက်မှု မှတ်တမ်း</h3>
+      
+      <div class="history-total-box">
+        <div class="history-total-label">စုစုပေါင်း ခန့်မှန်းကုန်ကျစရိတ်</div>
+        <div class="history-total-amount" id="grandTotal">0 ကျပ်</div>
+      </div>
+
+      <div id="historyList"></div>
+
+      <button class="btn-clear-all" onclick="clearAllHistory()">🗑️ မှတ်တမ်းအားလုံး ရှင်းလင်းမည်</button>
+    </div>
+
     <!-- ROOF CALCULATOR -->
     <div id="roofCalc" class="calc-page">
       <button class="btn-calc btn-back" onclick="goHome()">← နောက်သို့</button>
@@ -217,9 +322,9 @@
         <div class="form-group">
           <label>ခေါင်းမိုး ဒီဇိုင်း အမျိုးအစား ရွေးပါ:</label>
           <select id="roofDesign" onchange="updateDesignDetails()">
-            <option data-img="" data-labour="2500" value="gable">နှစ်ဖက်ချခေါင်းမိုး (Gable Roof)</option>
-            <option data-img="" data-labour="2000" value="leanto">တစ်ဖက်စောင်းခေါင်းမိုး (Lean-to Roof)</option>
-            <option data-img="" data-labour="3000" value="hip">လေးဖက်ချခေါင်းမိုး (Hip Roof)</option>
+            <option data-labour="2500" value="gable">နှစ်ဖက်ချခေါင်းမိုး (Gable Roof)</option>
+            <option data-labour="2000" value="leanto">တစ်ဖက်စောင်းခေါင်းမိုး (Lean-to Roof)</option>
+            <option data-labour="3000" value="hip">လေးဖက်ချခေါင်းမိုး (Hip Roof)</option>
           </select>
         </div>
 
@@ -275,6 +380,7 @@
         </div>
 
         <button class="btn-calc" onclick="calcRoof()">တွက်ချက်မည်</button>
+        <button class="btn-calc btn-save" onclick="saveToHistory('roof')" style="display: none;" id="saveRoofBtn">💾 မှတ်တမ်းတင်မည်</button>
 
         <div id="roofResult" class="result-box">
           <div class="result-title">📊 တွက်ချက်မှု ရလဒ်များ</div>
@@ -333,6 +439,7 @@
         </div>
 
         <button class="btn-calc" onclick="calcConcrete()">တွက်ချက်မည်</button>
+        <button class="btn-calc btn-save" onclick="saveToHistory('concrete')" style="display: none;" id="saveConcreteBtn">💾 မှတ်တမ်းတင်မည်</button>
 
         <div id="concResult" class="result-box">
           <div class="result-title">📊 တွက်ချက်မှု ရလဒ်များ</div>
@@ -390,6 +497,7 @@
         </div>
 
         <button class="btn-calc" onclick="calcBrick()">တွက်ချက်မည်</button>
+        <button class="btn-calc btn-save" onclick="saveToHistory('brick')" style="display: none;" id="saveBrickBtn">💾 မှတ်တမ်းတင်မည်</button>
 
         <div id="brickResult" class="result-box">
           <div class="result-title">📊 တွက်ချက်မှု ရလဒ်များ</div>
@@ -455,6 +563,7 @@
         </div>
 
         <button class="btn-calc" onclick="calcSteel()">တွက်ချက်မည်</button>
+        <button class="btn-calc btn-save" onclick="saveToHistory('steel')" style="display: none;" id="saveSteelBtn">💾 မှတ်တမ်းတင်မည်</button>
 
         <div id="steelResult" class="result-box">
           <div class="result-title">📊 တွက်ချက်မှု ရလဒ်များ</div>
@@ -508,6 +617,7 @@
         </div>
 
         <button class="btn-calc" onclick="calcPaint()">တွက်ချက်မည်</button>
+        <button class="btn-calc btn-save" onclick="saveToHistory('paint')" style="display: none;" id="savePaintBtn">💾 မှတ်တမ်းတင်မည်</button>
 
         <div id="paintResult" class="result-box">
           <div class="result-title">📊 တွက်ချက်မှု ရလဒ်များ</div>
@@ -551,6 +661,7 @@
         </div>
 
         <button class="btn-calc" onclick="calcTile()">တွက်ချက်မည်</button>
+        <button class="btn-calc btn-save" onclick="saveToHistory('tile')" style="display: none;" id="saveTileBtn">💾 မှတ်တမ်းတင်မည်</button>
 
         <div id="tileResult" class="result-box">
           <div class="result-title">📊 တွက်ချက်မှု ရလဒ်များ</div>
@@ -569,11 +680,14 @@
    <!-- Bottom Navigation -->
   <div class="bottom-nav">
     <div class="nav-item active" onclick="goHome()">🏠<br>Home</div>
-    <div class="nav-item" onclick="alert('Coming soon!')">📋<br>History</div>
+    <div class="nav-item" onclick="openHistory()">📋<br>History</div>
     <div class="nav-item" onclick="alert('Coming soon!')">⚙️<br>Settings</div>
   </div>
 
   <script>
+    // Global variables for current calculations
+    let currentCalculations = {};
+
     // Navigation
     function openCalc(calcId) {
       document.querySelectorAll('.calc-page').forEach(page => page.classList.remove('active'));
@@ -584,6 +698,17 @@
     function goHome() {
       document.querySelectorAll('.calc-page').forEach(page => page.classList.remove('active'));
       document.getElementById('homeView').classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+      document.querySelectorAll('.nav-item')[0].classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    function openHistory() {
+      document.querySelectorAll('.calc-page').forEach(page => page.classList.remove('active'));
+      document.getElementById('historyView').classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+      document.querySelectorAll('.nav-item')[1].classList.add('active');
+      loadHistory();
       window.scrollTo(0, 0);
     }
 
@@ -645,6 +770,15 @@
       document.getElementById('resRoofLabour').innerText = totalLabour.toLocaleString();
       document.getElementById('resRoofTotal').innerText = grandTotal.toLocaleString();
       document.getElementById('roofResult').style.display = 'block';
+      document.getElementById('saveRoofBtn').style.display = 'block';
+
+      currentCalculations['roof'] = {
+        type: 'roof',
+        typeName: 'ခေါင်းမိုး တွက်ချက်ရေး',
+        total: grandTotal,
+        details: `သွပ်ပြား ${totalSheets} ချပ်, အရှည် ${neededSheetLength} ပေ`,
+        timestamp: new Date().toISOString()
+      };
     }
 
     // CONCRETE CALCULATOR
@@ -657,17 +791,18 @@
       let cementPrice = parseFloat(document.getElementById('cementPrice').value) || 18000;
 
       let thickFt = thickInch / 12;
-      let volume = l * w * thickFt; // cubic feet
+      let volume = l * w * thickFt;
 
       let totalRatio = ratio[0] + ratio[1] + ratio[2];
-      let dryVolume = volume * 1.54; // dry volume factor
+      let dryVolume = volume * 1.54;
 
-      let cementBags = (dryVolume * ratio[0] / totalRatio) * 0.217; // 1 bag = 1.25 cft
+      let cementCft = dryVolume * ratio[0] / totalRatio;
+      let cementBags = cementCft / 1.25;
       let sand = dryVolume * ratio[1] / totalRatio;
       let aggregate = dryVolume * ratio[2] / totalRatio;
 
       let cementCost = Math.ceil(cementBags) * cementPrice;
-      let totalCost = cementCost + (sand * 800) + (aggregate * 1200); // approximate material costs
+      let totalCost = cementCost + (sand * 800) + (aggregate * 1200);
 
       document.getElementById('resConcVol').innerText = volume.toFixed(2);
       document.getElementById('resCementBags').innerText = Math.ceil(cementBags);
@@ -676,6 +811,15 @@
       document.getElementById('resCementCost').innerText = cementCost.toLocaleString();
       document.getElementById('resConcTotal').innerText = Math.ceil(totalCost).toLocaleString();
       document.getElementById('concResult').style.display = 'block';
+      document.getElementById('saveConcreteBtn').style.display = 'block';
+
+      currentCalculations['concrete'] = {
+        type: 'concrete',
+        typeName: 'ကွန်ကရစ် တွက်ချက်ရေး',
+        total: Math.ceil(totalCost),
+        details: `Cement ${Math.ceil(cementBags)} အိတ်, ${volume.toFixed(2)} cft`,
+        timestamp: new Date().toISOString()
+      };
     }
 
     // BRICK CALCULATOR
@@ -688,15 +832,12 @@
       let brickPrice = parseFloat(document.getElementById('brickPrice').value) || 650;
 
       let wallArea = wallLen * wallHeight;
-      let wallVol = wallArea * (wallThick / 12); // cubic feet
+      
+      let bricksPerSqft = wallThick === 4.5 ? 13.5 : 27;
+      let bricks = Math.ceil(wallArea * bricksPerSqft);
 
-      let brickVol = brickType === 'standard' ? (9 * 4.5 * 3) / 1728 : (9 * 4.5 * 4) / 1728;
-      let mortarVol = wallVol * 0.25; // 25% mortar
-      let netBrickVol = wallVol - mortarVol;
-      let bricks = Math.ceil(netBrickVol / brickVol);
-
-      let cementBags = Math.ceil(bricks / 500); // 1 bag per 500 bricks approx
-      let sand = (bricks / 1000) * 10; // 10 cft per 1000 bricks
+      let cementBags = Math.ceil(bricks / 500);
+      let sand = (bricks / 1000) * 10;
       let brickCost = bricks * brickPrice;
       let totalCost = brickCost + (cementBags * 18000) + (sand * 800);
 
@@ -707,6 +848,15 @@
       document.getElementById('resBrickCost').innerText = brickCost.toLocaleString();
       document.getElementById('resBrickTotal').innerText = Math.ceil(totalCost).toLocaleString();
       document.getElementById('brickResult').style.display = 'block';
+      document.getElementById('saveBrickBtn').style.display = 'block';
+
+      currentCalculations['brick'] = {
+        type: 'brick',
+        typeName: 'အုတ် တွက်ချက်ရေး',
+        total: Math.ceil(totalCost),
+        details: `အုတ် ${bricks} ချပ်, ${wallArea.toFixed(2)} sqft`,
+        timestamp: new Date().toISOString()
+      };
     }
 
     // STEEL CALCULATOR
@@ -718,10 +868,11 @@
       let barSpacing = parseFloat(document.getElementById('barSpacing').value) || 8;
       let steelPrice = parseFloat(document.getElementById('steelPrice').value) || 3200;
 
-      let area = l * w;
       let bars = Math.ceil((l * 12) / barSpacing) + Math.ceil((w * 12) / barSpacing);
       let totalLen = bars * Math.max(l, w);
-      let weightPerFt = (barDia * barDia) / 533; // kg per foot formula
+      
+      let weightPerMeter = (barDia * barDia) / 162;
+      let weightPerFt = weightPerMeter / 3.281;
       let totalWeight = totalLen * weightPerFt;
       let totalCost = Math.ceil(totalWeight) * steelPrice;
 
@@ -731,6 +882,15 @@
       document.getElementById('resSteelCost').innerText = (Math.ceil(totalWeight) * steelPrice).toLocaleString();
       document.getElementById('resSteelTotal').innerText = totalCost.toLocaleString();
       document.getElementById('steelResult').style.display = 'block';
+      document.getElementById('saveSteelBtn').style.display = 'block';
+
+      currentCalculations['steel'] = {
+        type: 'steel',
+        typeName: 'သံကြိုး တွက်ချက်ရေး',
+        total: totalCost,
+        details: `သံကြိုး ${bars} ချောင်း, ${Math.ceil(totalWeight)} kg`,
+        timestamp: new Date().toISOString()
+      };
     }
 
     // PAINT CALCULATOR
@@ -741,7 +901,7 @@
       let paintPrice = parseFloat(document.getElementById('paintPrice').value) || 45000;
 
       let area = l * h;
-      let coveragePerGallon = 350; // sqft per gallon (standard)
+      let coveragePerGallon = 350;
       let gallons = (area * coats) / coveragePerGallon;
       let totalCost = Math.ceil(gallons) * paintPrice;
 
@@ -750,6 +910,15 @@
       document.getElementById('resPaintCost').innerText = (Math.ceil(gallons) * paintPrice).toLocaleString();
       document.getElementById('resPaintTotal').innerText = totalCost.toLocaleString();
       document.getElementById('paintResult').style.display = 'block';
+      document.getElementById('savePaintBtn').style.display = 'block';
+
+      currentCalculations['paint'] = {
+        type: 'paint',
+        typeName: 'ဆေးသုတ် တွက်ချက်ရေး',
+        total: totalCost,
+        details: `${Math.ceil(gallons)} gallons, ${area.toFixed(2)} sqft`,
+        timestamp: new Date().toISOString()
+      };
     }
 
     // TILE CALCULATOR
@@ -761,8 +930,8 @@
 
       let area = l * w;
       let tiles = Math.ceil(area / tileSize);
-      let cementBags = Math.ceil(area / 100); // 1 bag per 100 sqft approx
-      let sand = (area / 100) * 3; // 3 cft per 100 sqft
+      let cementBags = Math.ceil(area / 100);
+      let sand = (area / 100) * 3;
       let tileCost = tiles * tilePrice;
       let totalCost = tileCost + (cementBags * 18000) + (sand * 800);
 
@@ -773,6 +942,89 @@
       document.getElementById('resTileCost').innerText = tileCost.toLocaleString();
       document.getElementById('resTileTotal').innerText = Math.ceil(totalCost).toLocaleString();
       document.getElementById('tileResult').style.display = 'block';
+      document.getElementById('saveTileBtn').style.display = 'block';
+
+      currentCalculations['tile'] = {
+        type: 'tile',
+        typeName: 'ကြွေပြား တွက်ချက်ရေး',
+        total: Math.ceil(totalCost),
+        details: `Tile ${tiles} ချပ်, ${area.toFixed(2)} sqft`,
+        timestamp: new Date().toISOString()
+      };
+    }
+
+    // HISTORY FUNCTIONS
+    function saveToHistory(calcType) {
+      if (!currentCalculations[calcType]) {
+        alert('အရင်ဆုံး တွက်ချက်မှု ပြုလုပ်ပါ!');
+        return;
+      }
+
+      let history = JSON.parse(localStorage.getItem('calcHistory') || '[]');
+      history.unshift(currentCalculations[calcType]);
+      localStorage.setItem('calcHistory', JSON.stringify(history));
+
+      alert('✅ မှတ်တမ်းတင်ပြီးပါပြီ!');
+      document.getElementById('save' + calcType.charAt(0).toUpperCase() + calcType.slice(1) + 'Btn').style.display = 'none';
+    }
+
+    function loadHistory() {
+      let history = JSON.parse(localStorage.getItem('calcHistory') || '[]');
+      let historyList = document.getElementById('historyList');
+      
+      if (history.length === 0) {
+        historyList.innerHTML = `
+          <div class="empty-history">
+            <div class="empty-history-icon">📋</div>
+            <div>မှတ်တမ်းမရှိသေးပါ</div>
+            <div style="font-size: 0.8rem; margin-top: 8px;">Calculator တစ်ခုခုတွက်ပြီး "မှတ်တမ်းတင်မည်" နှိပ်ပါ</div>
+          </div>
+        `;
+        document.getElementById('grandTotal').innerText = '0 ကျပ်';
+        return;
+      }
+
+      let html = '';
+      let grandTotal = 0;
+
+      history.forEach((item, index) => {
+        grandTotal += item.total;
+        let date = new Date(item.timestamp);
+        let dateStr = date.toLocaleDateString('my-MM') + ' ' + date.toLocaleTimeString('my-MM', {hour: '2-digit', minute:'2-digit'});
+        
+        html += `
+          <div class="history-item">
+            <div class="history-item-header">
+              <div class="history-calc-type">${item.typeName}</div>
+              <div class="history-date">${dateStr}</div>
+            </div>
+            <div style="margin-bottom: 6px;">${item.details}</div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div class="history-total">${item.total.toLocaleString()} ကျပ်</div>
+              <button class="btn-delete" onclick="deleteHistoryItem(${index})">🗑️ ဖျက်မည်</button>
+            </div>
+          </div>
+        `;
+      });
+
+      historyList.innerHTML = html;
+      document.getElementById('grandTotal').innerText = grandTotal.toLocaleString() + ' ကျပ်';
+    }
+
+    function deleteHistoryItem(index) {
+      if (!confirm('ဒီမှတ်တမ်းကို ဖျက်မှာ သေချာပါသလား?')) return;
+      
+      let history = JSON.parse(localStorage.getItem('calcHistory') || '[]');
+      history.splice(index, 1);
+      localStorage.setItem('calcHistory', JSON.stringify(history));
+      loadHistory();
+    }
+
+    function clearAllHistory() {
+      if (!confirm('မှတ်တမ်းအားလုံးကို ဖျက်မှာ သေချာပါသလား?')) return;
+      
+      localStorage.removeItem('calcHistory');
+      loadHistory();
     }
   </script>
 </body>
