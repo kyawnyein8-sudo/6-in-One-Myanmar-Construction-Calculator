@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Myanmar Construction Calculator</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#006b3f">
+  <meta name="mobile-web-app-capable" content="yes">
+  <style>
+    :root {
+      --primary-green: #006b3f;
+      --light-green: #e6f5eb;
+      --bg-color: #f4f8f5;
+      --card-bg: #ffffff;
+      --text-main: #1f2d24;
+      --border-color: #e2ede5;
+      --accent-blue: #0077b6;
+      --accent-orange: #f77f00;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+    body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 70px; }
+
+    .app-bar {
+      background-color: var(--primary-green);
+      color: white;
+      padding: 14px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .container { max-width: 480px; margin: 0 auto; padding: 16px; }
+
+    /* Home Screen - Calculator Grid */
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .calc-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .calc-card:hover { transform: translateY(-2px); }
+    .calc-card.active { background: var(--light-green); border-color: var(--primary-green); }
+
+    .calc-icon { font-size: 2rem; margin-bottom: 8px; }
+    .calc-title { font-size: 0.85rem; font-weight: bold; color: var(--primary-green); }
+
+    /* Calculator Pages */
+    .calc-page { display: none; }
+    .calc-page.active { display: block; }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+      border: 1px solid var(--border-color);
+    }
+
+    .form-group { margin-bottom: 12px; }
+    label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: var(--primary-green); }
+    select, input {
+      width: 100%; padding: 10px; border: 1px solid var(--border-color);
+      border-radius: 8px; font-size: 0.95rem; outline: none; background: #fafafa;
+    }
+    select:focus, input:focus { border-color: var(--primary-green); background: #fff; }
+
+    .form-row { display: flex; gap: 10px; }
+    .form-row .form-group { flex: 1; }
+
+    .btn-calc {
+      width: 100%; background: var(--primary-green); color: white;
+      border: none; padding: 12px; border-radius: 8px; font-weight: bold;
+      font-size: 1rem; cursor: pointer; margin-top: 8px;
+    }
+
+    .btn-back {
+      background: #6c757d; margin-bottom: 12px;
+    }
+
+    .result-box {
+      background: #f0f7f2;
+      border-left: 4px solid var(--primary-green);
+      border-radius: 8px;
+      display: none;
+      margin-top: 15px;
+      padding: 14px;
+    }
+
+    .result-title {
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: var(--primary-green);
+      margin-bottom: 8px;
+    }
+
+    .result-item {
+      font-size: 0.85rem;
+      margin: 6px 0;
+    }
+
+    .result-total {
+      font-size: 1.05rem;
+      font-weight: bold;
+      color: #d93025;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed #ccc;
+    }
+
+    /* Sponsor Banner */
+    .sponsor-card {
+      background: var(--light-green);
+      border: 1px dashed var(--primary-green);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .sponsor-tag { font-size: 0.7rem; background: var(--primary-green); color: white; padding: 2px 6px; border-radius: 4px; }
+    .sponsor-title { font-weight: bold; font-size: 0.9rem; margin-top: 4px; }
+    .sponsor-desc { font-size: 0.75rem; color: #555; }
+    .btn-contact {
+      background: var(--primary-green); color: white; border: none;
+      padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; text-decoration: none;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: white; display: flex; justify-content: space-around;
+      padding: 8px 0; border-top: 1px solid var(--border-color);
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+    }
+    .nav-item { text-align: center; font-size: 0.75rem; color: #777; text-decoration: none; cursor: pointer; flex: 1; }
+    .nav-item.active { color: var(--primary-green); font-weight: bold; }
+  </style>
+</head>
+<body>
+
+ <div class="app-bar">
+  <span>🏗️ Myanmar Construction Calculator</span>
+</div>
+
+  <div class="container">
+    
+    <!-- HOME SCREEN - Calculator Selection -->
+    <div id="homeView" class="calc-page active">
+      <div class="calc-grid">
+        <div class="calc-card" onclick="openCalc('roofCalc')">
+          <div class="calc-icon">🏠</div>
+          <div class="calc-title">ခေါင်းမိုး တွက်ချက်ရေး</div>
+        </div>
+        
+        <div class="calc-card" onclick="openCalc('concreteCalc')">
+          <div class="calc-icon">🧱</div>
+          <div class="calc-title">ကွန်ကရစ် တွက်ချက်ရေး</div>
+        </div>
+        
+        <div class="calc-card" onclick="openCalc('brickCalc')">
+          <div class="calc-icon">🧱</div>
+          <div class="calc-title">အုတ် တွက်ချက်ရေး</div>
+        </div>
+        
+        <div class="calc-card" onclick="openCalc('steelCalc')">
+          <div class="calc-icon">🏗️</div>
+          <div class="calc-title">သံကြိုး တွက်ချက်ရေး</div>
+        </div>
+        
+        <div class="calc-card" onclick="openCalc('paintCalc')">
+          <div class="calc-icon">🎨</div>
+          <div class="calc-title">ဆေးသုတ် တွက်ချက်ရေး</div>
+        </div>
+        
+        <div class="calc-card" onclick="openCalc('tileCalc')">
+          <div class="calc-icon">🔲</div>
+          <div class="calc-title">ကြွေပြား တွက်ချက်ရေး</div>
+        </div>
+      </div>
+
+      <div class="sponsor-card">
+        <div>
+          <span class="sponsor-tag">📢 Sponsor</span>
+          <div class="sponsor-title">ဆောက်လုပ်ရေးဆိုင်များ ကြော်ငြာနိုင်သည်</div>
+          <div class="sponsor-desc">ကြော်ငြာထည့်သွင်းရန် Viber မှ ဆက်သွယ်ပါ</div>
+        </div>
+        <a href="viber://chat?number=959264134142" onclick="setTimeout(() => { window.location.href='https://page.viber.com/'; }, 2500); return true;" class="btn-contact" style="background: #7360f2;">Viber ဖြင့် ဆက်သွယ်ရန်</a>
+      </div>
+    </div>
+
+    <!-- ROOF CALCULATOR -->
+    <div id="roofCalc" class="calc-page">
+      <button class="btn-calc btn-back" onclick="goHome()">← နောက်သို့</button>
+      <div class="card">
+        <h3 style="margin-bottom: 12px; color: var(--primary-green);">🏠 ခေါင်းမိုး တွက်ချက်ရေး</h3>
+        
+        <div class="form-group">
+          <label>ခေါင်းမိုး ဒီဇိုင်း အမျိုးအစား ရွေးပါ:</label>
+          <select id="roofDesign" onchange="updateDesignDetails()">
+            <option data-img="" data-labour="2500" value="gable">နှစ်ဖက်ချခေါင်းမိုး (Gable Roof)</option>
+            <option data-img="" data-labour="2000" value="leanto">တစ်ဖက်စောင်းခေါင်းမိုး (Lean-to Roof)</option>
+            <option data-img="" data-labour="3000" value="hip">လေးဖက်ချခေါင်းမိုး (Hip Roof)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>သွပ်ပြား အကျိုးရှိအကျယ် (Effective Width) ရွေးပါ:</label>
+          <select id="sheetWidth">
+            <option value="2.5">4 Angle / 11 Line (အကျိုးရှိအကျယ် ၂ ပေခွဲ)</option>
+            <option value="2.0">Line သွပ်ပြား (အကျိုးရှိအကျယ် ၂ ပေ)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>သွပ်ပြား အထူနှင့် စက်ရုံ ရွေးပါ:</label>
+          <select id="sheetPricePerFt">
+            <option value="2100">0.30 mm - China PPGI (2,100 ကျပ်/ပေ)</option>
+            <option value="6600" selected>0.36 mm - Vietnam PPGL AZ100 (6,600 ကျပ်/ပေ)</option>
+            <option value="8500">0.50 mm - Vietnam PPGL AZ100 (8,500 ကျပ်/ပေ)</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>အိမ်အလျား (ပေ)</label>
+            <input type="number" id="roofLen" value="30">
+          </div>
+          <div class="form-group">
+            <label>အိမ်အနံ (ပေ)</label>
+            <input type="number" id="roofWid" value="15">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>အပြင်ဖက် အဝဲအထွက်:</label>
+          <select id="roofOverhang">
+            <option value="1" selected>၁ ပေ အထွက်</option>
+            <option value="2">၂ ပေ အထွက်</option>
+            <option value="0">အဝဲမထုတ်ပါ</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>အမိုး အစောင်း / ခေါင်ချိုး အချိုး:</label>
+          <select id="roofSlope">
+            <option value="1.054">၄ လက်မ ခေါင်ချိုး (Standard Slope)</option>
+            <option value="1.083">၅ လက်မ ခေါင်ချိုး (ခေါင်မြင့် Slope)</option>
+            <option value="1.000">အတန်း/ပြင်ညီ မိုး (Flat Slope)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>လက်ခနှုန်းထား (၁ စတုရန်းပေ / ကျပ်):</label>
+          <input type="number" id="roofLabourRate" value="2500">
+        </div>
+
+        <button class="btn-calc" onclick="calcRoof()">တွက်ချက်မည်</button>
+
+        <div id="roofResult" class="result-box">
+          <div class="result-title">📊 တွက်ချက်မှု ရလဒ်များ</div>
+          <div class="result-item">သွပ်ပြားအရှည်: <b id="resRoofSheetLen" style="color: var(--primary-green);">0</b> ပေ</div>
+          <div class="result-item">စုစုပေါင်း သွပ်ပြား: <b id="resRoofSheets" style="color: var(--primary-green);">0</b> ချပ်</div>
+          <div class="result-item">သွပ်ပြား ကုန်ကျစရိတ်: <b id="resRoofMat">0</b> ကျပ်</div>
+          <div class="result-item">လက်ခ (<span id="resRoofSqft">0</span> စတုရန်းပေ): <b id="resRoofLabour">0</b> ကျပ်</div>
+          <div class="result-total">စုစုပေါင်း: <span id="resRoofTotal">0</span> ကျပ်</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONCRETE CALCULATOR -->
+    <div id="concreteCalc" class="calc-page">
+      <button class="btn-calc btn-back" onclick="goHome()">← နောက်သို့</button>
+      <div class="card">
+        <h3 style="margin-bottom: 12px; color: var(--primary-green);">🧱 ကွန်ကရစ် တွက်ချက်ရေး</h3>
+        
+        <div class="form-group">
+          <label>အမျိုးအစား ရွေးပါ:</label>
+          <select id="concreteType">
+            <option value="slab">Slab (ပြင်ညီ)</option>
+            <option value="column">Column (တိုင်)</option>
+            <option value="beam">Beam (အတန်း)</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>အလျား (ပေ)</label>
+            <input type="number" id="concLen" value="10">
+          </div>
+          <div class="form-group">
+            <label>အနံ (ပေ)</label>
+            <input type="number" id="concWid" value="10">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>အထူ (လက်မ)</label>
+          <input type="number" id="concThick" value="4">
+        </div>
+
+        <div class="form-group">
+          <label>Mix Ratio ရွေးပါ:</label>
+          <select id="concRatio">
+            <option value="1,2,4">1:2:4 (M15 Grade - သာမန်)</option>
+            <option value="1,1.5,3">1:1.5:3 (M20 Grade - အခိုင်)</option>
+            <option value="1,1,2">1:1:2 (M25 Grade - အရမ်းခိုင်)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Cement အိတ်တစ်အိတ်ဈေး (ကျပ်):</label>
+          <input type="number" id="cementPrice" value="18000">
+        </div>
+
+        <button class="btn-calc" onclick="calcConcrete()">တွက်ချက်မည်</button>
+
+        <div id="concResult" class="result-box">
+          <div class="result-title">📊 တွက်ချက်မှု ရလဒ်များ</div>
+          <div class="result-item">ကွန်ကရစ် ထုထည်: <b id="resConcVol" style="color: var(--primary-green);">0</b> cubic feet</div>
+          <div class="result-item">Cement အိတ်: <b id="resCementBags" style="color: var(--primary-green);">0</b> အိတ်</div>
+          <div class="result-item">Sand: <b id="resSand">0</b> cubic feet</div>
+          <div class="result-item">Aggregate: <b id="resAggregate">0</b> cubic feet</div>
+          <div class="result-item">Cement ကုန်ကျ: <b id="resCementCost">0</b> ကျပ်</div>
+          <div class="result-total">ခန့်မှန်း စုစုပေါင်း: <span id="resConcTotal">0</span> ကျပ်</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BRICK CALCULATOR -->
+    <div id="brickCalc" class="calc-page">
+      <button class="btn-calc btn-back" onclick="goHome()">← နောက်သို့</button>
+      <div class="card">
+        <h3 style="margin-bottom: 12px; color: var(--primary-green);">🧱 အုတ် တွက်ချက်ရေး</h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>နံရံ အလျား (ပေ)</label>
+            <input type="number" id="wallLen" value="20">
+          </div>
+          <div class="form-group">
+            <label>နံရံ အမြင့် (ပေ)</label>
+            <input type="number" id="wallHeight" value="10">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>နံရံ အထူ ရွေးပါ:</label>
+          <select id="wallThick">
+            <option value="4.5">4.5 လက်မ (တစ်ထပ်အုတ်)</option>
+            <option value="9">9 လက်မ (နှစ်ထပ်အုတ်)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>အုတ်အမျိုးအစား:</label>
+          <select id="brickType">
+            <option value="standard">9" × 4.5" × 3" (Standard)</option>
+            <option value="large">9" × 4.5" × 4" (Large)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Mortar Thickness (လက်မ):</label>
+          <input type="number" id="mortarThick" value="0.5">
+        </div>
+
+        <div class="form-group">
+          <label>အုတ်တစ်ချပ်ဈေး (ကျပ်):</label>
+          <input type="number" id="brickPrice" value="650">
+        </div>
+
+        <button class="btn-calc" onclick="calcBrick()">တွက်ချက်မည်</button>
+
+        <div id="brickResult" class="result-box">
+          <div class="result-title">📊 တွက်ချက်မှု ရလဒ်များ</div>
+          <div class="result-item">နံရံ ဧရိယာ: <b id="resWallArea">0</b> စတုရန်းပေ</div>
+          <div class="result-item">အုတ်အရေအတွက်: <b id="resBricks" style="color: var(--primary-green);">0</b> ချပ်</div>
+          <div class="result-item">Cement အိတ်: <b id="resBrickCement">0</b> အိတ်</div>
+          <div class="result-item">Sand: <b id="resBrickSand">0</b> cubic feet</div>
+          <div class="result-item">အုတ်ကုန်ကျ: <b id="resBrickCost">0</b> ကျပ်</div>
+          <div class="result-total">ခန့်မှန်း စုစုပေါင်း: <span id="resBrickTotal">0</span> ကျပ်</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEEL CALCULATOR -->
+    <div id="steelCalc" class="calc-page">
+      <button class="btn-calc btn-back" onclick="goHome()">← နောက်သို့</button>
+      <div class="card">
+        <h3 style="margin-bottom: 12px; color: var(--primary-green);">🏗️ သံကြိုး တွက်ချက်ရေး</h3>
+        
+        <div class="form-group">
+          <label>အမျိုးအစား ရွေးပါ:</label>
+          <select id="steelType">
+            <option value="slab">Slab (ပြင်ညီ)</option>
+            <option value="beam">Beam (အတန်း)</option>
+            <option value="column">Column (တိုင်)</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>အလျား (ပေ)</label>
+            <input type="number" id="steelLen" value="20">
+          </div>
+          <div class="form-group">
+            <label>အနံ (ပေ)</label>
+            <input type="number" id="steelWid" value="15">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Bar Diameter ရွေးပါ:</label>
+          <select id="barDiameter">
+            <option value="10">10 mm (3/8")</option>
+            <option value="12">12 mm (1/2")</option>
+            <option value="16">16 mm (5/8")</option>
+            <option value="20">20 mm (3/4")</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Bar Spacing (လက်မ):</label>
+          <select id="barSpacing">
+            <option value="6">6 လက်မ</option>
+            <option value="8">8 လက်မ</option>
+            <option value="10">10 လက်မ</option>
+            <option value="12">12 လက်မ</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Steel Price per kg (ကျပ်):</label>
+          <input type="number" id="steelPrice" value="3200">
+        </div>
+
+        <button class="btn-calc" onclick="calcSteel()">တွက်ချက်မည်</button>
+
+        <div id="steelResult" class="result-box">
+          <div class="result-title">📊 တွက်ချက်မှု ရလဒ်များ</div>
+          <div class="result-item">Bar အရေအတွက်: <b id="resBars">0</b> ချောင်း</div>
+          <div class="result-item">Total Length: <b id="resTotalLen">0</b> ပေ</div>
+          <div class="result-item">Total Weight: <b id="resWeight" style="color: var(--primary-green);">0</b> kg</div>
+          <div class="result-item">Steel ကုန်ကျ: <b id="resSteelCost">0</b> ကျပ်</div>
+          <div class="result-total">ခန့်မှန်း စုစုပေါင်း: <span id="resSteelTotal">0</span> ကျပ်</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAINT CALCULATOR -->
+    <div id="paintCalc" class="calc-page">
+      <button class="btn-calc btn-back" onclick="goHome()">← နောက်သို့</button>
+      <div class="card">
+        <h3 style="margin-bottom: 12px; color: var(--primary-green);">🎨 ဆေးသုတ် တွက်ချက်ရေး</h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>အလျား (ပေ)</label>
+            <input type="number" id="paintLen" value="15">
+          </div>
+          <div class="form-group">
+            <label>အမြင့် (ပေ)</label>
+            <input type="number" id="paintHeight" value="10">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Paint Type ရွေးပါ:</label>
+          <select id="paintType">
+            <option value="emulsion">Emulsion (နံရံဆေး)</option>
+            <option value="enamel">Enamel (သစ်သား/သံဆေး)</option>
+            <option value="wood">Wood Stain (သစ်သားဆေး)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Coats အရေအတွက်:</label>
+          <select id="paintCoats">
+            <option value="1">1 coat (Primer သက်သက်)</option>
+            <option value="2">2 coats (Primer + Top)</option>
+            <option value="3">3 coats (Primer + 2 Top)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Paint 1 Gallon ဈေး (ကျပ်):</label>
+          <input type="number" id="paintPrice" value="45000">
+        </div>
+
+        <button class="btn-calc" onclick="calcPaint()">တွက်ချက်မည်</button>
+
+        <div id="paintResult" class="result-box">
+          <div class="result-title">📊 တွက်ချက်မှု ရလဒ်များ</div>
+          <div class="result-item">နံရံ ဧရိယာ: <b id="resPaintArea">0</b> စတုရန်းပေ</div>
+          <div class="result-item">လိုအပ်မည့် Paint: <b id="resPaintGallons" style="color: var(--primary-green);">0</b> Gallons</div>
+          <div class="result-item">Paint ကုန်ကျ: <b id="resPaintCost">0</b> ကျပ်</div>
+          <div class="result-total">ခန့်မှန်း စုစုပေါင်း: <span id="resPaintTotal">0</span> ကျပ်</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TILE CALCULATOR -->
+    <div id="tileCalc" class="calc-page">
+      <button class="btn-calc btn-back" onclick="goHome()">← နောက်သို့</button>
+      <div class="card">
+        <h3 style="margin-bottom: 12px; color: var(--primary-green);">🔲 ကြွေပြား တွက်ချက်ရေး</h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>အလျား (ပေ)</label>
+            <input type="number" id="tileLen" value="12">
+          </div>
+          <div class="form-group">
+            <label>အနံ (ပေ)</label>
+            <input type="number" id="tileWid" value="10">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Tile Size ရွေးပါ:</label>
+          <select id="tileSize">
+            <option value="1">12" × 12" (1 sqft)</option>
+            <option value="2">24" × 24" (4 sqft)</option>
+            <option value="1.5">18" × 18" (2.25 sqft)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Tile 1 ချပ်ဈေး (ကျပ်):</label>
+          <input type="number" id="tilePrice" value="8500">
+        </div>
+
+        <button class="btn-calc" onclick="calcTile()">တွက်ချက်မည်</button>
+
+        <div id="tileResult" class="result-box">
+          <div class="result-title">📊 တွက်ချက်မှု ရလဒ်များ</div>
+          <div class="result-item">ဧရိယာ: <b id="resTileArea">0</b> စတုရန်းပေ</div>
+          <div class="result-item">လိုအပ်မည့် Tile: <b id="resTiles" style="color: var(--primary-green);">0</b> ချပ်</div>
+          <div class="result-item">Cement: <b id="resTileCement">0</b> အိတ်</div>
+          <div class="result-item">Sand: <b id="resTileSand">0</b> cubic feet</div>
+          <div class="result-item">Tile ကုန်ကျ: <b id="resTileCost">0</b> ကျပ်</div>
+          <div class="result-total">ခန့်မှန်း စုစုပေါင်း: <span id="resTileTotal">0</span> ကျပ်</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+   <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <div class="nav-item active" onclick="goHome()">🏠<br>Home</div>
+    <div class="nav-item" onclick="alert('Coming soon!')">📋<br>History</div>
+    <div class="nav-item" onclick="alert('Coming soon!')">⚙️<br>Settings</div>
+  </div>
+
+  <script>
+    // Navigation
+    function openCalc(calcId) {
+      document.querySelectorAll('.calc-page').forEach(page => page.classList.remove('active'));
+      document.getElementById(calcId).classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    function goHome() {
+      document.querySelectorAll('.calc-page').forEach(page => page.classList.remove('active'));
+      document.getElementById('homeView').classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    // ROOF CALCULATOR
+    function updateDesignDetails() {
+      let select = document.getElementById('roofDesign');
+      let selectedOption = select.options[select.selectedIndex];
+      let labour = selectedOption.getAttribute('data-labour');
+      document.getElementById('roofLabourRate').value = labour;
+    }
+
+    function calcRoof() {
+      let roofDesign = document.getElementById('roofDesign').value;
+      let l = parseFloat(document.getElementById('roofLen').value) || 0;
+      let w = parseFloat(document.getElementById('roofWid').value) || 0;
+      let overhang = parseFloat(document.getElementById('roofOverhang').value) || 0;
+      let slopeMultiplier = parseFloat(document.getElementById('roofSlope').value) || 1.054;
+      let effWidth = parseFloat(document.getElementById('sheetWidth').value) || 2.5;
+      let pricePerFt = parseFloat(document.getElementById('sheetPricePerFt').value) || 0;
+      let labourRate = parseFloat(document.getElementById('roofLabourRate').value) || 0;
+
+      let totalW = w + (overhang * 2);
+      let totalL = l + (overhang * 2);
+      let oneSideRoofLen = 0;
+      let neededSheetLength = 0;
+      let totalSheets = 0;
+      let roofArea = 0;
+
+      if (roofDesign === 'gable') {
+        oneSideRoofLen = (totalW / 2) * slopeMultiplier;
+        neededSheetLength = Math.ceil(oneSideRoofLen);
+        let sheetsPerSide = Math.ceil(totalL / effWidth);
+        totalSheets = sheetsPerSide * 2;
+        roofArea = totalL * totalW * slopeMultiplier;
+      } else if (roofDesign === 'leanto') {
+        oneSideRoofLen = totalW * slopeMultiplier;
+        neededSheetLength = Math.ceil(oneSideRoofLen);
+        totalSheets = Math.ceil(totalL / effWidth);
+        roofArea = totalL * totalW * slopeMultiplier;
+      } else if (roofDesign === 'hip') {
+        let halfSpan = totalW / 2;
+        oneSideRoofLen = halfSpan * slopeMultiplier;
+        neededSheetLength = Math.ceil(oneSideRoofLen);
+        roofArea = totalL * totalW * slopeMultiplier;
+        let areaPerSheet = effWidth * neededSheetLength;
+        totalSheets = Math.ceil((roofArea / areaPerSheet) * 1.10);
+      }
+
+      let pricePerSheet = pricePerFt * neededSheetLength;
+      let sqft = Math.ceil(roofArea);
+      let totalMat = totalSheets * pricePerSheet;
+      let totalLabour = sqft * labourRate;
+      let grandTotal = totalMat + totalLabour;
+
+      document.getElementById('resRoofSheetLen').innerText = neededSheetLength;
+      document.getElementById('resRoofSheets').innerText = totalSheets.toLocaleString();
+      document.getElementById('resRoofMat').innerText = totalMat.toLocaleString();
+      document.getElementById('resRoofSqft').innerText = sqft.toLocaleString();
+      document.getElementById('resRoofLabour').innerText = totalLabour.toLocaleString();
+      document.getElementById('resRoofTotal').innerText = grandTotal.toLocaleString();
+      document.getElementById('roofResult').style.display = 'block';
+    }
+
+    // CONCRETE CALCULATOR
+    function calcConcrete() {
+      let type = document.getElementById('concreteType').value;
+      let l = parseFloat(document.getElementById('concLen').value) || 0;
+      let w = parseFloat(document.getElementById('concWid').value) || 0;
+      let thickInch = parseFloat(document.getElementById('concThick').value) || 4;
+      let ratio = document.getElementById('concRatio').value.split(',').map(Number);
+      let cementPrice = parseFloat(document.getElementById('cementPrice').value) || 18000;
+
+      let thickFt = thickInch / 12;
+      let volume = l * w * thickFt; // cubic feet
+
+      let totalRatio = ratio[0] + ratio[1] + ratio[2];
+      let dryVolume = volume * 1.54; // dry volume factor
+
+      let cementBags = (dryVolume * ratio[0] / totalRatio) * 0.217; // 1 bag = 1.25 cft
+      let sand = dryVolume * ratio[1] / totalRatio;
+      let aggregate = dryVolume * ratio[2] / totalRatio;
+
+      let cementCost = Math.ceil(cementBags) * cementPrice;
+      let totalCost = cementCost + (sand * 800) + (aggregate * 1200); // approximate material costs
+
+      document.getElementById('resConcVol').innerText = volume.toFixed(2);
+      document.getElementById('resCementBags').innerText = Math.ceil(cementBags);
+      document.getElementById('resSand').innerText = sand.toFixed(2);
+      document.getElementById('resAggregate').innerText = aggregate.toFixed(2);
+      document.getElementById('resCementCost').innerText = cementCost.toLocaleString();
+      document.getElementById('resConcTotal').innerText = Math.ceil(totalCost).toLocaleString();
+      document.getElementById('concResult').style.display = 'block';
+    }
+
+    // BRICK CALCULATOR
+    function calcBrick() {
+      let wallLen = parseFloat(document.getElementById('wallLen').value) || 0;
+      let wallHeight = parseFloat(document.getElementById('wallHeight').value) || 0;
+      let wallThick = parseFloat(document.getElementById('wallThick').value) || 4.5;
+      let brickType = document.getElementById('brickType').value;
+      let mortarThick = parseFloat(document.getElementById('mortarThick').value) || 0.5;
+      let brickPrice = parseFloat(document.getElementById('brickPrice').value) || 650;
+
+      let wallArea = wallLen * wallHeight;
+      let wallVol = wallArea * (wallThick / 12); // cubic feet
+
+      let brickVol = brickType === 'standard' ? (9 * 4.5 * 3) / 1728 : (9 * 4.5 * 4) / 1728;
+      let mortarVol = wallVol * 0.25; // 25% mortar
+      let netBrickVol = wallVol - mortarVol;
+      let bricks = Math.ceil(netBrickVol / brickVol);
+
+      let cementBags = Math.ceil(bricks / 500); // 1 bag per 500 bricks approx
+      let sand = (bricks / 1000) * 10; // 10 cft per 1000 bricks
+      let brickCost = bricks * brickPrice;
+      let totalCost = brickCost + (cementBags * 18000) + (sand * 800);
+
+      document.getElementById('resWallArea').innerText = wallArea.toFixed(2);
+      document.getElementById('resBricks').innerText = bricks;
+      document.getElementById('resBrickCement').innerText = cementBags;
+      document.getElementById('resBrickSand').innerText = sand.toFixed(2);
+      document.getElementById('resBrickCost').innerText = brickCost.toLocaleString();
+      document.getElementById('resBrickTotal').innerText = Math.ceil(totalCost).toLocaleString();
+      document.getElementById('brickResult').style.display = 'block';
+    }
+
+    // STEEL CALCULATOR
+    function calcSteel() {
+      let type = document.getElementById('steelType').value;
+      let l = parseFloat(document.getElementById('steelLen').value) || 0;
+      let w = parseFloat(document.getElementById('steelWid').value) || 0;
+      let barDia = parseFloat(document.getElementById('barDiameter').value) || 12;
+      let barSpacing = parseFloat(document.getElementById('barSpacing').value) || 8;
+      let steelPrice = parseFloat(document.getElementById('steelPrice').value) || 3200;
+
+      let area = l * w;
+      let bars = Math.ceil((l * 12) / barSpacing) + Math.ceil((w * 12) / barSpacing);
+      let totalLen = bars * Math.max(l, w);
+      let weightPerFt = (barDia * barDia) / 533; // kg per foot formula
+      let totalWeight = totalLen * weightPerFt;
+      let totalCost = Math.ceil(totalWeight) * steelPrice;
+
+      document.getElementById('resBars').innerText = bars;
+      document.getElementById('resTotalLen').innerText = totalLen.toFixed(2);
+      document.getElementById('resWeight').innerText = Math.ceil(totalWeight);
+      document.getElementById('resSteelCost').innerText = (Math.ceil(totalWeight) * steelPrice).toLocaleString();
+      document.getElementById('resSteelTotal').innerText = totalCost.toLocaleString();
+      document.getElementById('steelResult').style.display = 'block';
+    }
+
+    // PAINT CALCULATOR
+    function calcPaint() {
+      let l = parseFloat(document.getElementById('paintLen').value) || 0;
+      let h = parseFloat(document.getElementById('paintHeight').value) || 0;
+      let coats = parseInt(document.getElementById('paintCoats').value) || 2;
+      let paintPrice = parseFloat(document.getElementById('paintPrice').value) || 45000;
+
+      let area = l * h;
+      let coveragePerGallon = 350; // sqft per gallon (standard)
+      let gallons = (area * coats) / coveragePerGallon;
+      let totalCost = Math.ceil(gallons) * paintPrice;
+
+      document.getElementById('resPaintArea').innerText = area.toFixed(2);
+      document.getElementById('resPaintGallons').innerText = Math.ceil(gallons);
+      document.getElementById('resPaintCost').innerText = (Math.ceil(gallons) * paintPrice).toLocaleString();
+      document.getElementById('resPaintTotal').innerText = totalCost.toLocaleString();
+      document.getElementById('paintResult').style.display = 'block';
+    }
+
+    // TILE CALCULATOR
+    function calcTile() {
+      let l = parseFloat(document.getElementById('tileLen').value) || 0;
+      let w = parseFloat(document.getElementById('tileWid').value) || 0;
+      let tileSize = parseFloat(document.getElementById('tileSize').value) || 1;
+      let tilePrice = parseFloat(document.getElementById('tilePrice').value) || 8500;
+
+      let area = l * w;
+      let tiles = Math.ceil(area / tileSize);
+      let cementBags = Math.ceil(area / 100); // 1 bag per 100 sqft approx
+      let sand = (area / 100) * 3; // 3 cft per 100 sqft
+      let tileCost = tiles * tilePrice;
+      let totalCost = tileCost + (cementBags * 18000) + (sand * 800);
+
+      document.getElementById('resTileArea').innerText = area.toFixed(2);
+      document.getElementById('resTiles').innerText = tiles;
+      document.getElementById('resTileCement').innerText = cementBags;
+      document.getElementById('resTileSand').innerText = sand.toFixed(2);
+      document.getElementById('resTileCost').innerText = tileCost.toLocaleString();
+      document.getElementById('resTileTotal').innerText = Math.ceil(totalCost).toLocaleString();
+      document.getElementById('tileResult').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
