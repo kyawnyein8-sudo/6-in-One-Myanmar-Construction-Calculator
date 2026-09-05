@@ -1231,6 +1231,31 @@
     window.addEventListener('DOMContentLoaded', () => {
       applyCustomPrices();
     });
+    let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Automatic Banner မပေါ်အောင် တားဆီးသည်
+  e.preventDefault();
+  deferredPrompt = e;
+  
+  // Install ခလုတ် သို့မဟုတ် Pop-up ပြရန်နေရာ
+  console.log('App ကို Install လုပ်ရန် အဆင်သင့်ဖြစ်ပါပြီ');
+});
+
+// App ထဲရှိ Install ခလုတ်တစ်ခုခုကို နှိပ်သည့်အခါ ခေါ်မည့် Function
+function installPWA() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      }
+      deferredPrompt = null;
+    });
+  } else {
+    alert('Browser Menu (အစက်သုံးစက်) မှ "Add to Home screen" ကို နှိပ်၍ Install လုပ်နိုင်ပါတယ်');
+  }
+}
   </script>
 </body>
 </html>
