@@ -20,7 +20,7 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-    body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 70px; }
+    body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 75px; }
 
     .app-bar {
       background-color: var(--primary-green);
@@ -60,7 +60,7 @@
     .calc-card.active { background: var(--light-green); border-color: var(--primary-green); }
 
     .calc-icon { font-size: 2rem; margin-bottom: 8px; }
-    .calc-title { font-size: 0.85rem; font-weight: bold; color: var(--primary-green); }
+    .calc-title { font-size: 0.85rem; font-weight: bold; color: var(--primary-green); word-break: keep-all; }
 
     /* Calculator Pages */
     .calc-page { display: none; }
@@ -77,11 +77,11 @@
 
     .form-group { margin-bottom: 12px; }
     label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: var(--primary-green); }
-    select, input {
+    select, input, textarea {
       width: 100%; padding: 10px; border: 1px solid var(--border-color);
       border-radius: 8px; font-size: 0.95rem; outline: none; background: #fafafa;
     }
-    select:focus, input:focus { border-color: var(--primary-green); background: #fff; }
+    select:focus, input:focus, textarea:focus { border-color: var(--primary-green); background: #fff; }
 
     .form-row { display: flex; gap: 10px; }
     .form-row .form-group { flex: 1; }
@@ -92,13 +92,8 @@
       font-size: 1rem; cursor: pointer; margin-top: 8px;
     }
 
-    .btn-back {
-      background: #6c757d; margin-bottom: 12px;
-    }
-
-    .btn-save {
-      background: var(--accent-blue); margin-top: 8px;
-    }
+    .btn-back { background: #6c757d; margin-bottom: 12px; }
+    .btn-save { background: var(--accent-blue); margin-top: 8px; }
 
     .result-box {
       background: #f0f7f2;
@@ -109,25 +104,11 @@
       padding: 14px;
     }
 
-    .result-title {
-      font-size: 0.9rem;
-      font-weight: bold;
-      color: var(--primary-green);
-      margin-bottom: 8px;
-    }
-
-    .result-item {
-      font-size: 0.85rem;
-      margin: 6px 0;
-    }
-
+    .result-title { font-size: 0.9rem; font-weight: bold; color: var(--primary-green); margin-bottom: 8px; }
+    .result-item { font-size: 0.85rem; margin: 6px 0; }
     .result-total {
-      font-size: 1.05rem;
-      font-weight: bold;
-      color: #d93025;
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px dashed #ccc;
+      font-size: 1.05rem; font-weight: bold; color: #d93025;
+      margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ccc;
     }
 
     /* Sponsor Banner */
@@ -149,8 +130,8 @@
       padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; text-decoration: none;
     }
 
-    /* History Items */
-    .history-item {
+    /* History & Notes Items */
+    .history-item, .note-item {
       background: var(--card-bg);
       border-radius: 8px;
       padding: 12px;
@@ -159,50 +140,13 @@
       font-size: 0.85rem;
     }
 
-    .history-item-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-    }
+    .history-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .history-calc-type { font-weight: bold; color: var(--primary-green); }
+    .history-date { font-size: 0.75rem; color: #666; }
+    .history-total { font-weight: bold; color: #d93025; font-size: 0.95rem; }
 
-    .history-calc-type {
-      font-weight: bold;
-      color: var(--primary-green);
-    }
-
-    .history-date {
-      font-size: 0.75rem;
-      color: #666;
-    }
-
-    .history-total {
-      font-weight: bold;
-      color: #d93025;
-      font-size: 0.95rem;
-    }
-
-    .btn-delete {
-      background: #dc3545;
-      color: white;
-      border: none;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      cursor: pointer;
-    }
-
-    .btn-clear-all {
-      background: #dc3545;
-      color: white;
-      border: none;
-      padding: 10px;
-      border-radius: 8px;
-      font-weight: bold;
-      width: 100%;
-      margin-top: 12px;
-      cursor: pointer;
-    }
+    .btn-delete { background: #dc3545; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; }
+    .btn-clear-all { background: #dc3545; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 12px; cursor: pointer; }
 
     .history-total-box {
       background: var(--light-green);
@@ -213,16 +157,21 @@
       margin-bottom: 16px;
     }
 
-    .history-total-label {
-      font-size: 0.85rem;
-      color: var(--primary-green);
-      margin-bottom: 4px;
-    }
+    .history-total-label { font-size: 0.85rem; color: var(--primary-green); margin-bottom: 4px; }
+    .history-total-amount { font-size: 1.3rem; font-weight: bold; color: #d93025; }
 
-    .history-total-amount {
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: #d93025;
+    /* Modal for Apps List */
+    .modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;
+    }
+    .modal.active { display: flex; }
+    .modal-content {
+      background: white; border-radius: 12px; width: 90%; max-width: 400px; padding: 20px; max-height: 80vh; overflow-y: auto;
+    }
+    .pwa-link-card {
+      display: flex; align-items: center; gap: 12px; padding: 10px; border: 1px solid var(--border-color);
+      border-radius: 8px; text-decoration: none; color: inherit; margin-bottom: 10px;
     }
 
     /* Bottom Navigation */
@@ -230,21 +179,13 @@
       position: fixed; bottom: 0; left: 0; right: 0;
       background: white; display: flex; justify-content: space-around;
       padding: 8px 0; border-top: 1px solid var(--border-color);
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 99;
     }
     .nav-item { text-align: center; font-size: 0.75rem; color: #777; text-decoration: none; cursor: pointer; flex: 1; }
     .nav-item.active { color: var(--primary-green); font-weight: bold; }
 
-    .empty-history {
-      text-align: center;
-      padding: 40px 20px;
-      color: #999;
-    }
-
-    .empty-history-icon {
-      font-size: 3rem;
-      margin-bottom: 12px;
-    }
+    .empty-state { text-align: center; padding: 40px 20px; color: #999; }
+    .empty-icon { font-size: 3rem; margin-bottom: 12px; }
   </style>
 </head>
 <body>
@@ -255,37 +196,57 @@
 
   <div class="container">
     
-    <!-- HOME SCREEN - Calculator Selection -->
+    <!-- HOME SCREEN -->
     <div id="homeView" class="calc-page active">
       <div class="calc-grid">
         <div class="calc-card" onclick="openCalc('roofCalc')">
           <div class="calc-icon">🏠</div>
-          <div class="calc-title">ခေါင်းမိုး တွက်ချက်ရေး</div>
+          <div class="calc-title">ခေါင်းမိုး</div>
         </div>
         
         <div class="calc-card" onclick="openCalc('concreteCalc')">
-          <div class="calc-icon">🧱</div>
-          <div class="calc-title">ကွန်ကရစ် တွက်ချက်ရေး</div>
+          <div class="calc-icon">🏗️</div>
+          <div class="calc-title">ကွန်ကရစ်</div>
         </div>
         
         <div class="calc-card" onclick="openCalc('brickCalc')">
           <div class="calc-icon">🧱</div>
-          <div class="calc-title">အုတ် တွက်ချက်ရေး</div>
+          <div class="calc-title">အုတ်စီရန်</div>
         </div>
         
         <div class="calc-card" onclick="openCalc('steelCalc')">
-          <div class="calc-icon">🏗️</div>
-          <div class="calc-title">သံကြိုး တွက်ချက်ရေး</div>
+          <div class="calc-icon">🔩</div>
+          <div class="calc-title">သံချောင်း</div>
         </div>
         
         <div class="calc-card" onclick="openCalc('paintCalc')">
           <div class="calc-icon">🎨</div>
-          <div class="calc-title">ဆေးသုတ် တွက်ချက်ရေး</div>
+          <div class="calc-title">ဆေးသုတ်ရန်</div>
         </div>
         
         <div class="calc-card" onclick="openCalc('tileCalc')">
           <div class="calc-icon">🔲</div>
-          <div class="calc-title">ကြွေပြား တွက်ချက်ရေး</div>
+          <div class="calc-title">ကြွေပြားခင်း</div>
+        </div>
+
+        <div class="calc-card" onclick="openCalc('timberCalc')">
+          <div class="calc-icon">🪵</div>
+          <div class="calc-title">သစ်တွက်ရန်</div>
+        </div>
+
+        <div class="calc-card" onclick="openCalc('unitCalc')">
+          <div class="calc-icon">📐</div>
+          <div class="calc-title">Unit Converter</div>
+        </div>
+
+        <div class="calc-card" onclick="openCalc('notePage')">
+          <div class="calc-icon">📝</div>
+          <div class="calc-title">မှတ်စု</div>
+        </div>
+
+        <div class="calc-card" onclick="openPwaModal()">
+          <div class="calc-icon">🌐</div>
+          <div class="calc-title">တခြား Apps များ</div>
         </div>
       </div>
 
@@ -313,12 +274,114 @@
       <button class="btn-clear-all" onclick="clearAllHistory()">🗑️ မှတ်တမ်းအားလုံး ရှင်းလင်းမည်</button>
     </div>
 
+    <!-- SETTINGS VIEW -->
+    <div id="settingsView" class="calc-page">
+      <h3 style="margin-bottom: 16px; color: var(--primary-green);">⚙️ Settings & Custom Prices</h3>
+      <div class="card">
+        <p style="font-size: 0.8rem; color: #555; margin-bottom: 12px;">
+          သင့်ဒေသ ဝယ်ဈေးများကို Save လုပ်ထားပါက Calculators များတွင် မူလဈေးအဖြစ် Auto ဖြည့်ပေးမည်ဖြစ်ပါသည်။
+        </p>
+
+        <div class="form-group">
+          <label>ဘိလပ်မြေ ၁ အိတ်ဈေး (ကျပ်):</label>
+          <input type="number" id="settingCementPrice" placeholder="18000">
+        </div>
+
+        <div class="form-group">
+          <label>အုတ် ၁ ချပ်ဈေး (ကျပ်):</label>
+          <input type="number" id="settingBrickPrice" placeholder="650">
+        </div>
+
+        <div class="form-group">
+          <label>သံ 1 kg ဈေး (ကျပ်):</label>
+          <input type="number" id="settingSteelPrice" placeholder="3200">
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 15px;">
+          <button onclick="saveCustomPrices()" class="btn-calc" style="flex: 2; margin-top: 0;">💾 ဈေးနှုန်းများ သိမ်းမည်</button>
+          <button onclick="resetCustomPrices()" style="flex: 1; background: #dc3545; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">↺ ပြန်စမည်</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIMBER CALCULATOR -->
+    <div id="timberCalc" class="calc-page">
+      <button class="btn-calc btn-back" onclick="goHome()">← နောက်သို့</button>
+      <div class="card">
+        <h3 style="margin-bottom: 12px; color: var(--primary-green);">🪵 သစ်တွက်ရန်</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>အထူ (လက်မ)</label>
+            <input type="number" id="woodThick" value="2">
+          </div>
+          <div class="form-group">
+            <label>အကျယ် (လက်မ)</label>
+            <input type="number" id="woodWidth" value="4">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>အလျား (ပေ)</label>
+            <input type="number" id="woodLen" value="12">
+          </div>
+          <div class="form-group">
+            <label>အချပ်/အတန်းရေ</label>
+            <input type="number" id="woodQty" value="10">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>သစ် ၁ တန်ဈေး (ကျပ်):</label>
+          <input type="number" id="woodTonPrice" value="1500000">
+        </div>
+        <button class="btn-calc" onclick="calcTimber()">တွက်ချက်မည်</button>
+        <button class="btn-calc btn-save" onclick="saveToHistory('timber')" style="display: none;" id="saveTimberBtn">💾 မှတ်တမ်းတင်မည်</button>
+
+        <div id="timberResult" class="result-box">
+          <div class="result-title">📊 တွက်ချက်မှု ရလဒ်များ</div>
+          <div class="result-item">စုစုပေါင်း ကုဗပေ (CFT): <b id="resWoodCft" style="color: var(--primary-green);">0</b> cft</div>
+          <div class="result-item">စုစုပေါင်း သစ်တန်: <b id="resWoodTons" style="color: var(--primary-green);">0</b> တန်</div>
+          <div class="result-total">ခန့်မှန်း စုစုပေါင်း: <span id="resWoodTotal">0</span> ကျပ်</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- UNIT CONVERTER -->
+    <div id="unitCalc" class="calc-page">
+      <button class="btn-calc btn-back" onclick="goHome()">← နောက်သို့</button>
+      <div class="card">
+        <h3 style="margin-bottom: 12px; color: var(--primary-green);">📐 Unit Converter</h3>
+        <div class="form-group">
+          <label>အလျား / အကွာအဝေး (ပေ ➔ မီတာ):</label>
+          <input type="number" id="unitFt" placeholder="ပေ ထည့်ပါ" oninput="convertFtToM()">
+          <p style="font-size: 0.85rem; margin-top: 4px; color: #555;">ရလဒ် = <b id="unitM">0</b> မီတာ</p>
+        </div>
+        <hr style="margin: 12px 0; border: 0; border-top: 1px solid #eee;">
+        <div class="form-group">
+          <label>ဧရိယာ (စတုရန်းပေ ➔ ကျင်း/100 sqft):</label>
+          <input type="number" id="unitSqft" placeholder="Sqft ထည့်ပါ" oninput="convertSqftToKyaing()">
+          <p style="font-size: 0.85rem; margin-top: 4px; color: #555;">ရလဒ် = <b id="unitKyaing">0</b> ကျင်း</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTES PAGE -->
+    <div id="notePage" class="calc-page">
+      <button class="btn-calc btn-back" onclick="goHome()">← နောက်သို့</button>
+      <div class="card">
+        <h3 style="margin-bottom: 12px; color: var(--primary-green);">📝 လုပ်ငန်းခွင် မှတ်စု</h3>
+        <div class="form-group">
+          <textarea id="noteInput" rows="3" placeholder="ဒီနေ့ ပစ္စည်းရောက်သည့် စာရင်း သို့မဟုတ် မှတ်စု ရေးရန်..."></textarea>
+        </div>
+        <button class="btn-calc" onclick="addNote()">➕ မှတ်စု ထည့်မည်</button>
+      </div>
+      <div id="notesList"></div>
+    </div>
+
     <!-- ROOF CALCULATOR -->
     <div id="roofCalc" class="calc-page">
       <button class="btn-calc btn-back" onclick="goHome()">← နောက်သို့</button>
       <div class="card">
-        <h3 style="margin-bottom: 12px; color: var(--primary-green);">🏠 ခေါင်းမိုး တွက်ချက်ရေး</h3>
-        
+        <h3 style="margin-bottom: 12px; color: var(--primary-green);">🏠 ခေါင်းမိုး</h3>
         <div class="form-group">
           <label>ခေါင်းမိုး ဒီဇိုင်း အမျိုးအစား ရွေးပါ:</label>
           <select id="roofDesign" onchange="updateDesignDetails()">
@@ -329,15 +392,15 @@
         </div>
 
         <div class="form-group">
-          <label>သွပ်ပြား အကျိုးရှိအကျယ် (Effective Width) ရွေးပါ:</label>
+          <label>သွပ်ပြား အကျိုးရှိအကျယ် (Effective Width):</label>
           <select id="sheetWidth">
-            <option value="2.5">4 Angle / 11 Line (အကျိုးရှိအကျယ် ၂ ပေခွဲ)</option>
-            <option value="2.0">Line သွပ်ပြား (အကျိုးရှိအကျယ် ၂ ပေ)</option>
+            <option value="2.5">4 Angle / 11 Line (၂ ပေခွဲ)</option>
+            <option value="2.0">Line သွပ်ပြား (၂ ပေ)</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label>သွပ်ပြား အထူနှင့် စက်ရုံ ရွေးပါ:</label>
+          <label>သွပ်ပြား အထူနှင့် ဈေးနှုန်း:</label>
           <select id="sheetPricePerFt">
             <option value="2100">0.30 mm - China PPGI (2,100 ကျပ်/ပေ)</option>
             <option value="6600" selected>0.36 mm - Vietnam PPGL AZ100 (6,600 ကျပ်/ပေ)</option>
@@ -397,8 +460,7 @@
     <div id="concreteCalc" class="calc-page">
       <button class="btn-calc btn-back" onclick="goHome()">← နောက်သို့</button>
       <div class="card">
-        <h3 style="margin-bottom: 12px; color: var(--primary-green);">🧱 ကွန်ကရစ် တွက်ချက်ရေး</h3>
-        
+        <h3 style="margin-bottom: 12px; color: var(--primary-green);">🏗️ ကွန်ကရစ်</h3>
         <div class="form-group">
           <label>အမျိုးအစား ရွေးပါ:</label>
           <select id="concreteType">
@@ -457,8 +519,7 @@
     <div id="brickCalc" class="calc-page">
       <button class="btn-calc btn-back" onclick="goHome()">← နောက်သို့</button>
       <div class="card">
-        <h3 style="margin-bottom: 12px; color: var(--primary-green);">🧱 အုတ် တွက်ချက်ရေး</h3>
-        
+        <h3 style="margin-bottom: 12px; color: var(--primary-green);">🧱 အုတ်စီရန်</h3>
         <div class="form-row">
           <div class="form-group">
             <label>နံရံ အလျား (ပေ)</label>
@@ -515,8 +576,7 @@
     <div id="steelCalc" class="calc-page">
       <button class="btn-calc btn-back" onclick="goHome()">← နောက်သို့</button>
       <div class="card">
-        <h3 style="margin-bottom: 12px; color: var(--primary-green);">🏗️ သံကြိုး တွက်ချက်ရေး</h3>
-        
+        <h3 style="margin-bottom: 12px; color: var(--primary-green);">🔩 သံချောင်း</h3>
         <div class="form-group">
           <label>အမျိုးအစား ရွေးပါ:</label>
           <select id="steelType">
@@ -580,8 +640,7 @@
     <div id="paintCalc" class="calc-page">
       <button class="btn-calc btn-back" onclick="goHome()">← နောက်သို့</button>
       <div class="card">
-        <h3 style="margin-bottom: 12px; color: var(--primary-green);">🎨 ဆေးသုတ် တွက်ချက်ရေး</h3>
-        
+        <h3 style="margin-bottom: 12px; color: var(--primary-green);">🎨 ဆေးသုတ်ရန်</h3>
         <div class="form-row">
           <div class="form-group">
             <label>အလျား (ပေ)</label>
@@ -633,8 +692,7 @@
     <div id="tileCalc" class="calc-page">
       <button class="btn-calc btn-back" onclick="goHome()">← နောက်သို့</button>
       <div class="card">
-        <h3 style="margin-bottom: 12px; color: var(--primary-green);">🔲 ကြွေပြား တွက်ချက်ရေး</h3>
-        
+        <h3 style="margin-bottom: 12px; color: var(--primary-green);">🔲 ကြွေပြားခင်း</h3>
         <div class="form-row">
           <div class="form-group">
             <label>အလျား (ပေ)</label>
@@ -677,21 +735,51 @@
 
   </div>
 
-   <!-- Bottom Navigation -->
+  <!-- PWA Apps List Modal -->
+  <div id="pwaModal" class="modal">
+    <div class="modal-content">
+      <h3 style="color: var(--primary-green); margin-bottom: 12px;">🌐 ကျွန်ုပ်တို့၏ အခြား Apps များ</h3>
+      <a href="#" class="pwa-link-card">
+        <span style="font-size: 1.5rem;">⚡</span>
+        <div>
+          <b style="font-size: 0.9rem;">Electrical Calculator</b>
+          <p style="font-size: 0.75rem; color: #666;">မီးကြိုးနှင့် မီးအား တွက်စက် PWA</p>
+        </div>
+      </a>
+      <a href="#" class="pwa-link-card">
+        <span style="font-size: 1.5rem;">🚜</span>
+        <div>
+          <b style="font-size: 0.9rem;">Agri Myanmar App</b>
+          <p style="font-size: 0.75rem; color: #666;">စိုက်ပျိုးရေးနှင့် မြေဩဇာတွက်စက် PWA</p>
+        </div>
+      </a>
+      <button class="btn-calc btn-back" onclick="closePwaModal()" style="margin-top: 10px;">ပိတ်မည်</button>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
   <div class="bottom-nav">
     <div class="nav-item active" onclick="goHome()">🏠<br>Home</div>
     <div class="nav-item" onclick="openHistory()">📋<br>History</div>
-    <div class="nav-item" onclick="alert('Coming soon!')">⚙️<br>Settings</div>
+    <div class="nav-item" onclick="openSettings()">⚙️<br>Settings</div>
   </div>
 
   <script>
-    // Global variables for current calculations
     let currentCalculations = {};
+
+    // Default Material Prices
+    const defaultPrices = {
+      cement: 18000,
+      brick: 650,
+      steel: 3200
+    };
 
     // Navigation
     function openCalc(calcId) {
       document.querySelectorAll('.calc-page').forEach(page => page.classList.remove('active'));
-      document.getElementById(calcId).classList.add('active');
+      const target = document.getElementById(calcId);
+      if(target) target.classList.add('active');
+      if(calcId === 'notePage') loadNotes();
       window.scrollTo(0, 0);
     }
 
@@ -710,6 +798,130 @@
       document.querySelectorAll('.nav-item')[1].classList.add('active');
       loadHistory();
       window.scrollTo(0, 0);
+    }
+
+    function openSettings() {
+      document.querySelectorAll('.calc-page').forEach(page => page.classList.remove('active'));
+      document.getElementById('settingsView').classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+      document.querySelectorAll('.nav-item')[2].classList.add('active');
+      loadSettingsUI();
+      window.scrollTo(0, 0);
+    }
+
+    function openPwaModal() { document.getElementById('pwaModal').classList.add('active'); }
+    function closePwaModal() { document.getElementById('pwaModal').classList.remove('active'); }
+
+    // CUSTOM PRICE SETTINGS
+    function loadSettingsUI() {
+      let saved = JSON.parse(localStorage.getItem('myCustomPrices')) || defaultPrices;
+      if(document.getElementById('settingCementPrice')) document.getElementById('settingCementPrice').value = saved.cement;
+      if(document.getElementById('settingBrickPrice')) document.getElementById('settingBrickPrice').value = saved.brick;
+      if(document.getElementById('settingSteelPrice')) document.getElementById('settingSteelPrice').value = saved.steel;
+    }
+
+    function saveCustomPrices() {
+      let customPrices = {
+        cement: parseFloat(document.getElementById('settingCementPrice').value) || defaultPrices.cement,
+        brick: parseFloat(document.getElementById('settingBrickPrice').value) || defaultPrices.brick,
+        steel: parseFloat(document.getElementById('settingSteelPrice').value) || defaultPrices.steel
+      };
+      localStorage.setItem('myCustomPrices', JSON.stringify(customPrices));
+      applyCustomPrices();
+      alert('✅ ဈေးနှုန်းများ အောင်မြင်စွာ သိမ်းဆည်းပြီးပါပြီ။');
+    }
+
+    function resetCustomPrices() {
+      if (confirm("မူလ Default ဈေးနှုန်းများသို့ ပြန်ပြောင်းလိုပါသလား။")) {
+        localStorage.removeItem('myCustomPrices');
+        loadSettingsUI();
+        applyCustomPrices();
+      }
+    }
+
+    function applyCustomPrices() {
+      let saved = JSON.parse(localStorage.getItem('myCustomPrices')) || defaultPrices;
+      if(document.getElementById('cementPrice')) document.getElementById('cementPrice').value = saved.cement;
+      if(document.getElementById('brickPrice')) document.getElementById('brickPrice').value = saved.brick;
+      if(document.getElementById('steelPrice')) document.getElementById('steelPrice').value = saved.steel;
+    }
+
+    // TIMBER CALCULATOR
+    function calcTimber() {
+      let t = parseFloat(document.getElementById('woodThick').value) || 0;
+      let w = parseFloat(document.getElementById('woodWidth').value) || 0;
+      let l = parseFloat(document.getElementById('woodLen').value) || 0;
+      let qty = parseFloat(document.getElementById('woodQty').value) || 0;
+      let pricePerTon = parseFloat(document.getElementById('woodTonPrice').value) || 0;
+
+      let cftPerPiece = (t * w * l) / 144;
+      let totalCft = cftPerPiece * qty;
+      let totalTons = totalCft / 50;
+      let totalCost = totalTons * pricePerTon;
+
+      document.getElementById('resWoodCft').innerText = totalCft.toFixed(2);
+      document.getElementById('resWoodTons').innerText = totalTons.toFixed(3);
+      document.getElementById('resWoodTotal').innerText = Math.ceil(totalCost).toLocaleString() + ' ကျပ်';
+      document.getElementById('timberResult').style.display = 'block';
+      document.getElementById('saveTimberBtn').style.display = 'block';
+
+      currentCalculations['timber'] = {
+        type: 'timber',
+        typeName: 'သစ်တွက်ရန်',
+        total: Math.ceil(totalCost),
+        details: `သစ် ${qty} အုပ်/ချပ်, ${totalCft.toFixed(2)} cft (${totalTons.toFixed(3)} တန်)`,
+        timestamp: new Date().toISOString()
+      };
+    }
+
+    // UNIT CONVERTER
+    function convertFtToM() {
+      let ft = parseFloat(document.getElementById('unitFt').value) || 0;
+      document.getElementById('unitM').innerText = (ft * 0.3048).toFixed(2);
+    }
+    function convertSqftToKyaing() {
+      let sqft = parseFloat(document.getElementById('unitSqft').value) || 0;
+      document.getElementById('unitKyaing').innerText = (sqft / 100).toFixed(2);
+    }
+
+    // NOTES SYSTEM
+    function addNote() {
+      let text = document.getElementById('noteInput').value.trim();
+      if(!text) return;
+      let notes = JSON.parse(localStorage.getItem('siteNotes') || '[]');
+      notes.unshift({ text: text, date: new Date().toLocaleString('my-MM') });
+      localStorage.setItem('siteNotes', JSON.stringify(notes));
+      document.getElementById('noteInput').value = '';
+      loadNotes();
+    }
+
+    function loadNotes() {
+      let notes = JSON.parse(localStorage.getItem('siteNotes') || '[]');
+      let list = document.getElementById('notesList');
+      if(notes.length === 0) {
+        list.innerHTML = '<div class="empty-state">မှတ်စုများ မရှိသေးပါ</div>';
+        return;
+      }
+      let html = '';
+      notes.forEach((n, idx) => {
+        html += `
+          <div class="note-item">
+            <div class="history-item-header">
+              <span class="history-date">${n.date}</span>
+              <button class="btn-delete" onclick="deleteNote(${idx})">🗑️ ဖျက်မည်</button>
+            </div>
+            <div>${n.text}</div>
+          </div>
+        `;
+      });
+      list.innerHTML = html;
+    }
+
+    function deleteNote(idx) {
+      let notes = JSON.parse(localStorage.getItem('siteNotes') || '[]');
+      notes.splice(idx, 1);
+      localStorage.setItem('siteNotes', JSON.stringify(notes));
+      loadNotes();
     }
 
     // ROOF CALCULATOR
@@ -774,7 +986,7 @@
 
       currentCalculations['roof'] = {
         type: 'roof',
-        typeName: 'ခေါင်းမိုး တွက်ချက်ရေး',
+        typeName: 'ခေါင်းမိုး',
         total: grandTotal,
         details: `သွပ်ပြား ${totalSheets} ချပ်, အရှည် ${neededSheetLength} ပေ`,
         timestamp: new Date().toISOString()
@@ -783,7 +995,6 @@
 
     // CONCRETE CALCULATOR
     function calcConcrete() {
-      let type = document.getElementById('concreteType').value;
       let l = parseFloat(document.getElementById('concLen').value) || 0;
       let w = parseFloat(document.getElementById('concWid').value) || 0;
       let thickInch = parseFloat(document.getElementById('concThick').value) || 4;
@@ -792,7 +1003,6 @@
 
       let thickFt = thickInch / 12;
       let volume = l * w * thickFt;
-
       let totalRatio = ratio[0] + ratio[1] + ratio[2];
       let dryVolume = volume * 1.54;
 
@@ -815,7 +1025,7 @@
 
       currentCalculations['concrete'] = {
         type: 'concrete',
-        typeName: 'ကွန်ကရစ် တွက်ချက်ရေး',
+        typeName: 'ကွန်ကရစ်',
         total: Math.ceil(totalCost),
         details: `Cement ${Math.ceil(cementBags)} အိတ်, ${volume.toFixed(2)} cft`,
         timestamp: new Date().toISOString()
@@ -827,12 +1037,9 @@
       let wallLen = parseFloat(document.getElementById('wallLen').value) || 0;
       let wallHeight = parseFloat(document.getElementById('wallHeight').value) || 0;
       let wallThick = parseFloat(document.getElementById('wallThick').value) || 4.5;
-      let brickType = document.getElementById('brickType').value;
-      let mortarThick = parseFloat(document.getElementById('mortarThick').value) || 0.5;
       let brickPrice = parseFloat(document.getElementById('brickPrice').value) || 650;
 
       let wallArea = wallLen * wallHeight;
-      
       let bricksPerSqft = wallThick === 4.5 ? 13.5 : 27;
       let bricks = Math.ceil(wallArea * bricksPerSqft);
 
@@ -852,7 +1059,7 @@
 
       currentCalculations['brick'] = {
         type: 'brick',
-        typeName: 'အုတ် တွက်ချက်ရေး',
+        typeName: 'အုတ်စီရန်',
         total: Math.ceil(totalCost),
         details: `အုတ် ${bricks} ချပ်, ${wallArea.toFixed(2)} sqft`,
         timestamp: new Date().toISOString()
@@ -861,7 +1068,6 @@
 
     // STEEL CALCULATOR
     function calcSteel() {
-      let type = document.getElementById('steelType').value;
       let l = parseFloat(document.getElementById('steelLen').value) || 0;
       let w = parseFloat(document.getElementById('steelWid').value) || 0;
       let barDia = parseFloat(document.getElementById('barDiameter').value) || 12;
@@ -870,7 +1076,6 @@
 
       let bars = Math.ceil((l * 12) / barSpacing) + Math.ceil((w * 12) / barSpacing);
       let totalLen = bars * Math.max(l, w);
-      
       let weightPerMeter = (barDia * barDia) / 162;
       let weightPerFt = weightPerMeter / 3.281;
       let totalWeight = totalLen * weightPerFt;
@@ -886,9 +1091,9 @@
 
       currentCalculations['steel'] = {
         type: 'steel',
-        typeName: 'သံကြိုး တွက်ချက်ရေး',
+        typeName: 'သံချောင်း',
         total: totalCost,
-        details: `သံကြိုး ${bars} ချောင်း, ${Math.ceil(totalWeight)} kg`,
+        details: `သံချောင်း ${bars} ချောင်း, ${Math.ceil(totalWeight)} kg`,
         timestamp: new Date().toISOString()
       };
     }
@@ -901,8 +1106,7 @@
       let paintPrice = parseFloat(document.getElementById('paintPrice').value) || 45000;
 
       let area = l * h;
-      let coveragePerGallon = 350;
-      let gallons = (area * coats) / coveragePerGallon;
+      let gallons = (area * coats) / 350;
       let totalCost = Math.ceil(gallons) * paintPrice;
 
       document.getElementById('resPaintArea').innerText = area.toFixed(2);
@@ -914,7 +1118,7 @@
 
       currentCalculations['paint'] = {
         type: 'paint',
-        typeName: 'ဆေးသုတ် တွက်ချက်ရေး',
+        typeName: 'ဆေးသုတ်ရန်',
         total: totalCost,
         details: `${Math.ceil(gallons)} gallons, ${area.toFixed(2)} sqft`,
         timestamp: new Date().toISOString()
@@ -946,7 +1150,7 @@
 
       currentCalculations['tile'] = {
         type: 'tile',
-        typeName: 'ကြွေပြား တွက်ချက်ရေး',
+        typeName: 'ကြွေပြားခင်း',
         total: Math.ceil(totalCost),
         details: `Tile ${tiles} ချပ်, ${area.toFixed(2)} sqft`,
         timestamp: new Date().toISOString()
@@ -959,11 +1163,9 @@
         alert('အရင်ဆုံး တွက်ချက်မှု ပြုလုပ်ပါ!');
         return;
       }
-
       let history = JSON.parse(localStorage.getItem('calcHistory') || '[]');
       history.unshift(currentCalculations[calcType]);
       localStorage.setItem('calcHistory', JSON.stringify(history));
-
       alert('✅ မှတ်တမ်းတင်ပြီးပါပြီ!');
       document.getElementById('save' + calcType.charAt(0).toUpperCase() + calcType.slice(1) + 'Btn').style.display = 'none';
     }
@@ -974,8 +1176,8 @@
       
       if (history.length === 0) {
         historyList.innerHTML = `
-          <div class="empty-history">
-            <div class="empty-history-icon">📋</div>
+          <div class="empty-state">
+            <div class="empty-icon">📋</div>
             <div>မှတ်တမ်းမရှိသေးပါ</div>
             <div style="font-size: 0.8rem; margin-top: 8px;">Calculator တစ်ခုခုတွက်ပြီး "မှတ်တမ်းတင်မည်" နှိပ်ပါ</div>
           </div>
@@ -1013,7 +1215,6 @@
 
     function deleteHistoryItem(index) {
       if (!confirm('ဒီမှတ်တမ်းကို ဖျက်မှာ သေချာပါသလား?')) return;
-      
       let history = JSON.parse(localStorage.getItem('calcHistory') || '[]');
       history.splice(index, 1);
       localStorage.setItem('calcHistory', JSON.stringify(history));
@@ -1022,10 +1223,14 @@
 
     function clearAllHistory() {
       if (!confirm('မှတ်တမ်းအားလုံးကို ဖျက်မှာ သေချာပါသလား?')) return;
-      
       localStorage.removeItem('calcHistory');
       loadHistory();
     }
+
+    // Auto Apply Custom Prices on Start
+    window.addEventListener('DOMContentLoaded', () => {
+      applyCustomPrices();
+    });
   </script>
 </body>
 </html>
