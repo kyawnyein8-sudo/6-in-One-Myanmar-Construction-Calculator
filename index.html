@@ -198,6 +198,14 @@
     .empty-icon { font-size: 3rem; margin-bottom: 12px; }
   </style>
 </head>
+  <script>
+  window.addEventListener('appinstalled', () => {
+    gtag('event', 'pwa_install_success', {
+      'event_category': 'App Install',
+      'event_label': 'Myanmar Construction Calculator'
+    });
+  });
+</script>
 <body>
 
  <div class="app-bar">
