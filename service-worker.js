@@ -1,4 +1,4 @@
-const CACHE_NAME = "myanmar-construction-calc-v2";
+const CACHE_NAME = "myanmar-construction-calc-v1";
 
 const ASSETS = [
   "./",
