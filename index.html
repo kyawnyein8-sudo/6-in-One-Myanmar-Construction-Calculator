@@ -59,7 +59,7 @@
       gap: 10px;
     }
 
-    /* Pocket Calc Style Live Market Ticker */
+    /* Live Market Ticker */
     .market-ticker {
       background: #1c2733;
       color: #00e676;
@@ -106,7 +106,7 @@
       align-items: center;
     }
 
-    /* Myanmar Construction Calc 2-Column Grid Style */
+    /* 2-Column Grid Style */
     .apps-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -144,7 +144,7 @@
       color: var(--primary-color);
     }
 
-    /* Pocket Calc Style Material Shops Horizontal Slider */
+    /* Material Shops Horizontal Slider */
     .horizontal-shops {
       display: flex;
       gap: 12px;
@@ -330,7 +330,7 @@
   <!-- Live Market Ticker -->
   <div class="market-ticker">
     <i class="fa-solid fa-chart-line"></i>
-    <div class="ticker-content">
+    <div class="ticker-content" id="tickerContent">
       📢 ယနေ့ ပေါက်ဈေး - ဘိလပ်မြေ (၁ အိတ်) : ၁၈,၀၀၀ ကျပ် | အုတ် (၁ လုံး) : ၅၁၀ ကျပ် | သံချောင်း (၁ ကီလို) : ၃,၂၀၀ ကျပ်
     </div>
   </div>
@@ -422,6 +422,26 @@
   </nav>
 
   <script>
+    // ----------------------------------------------------
+    // GOOGLE SHEETS LIVE TICKER INTEGRATION
+    // ----------------------------------------------------
+    // Google Sheets -> File -> Share -> Publish to Web -> Choose CSV -> Copy URL
+    const sheetCsvUrl = ""; // Google Sheet CSV Link ရလာရင် ဒီမျက်တောင်ဖွင့်ပိတ် "" ထဲ Paste ထည့်ပါ
+
+    async function fetchLiveTicker() {
+      if (!sheetCsvUrl) return;
+      try {
+        const res = await fetch(sheetCsvUrl);
+        const text = await res.text();
+        const items = text.split('\n').map(i => i.trim()).filter(i => i.length > 0);
+        if (items.length > 0) {
+          document.getElementById('tickerContent').innerText = "📢 ယနေ့ ပေါက်ဈေးများ — " + items.join(" | ");
+        }
+      } catch (e) {
+        console.log("Sheet Ticker Error:", e);
+      }
+    }
+
     // Calculators List (Grid Cards)
     const apps = [
       { name: "ခေါင်မိုး", icon: "🏠", url: "roof.html" },
@@ -443,6 +463,9 @@
     ];
 
     window.onload = function() {
+      // Fetch Live Google Sheets Ticker Data
+      fetchLiveTicker();
+
       // Render Calculator Grid Cards
       const container = document.getElementById('appsContainer');
       apps.forEach(app => {
