@@ -196,6 +196,46 @@
 
     .empty-state { text-align: center; padding: 40px 20px; color: #999; }
     .empty-icon { font-size: 3rem; margin-bottom: 12px; }
+    .mcdh-ticker-container {
+  overflow: hidden;
+  background-color: #0d4a36; /* အစိမ်းရောင် နောက်ခံ */
+  color: #ffffff;
+  padding: 10px 0;
+  white-space: nowrap;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.mcdh-ticker-track {
+  display: inline-block;
+  white-space: nowrap;
+  animation: tickerScroll 25s linear infinite;
+}
+
+.mcdh-ticker-track:hover {
+  animation-play-state: paused; /* ပုံပေါ် လက်တင်လိုက်ရင် ရပ်သွားစေရန် */
+}
+
+.mcdh-price {
+  display: inline-block;
+  padding: 0 25px;
+  font-size: 14px;
+}
+
+.mcdh-price .up {
+  color: #4ade80; /* တက်နေရင် အစိမ်းရောင် */
+  margin-left: 5px;
+}
+
+.mcdh-price .down {
+  color: #f87171; /* ကျနေရင် အနီရောင် */
+  margin-left: 5px;
+}
+
+@keyframes tickerScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
  </style>
 
 <script>
@@ -210,12 +250,16 @@
 </head>
 <body>
 
- <div class="app-bar">
-  <span>🏗️ Myanmar Construction Calculator</span>
+ <div class="app-bar" style="display: flex; align-items: center; gap: 10px; background-color: #0d4a36; padding: 12px 16px; color: white;">
+  <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj_V6R0n5Fw9m8FH5uIcama-AjtxRBpv5ZMVrgvkykywFJJYAaq8NpAELDYLULt3rW4NdiS4R3_761U8KManjVezjxWD51b5cQjIk2R_27Xd1PKyOXZTEW6BPBmNA2e8a8Pl5yy3So5fudnhrXZpzRxGxCFKNxjVECmKQ998x25i0k8PqftqUDlXWG_xC9u/s200/ChatGPT%20Image%20Sep%2015,%202026,%2006_15_38%20PM.png" alt="Logo" style="width: 32px; height: 32px; object-fit: contain; display: block;">
+  <span style="font-weight: bold; font-size: 16px;">Myanmar Construction Calculator</span>
 </div>
-
-  <div class="container">
-    
+    <div class="mcdh-ticker-container">
+  <div class="mcdh-ticker-track" id="tickerTrack">
+    <!-- Prices from Google Sheet will load here -->
+    <span class="mcdh-price"><b>Loading prices...</b></span>
+  </div>
+</div>
     <!-- HOME SCREEN -->
     <div id="homeView" class="calc-page active">
       <div class="calc-grid">
@@ -785,6 +829,40 @@
   </div>
 
   <script>
+    fetch("https://script.google.com/macros/s/AKfycbwQTWff2K8bb3wvr5FnaWOYeBU52RkX0EFx4TgD7wZRRB0R-_nWUoItTv-Zh2QYEiLv/exec")
+    .then(response => response.json())
+    .then(data => {
+      let track = document.getElementById("tickerTrack");
+      let html = "";
+      
+      if (!Array.isArray(data) || data.length === 0) {
+        track.innerHTML = "<span class='mcdh-price'><b>No data found in Google Sheet</b></span>";
+        return;
+      }
+
+      // Ticker Animation ချောမွေ့စေရန် နှစ်ခါထပ်ပေးခြင်း
+      for (let k = 0; k < 2; k++) {
+        data.forEach(row => {
+          let name = row.name || "";
+          let price = row.price || "";
+          let unit = row.unit || "";
+          let change = row.change || "";
+          let trend = row.trend || "up";
+          let arrow = trend === "up" ? "▲" : "▼";
+
+          html += `<span class="mcdh-price">
+            <b>${name}:</b> 
+            <b>${price} ${unit}</b>
+            <span class="${trend}">${arrow} ${change}</span>
+          </span>`;
+        });
+      }
+      track.innerHTML = html;
+    })
+    .catch(error => {
+      console.error("Error loading prices:", error);
+      document.getElementById("tickerTrack").innerHTML = "<span class='mcdh-price'><b>Failed to load prices</b></span>";
+    });
     let currentCalculations = {};
 
     // Default Material Prices
