@@ -337,30 +337,39 @@ body {
           <div class="calc-icon">📐</div>
           <div class="calc-title">Unit Converter</div>
         </div>
-        <div class="card calc-card" style="padding: 16px; margin: 10px 0; border-radius: 12px; border: 1px solid var(--border-color); background: var(--card-bg);">
-  <h3>👷‍♂️ ဆောက်လုပ်ရေး လုပ်သားခ ခန့်မှန်းတွက်စက် (Labor Cost Estimator)</h3>
+       <!-- Labor Cost Estimator Toggle Section -->
+<div class="card calc-card" style="padding: 16px; margin: 10px 0; border-radius: 12px; border: 1px solid var(--border-color); background: var(--card-bg);">
   
-  <div style="margin: 10px 0;">
-    <label style="display: block; margin-bottom: 5px; font-size: 14px;">လုပ်ငန်းအမျိုးအစား ရွေးပါ:</label>
-    <select id="laborType" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main);">
-      <option value="35000">အုတ်စီလုပ်ငန်း (ကျွမ်းကျင် - ၃၅,၀၀၀ ကျပ် / ရက်)</option>
-      <option value="35000">သံချည်လုပ်ငန်း (ကျွမ်းကျင် - ၃၅,၀၀၀ ကျပ် / ရက်)</option>
-      <option value="35000">သစ်သားလုပ်ငန်း (ကျွမ်းကျင် - ၃၅,၀၀၀ ကျပ် / ရက်)</option>
-      <option value="35000">ဆေးသုတ်လုပ်ငန်း (လုပ်သား - ၃၅,၀၀၀ ကျပ် / ရက်)</option>
-      <option value="25000">အကူလုပ်သား (အကူ - ၂၅,၀၀၀ ကျပ် / ရက်)</option>
-    </select>
-  </div>
-
-  <div style="margin: 10px 0;">
-    <label style="display: block; margin-bottom: 5px; font-size: 14px;">လုပ်မည့် အကျယ်အဝန်း (စတုရန်းပေ / Sqft):</label>
-    <input type="number" id="laborArea" placeholder="ဥပမာ - ၁၀၀၀" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main); box-sizing: border-box;">
-  </div>
-
-  <button onclick="calculateLaborCost()" style="width: 100%; background: var(--app-bar-bg, #006b3f); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 5px;">
-    ခန့်မှန်းလုပ်သားခ တွက်မည်
+  <button onclick="toggleLaborCalculator()" style="width: 100%; background: var(--app-bar-bg, #006b3f); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
+    <span>👷‍♂️ ဆောက်လုပ်ရေး လုပ်သားခ ခန့်မှန်းတွက်ချက်ရန်</span>
+    <span id="toggleIcon">▼</span>
   </button>
 
-  <div id="laborResult" style="margin-top: 12px; font-weight: bold; color: var(--primary-green, #008f52); text-align: center;"></div>
+  <div id="laborCalcBody" style="display: none; margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+    
+    <div style="margin: 10px 0;">
+      <label style="display: block; margin-bottom: 5px; font-size: 14px;">လုပ်ငန်းအမျိုးအစား ရွေးပါ:</label>
+      <select id="laborType" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main); box-sizing: border-box;">
+        <option value="35000">အုတ်စီလုပ်ငန်း (ကျွမ်းကျင် - ၃၅,၀၀၀ ကျပ် / ရက်)</option>
+        <option value="35000">သံချည်လုပ်ငန်း (ကျွမ်းကျင် - ၃၅,၀၀၀ ကျပ် / ရက်)</option>
+        <option value="35000">သစ်သားလုပ်ငန်း (ကျွမ်းကျင် - ၃၅,၀၀၀ ကျပ် / ရက်)</option>
+        <option value="35000">ဆေးသုတ်လုပ်ငန်း (လုပ်သား - ၃၅,၀၀၀ ကျပ် / ရက်)</option>
+        <option value="25000">အကူလုပ်သား (အကူ - ၂၅,၀၀0 ကျပ် / ရက်)</option>
+      </select>
+    </div>
+
+    <div style="margin: 10px 0;">
+      <label style="display: block; margin-bottom: 5px; font-size: 14px;">လုပ်မည့် အကျယ်အဝန်း (စတုရန်းပေ / Sqft):</label>
+      <input type="number" id="laborArea" placeholder="ဥပမာ - ၁၀၀၀" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main); box-sizing: border-box;">
+    </div>
+
+    <button onclick="calculateLaborCost()" style="width: 100%; background: var(--primary-green, #008f52); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 5px;">
+      ခန့်မှန်းလုပ်သားခ တွက်မည်
+    </button>
+
+    <div id="laborResult" style="margin-top: 12px; font-weight: bold; color: var(--primary-green, #008f52); text-align: center;"></div>
+  </div>
+
 </div>
 
         <div class="calc-card" onclick="openCalc('notePage')">
@@ -1450,7 +1459,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
   updateThemeButtonText(initialTheme);
 });
-   function toggleLaborCalculator() {
+ function toggleLaborCalculator() {
   const body = document.getElementById("laborCalcBody");
   const icon = document.getElementById("toggleIcon");
   
