@@ -337,10 +337,10 @@ body {
           <div class="calc-icon">📐</div>
           <div class="calc-title">Unit Converter</div>
         </div>
-   <div class="card calc-card" style="padding: 16px; margin: 10px 0; border-radius: 12px; border: 1px solid var(--border-color); background: var(--card-bg);">
+  <div class="card calc-card" style="padding: 16px; margin: 10px 0; border-radius: 12px; border: 1px solid var(--border-color); background: var(--card-bg);">
   
   <button onclick="toggleLaborCalculator()" style="width: 100%; background: var(--app-bar-bg, #006b3f); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
-    <span>👷‍♂️ ဆောက်လုပ်ရေး လုပ်သားခ ခန့်မှန်းတွက်ချက်ရန်</span>
+    <span>👷‍♂️ ဆောက်လုပ်ရေး လုပ်သားခ ခန့်မှန်းတွက်စက်</span>
     <span id="toggleIcon">▼</span>
   </button>
 
@@ -1456,7 +1456,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
   updateThemeButtonText(initialTheme);
 });
- // တွက်စက် ဖွင့်/ပိတ် လုပ်ရန်
+// တွက်စက် ဖွင့်/ပိတ် လုပ်ရန်
 function toggleLaborCalculator() {
   const body = document.getElementById("laborCalcBody");
   const icon = document.getElementById("toggleIcon");
@@ -1476,7 +1476,7 @@ function calculateLaborRequirement() {
   const workType = document.getElementById("workType").value;
   
   if (area <= 0) {
-    document.getElementById("laborResult<b>").innerText = "ကျေးဇူးပြု၍ မှန်ကန်သော အကျယ်အဝန်း ထည့်ပါ။";
+ document.getElementById("laborResult").innerText = "ကျေးဇူးပြု၍ မှန်ကန်သော အကျယ်အဝန်း ထည့်ပါ။";
     return;
   }
 
