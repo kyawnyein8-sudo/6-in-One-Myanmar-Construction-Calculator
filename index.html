@@ -1475,9 +1475,10 @@ window.addEventListener("DOMContentLoaded", () => {
 function calculateLaborCost() {
   const rate = parseFloat(document.getElementById("laborType").value) || 0;
   const area = parseFloat(document.getElementById("laborArea").value) || 0;
+  const workType = document.getElementById("workType").value;
   
   if (area <= 0) {
-    document.getElementById("laborResult").innerText = "ကျေးဇူးပြု၍ မှန်ကန်သော အကျယ်အဝန်း (Sqft) ထည့်ပါ။";
+ document.getElementById("laborResult").innerText = "ကျေးဇူးပြု၍ မှန်ကန်သော အကျယ်အဝန်း ထည့်ပါ။";
     return;
   }
 
