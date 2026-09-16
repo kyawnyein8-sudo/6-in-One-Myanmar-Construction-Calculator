@@ -1459,7 +1459,8 @@ window.addEventListener("DOMContentLoaded", () => {
   }
   updateThemeButtonText(initialTheme);
 });
- function toggleLaborCalculator() {
+// တွက်စက် ဖွင့်/ပိတ် လုပ်ရန်
+function toggleLaborCalculator() {
   const body = document.getElementById("laborCalcBody");
   const icon = document.getElementById("toggleIcon");
   
@@ -1472,17 +1473,19 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 }
 
+// လုပ်သားခန့်မှန်းချက် တွက်ချက်ရန် (HTML ID များနှင့် ကိုက်ညီစေရန်)
 function calculateLaborCost() {
   const rate = parseFloat(document.getElementById("laborType").value) || 0;
   const area = parseFloat(document.getElementById("laborArea").value) || 0;
-  const workType = document.getElementById("workType").value;
   
   if (area <= 0) {
- document.getElementById("laborResult").innerText = "ကျေးဇူးပြု၍ မှန်ကန်သော အကျယ်အဝန်း ထည့်ပါ။";
+    document.getElementById("laborResult").innerText = "ကျေးဇူးပြု၍ မှန်ကန်သော အကျယ်အဝန်း ထည့်ပါ။";
     return;
   }
 
+  // နှုန်းထားနဲ့ အကျယ်အဝန်းကို တွက်ချက်ခြင်း
   let estimatedTotal = area * (rate / 10); 
+  
   document.getElementById("laborResult").innerHTML = `ခန့်မှန်းလုပ်သားခ စုစုပေါင်း: ${estimatedTotal.toLocaleString()} ကျပ် ခန့်`;
 }
   </script>
