@@ -337,10 +337,11 @@ body {
           <div class="calc-icon">📐</div>
           <div class="calc-title">Unit Converter</div>
         </div>
-  <div class="card calc-card" style="padding: 16px; margin: 10px 0; border-radius: 12px; border: 1px solid var(--border-color); background: var(--card-bg);">
+       <!-- Labor Cost Estimator Toggle Section -->
+<div class="card calc-card" style="padding: 16px; margin: 10px 0; border-radius: 12px; border: 1px solid var(--border-color); background: var(--card-bg);">
   
   <button onclick="toggleLaborCalculator()" style="width: 100%; background: var(--app-bar-bg, #006b3f); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
-    <span>👷‍♂️ ဆောက်လုပ်ရေး လုပ်သားခ ခန့်မှန်းတွက်စက်</span>
+    <span>👷‍♂️ ဆောက်လုပ်ရေး လုပ်သားခ ခန့်မှန်းတွက်ချက်ရန်</span>
     <span id="toggleIcon">▼</span>
   </button>
 
@@ -348,23 +349,25 @@ body {
     
     <div style="margin: 10px 0;">
       <label style="display: block; margin-bottom: 5px; font-size: 14px;">လုပ်ငန်းအမျိုးအစား ရွေးပါ:</label>
-      <select id="workType" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main); box-sizing: border-box;">
-        <option value="brick">အုတ်စီလုပ်ငန်း</option>
-        <option value="plaster">အချောကိုင် (Plaster) လုပ်ငန်း</option>
+      <select id="laborType" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main); box-sizing: border-box;">
+        <option value="35000">အုတ်စီလုပ်ငန်း (ကျွမ်းကျင် - ၃၅,၀၀၀ ကျပ် / ရက်)</option>
+        <option value="35000">သံချည်လုပ်ငန်း (ကျွမ်းကျင် - ၃၅,၀၀၀ ကျပ် / ရက်)</option>
+        <option value="35000">သစ်သားလုပ်ငန်း (ကျွမ်းကျင် - ၃၅,၀၀၀ ကျပ် / ရက်)</option>
+        <option value="35000">ဆေးသုတ်လုပ်ငန်း (လုပ်သား - ၃၅,၀၀၀ ကျပ် / ရက်)</option>
+        <option value="25000">အကူလုပ်သား (အကူ - ၂၅,၀၀0 ကျပ် / ရက်)</option>
       </select>
     </div>
 
     <div style="margin: 10px 0;">
       <label style="display: block; margin-bottom: 5px; font-size: 14px;">လုပ်မည့် အကျယ်အဝန်း (စတုရန်းပေ / Sqft):</label>
-      <input type="number" id="laborArea" placeholder="ဥပမာ - ၁၀၀" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main); box-sizing: border-box;">
+      <input type="number" id="laborArea" placeholder="ဥပမာ - ၁၀၀၀" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main); box-sizing: border-box;">
     </div>
 
-    <!-- ခလုတ်တွင် calculateLaborRequirement() ကို ချိတ်ပေးထားသည် -->
-    <button onclick="calculateLaborRequirement()" style="width: 100%; background: var(--primary-green, #008f52); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 5px;">
+    <button onclick="calculateLaborCost()" style="width: 100%; background: var(--primary-green, #008f52); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 5px;">
       ခန့်မှန်းလုပ်သားခ တွက်မည်
     </button>
 
-    <div id="laborResult" style="margin-top: 12px; font-size: 14px; color: var(--text-main); text-align: left; line-height: 1.6;"></div>
+    <div id="laborResult" style="margin-top: 12px; font-weight: bold; color: var(--primary-green, #008f52); text-align: center;"></div>
   </div>
 
 </div>
@@ -1456,8 +1459,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
   updateThemeButtonText(initialTheme);
 });
-// တွက်စက် ဖွင့်/ပိတ် လုပ်ရန်
-function toggleLaborCalculator() {
+ function toggleLaborCalculator() {
   const body = document.getElementById("laborCalcBody");
   const icon = document.getElementById("toggleIcon");
   
@@ -1470,8 +1472,8 @@ function toggleLaborCalculator() {
   }
 }
 
-// လုပ်သားခန့်မှန်းချက် တွက်ချက်ရန်
-function calculateLaborRequirement() {
+function calculateLaborCost() {
+  const rate = parseFloat(document.getElementById("laborType").value) || 0;
   const area = parseFloat(document.getElementById("laborArea").value) || 0;
   const workType = document.getElementById("workType").value;
   
@@ -1480,28 +1482,8 @@ function calculateLaborRequirement() {
     return;
   }
 
-  let skilledNeeded = 0;
-  let unskilledNeeded = 0;
-  let estimatedDays = 0;
-
-  if (workType === "brick") {
-    let totalBricksNeeded = area * 5; 
-    skilledNeeded = Math.ceil(totalBricksNeeded / 350); 
-    unskilledNeeded = skilledNeeded; 
-    estimatedDays = Math.ceil(area / 100); // ဥပမာ - ၁၀၀ စတုရန်းပေလျှင် ၁ ရက်ခန့်
-  } 
-  else if (workType === "plaster") {
-    estimatedDays = Math.ceil(area / 120); 
-    skilledNeeded = 1;
-    unskilledNeeded = 1;
-  }
-
-  document.getElementById("laborResult").innerHTML = `
-    <b>လုပ်သားအင်အား လိုအပ်ချက် ခန့်မှန်းခြေ:</b><br>
-    • ကျွမ်းကျင်လုပ်သား: ${skilledNeeded} ဦး<br>
-    • သာမန်လုပ်သား (Coolie): ${unskilledNeeded} ဦး<br>
-    • ခန့်မှန်းကြာချိန်: ${estimatedDays || 1} ရက် ခန့်
-  `;
+  let estimatedTotal = area * (rate / 10); 
+  document.getElementById("laborResult").innerHTML = `ခန့်မှန်းလုပ်သားခ စုစုပေါင်း: ${estimatedTotal.toLocaleString()} ကျပ် ခန့်`;
 }
   </script>
 </body>
