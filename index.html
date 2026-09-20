@@ -1592,107 +1592,274 @@ function calculateLaborCost() {
   // ==========================================
 
   // Modal ဖွင့်ရန်/ပိတ်ရန် Function များ
+ function openLaborModal() {
+  const modal = document.getElementById("laborModalPro");
+
+  if (modal) {
+    modal.style.display = "block";
+    updateUnitLabel();
+  }
+}
+
+function closeLaborModal() {
+  const modal = document.getElementById("laborModalPro");
+
+  if (modal) {
+    modal.style.display = "none";
+  }
+}
+
+function updateUnitLabel() {
+  const workType = document.getElementById("workType");
+  const unitLabel = document.getElementById("unitLabel");
+
+  if (!workType || !unitLabel) return;
+
+  const labels = {
+    brick: "၂။ လုပ်မည့် နံရံဧရိယာ (စတုရန်းပေ):",
+    plaster: "၂။ လုပ်မည့် အချောကိုင်ဧရိယာ (စတုရန်းပေ):",
+    concrete: "၂။ လုပ်မည့် ကွန်ကရစ်ပမာဏ (ကုဗပေ):",
+    rebar: "၂။ သံချည်သံကွေးမည့် ပမာဏ (kg):",
+    formwork: "၂။ Formwork ဧရိယာ (စတုရန်းပေ):",
+    tiling: "၂။ ကြွေပြားခင်းမည့် ဧရိယာ (စတုရန်းပေ):",
+    roofing: "၂။ အမိုးမိုးမည့် ဧရိယာ (စတုရန်းပေ):",
+    earthwork: "၂။ မြေတူး/မြေညှိမည့် ပမာဏ (ကုဗပေ):"
+  };
+
+  unitLabel.textContent =
+    labels[workType.value] || "၂။ လုပ်မည့် ပမာဏ:";
+}
+
+function calculateLaborPro() {
+  const getNumber = (id) => {
+    const element = document.getElementById(id);
+    return element ? Number(element.value) : NaN;
+  };
+
+  const workType = document.getElementById("workType").value;
+  const amount = getNumber("workAmount");
+  const skilled = getNumber("customSkilled");
+  const unskilled = getNumber("customUnskilled");
+  const distance = getNumber("distanceOption");
+  const efficiency = getNumber("efficiencyRating");
+  const skilledRate = getNumber("skilledRate");
+  const unskilledRate = getNumber("unskilledRate");
+  const allowance = getNumber("allowanceRate");
+  const resultBox = document.getElementById("resultBoxPro");
+
+  if (!resultBox) return;
+
+  if (
+    !Number.isFinite(amount) ||
+    amount <= 0 ||
+    !Number.isFinite(skilled) ||
+    skilled < 0 ||
+    !Number.isFinite(unskilled) ||
+    unskilled < 0 ||
+    !Number.isFinite(distance) ||
+    !Number.isFinite(efficiency) ||
+    !Number.isFinite(skilledRate) ||
+    !Number.isFinite(unskilledRate) ||
+    !Number.isFinite(allowance)
+  ) {
+    resultBox.style.display = "block";
+    resultBox.innerHTML =
+      "ကျေးဇူးပြု၍ အချက်အလက်များကို မှန်ကန်စွာ ဖြည့်ပါ။";
+    return;
+  }
+
+  const crewSize = skilled + unskilled;
+
+  if (crewSize <= 0) {
+    resultBox.style.display = "block";
+    resultBox.innerHTML = "လုပ်သားဦးရေ အနည်းဆုံး ၁ ဦး ထည့်ပါ။";
+    return;
+  }
+
+  const productivity = {
+    brick: 100,
+    plaster: 120,
+    concrete: 8,
+    rebar: 100,
+    formwork: 80,
+    tiling: 100,
+    roofing: 120,
+    earthwork: 12
+  };
+
+  const dailyOutput = productivity[workType] || 100;
+  const estimatedDays =
+    Math.max(0.5, amount / (dailyOutput * crewSize)) *
+    distance /
+    efficiency;
+
+  const dailyWage =
+    skilled * skilledRate +
+    unskilled * unskilledRate;
+
+  const dailyAllowance = crewSize * allowance;
+  const dailyTotal = dailyWage + dailyAllowance;
+  const totalCost = Math.ceil(estimatedDays * dailyTotal);
+
+  resultBox.style.display = "block";
+  resultBox.innerHTML = `
+    <div><b>📊 ခန့်မှန်းတွက်ချက်မှု ရလဒ်</b></div>
+    <div>လုပ်ငန်းအမျိုးအစား: <b>${workType}</b></div>
+    <div>လိုအပ်မည့် ကြာချိန်: <b>${estimatedDays.toFixed(1)} ရက်</b></div>
+    <div>လုပ်သားစုစုပေါင်း: <b>${crewSize} ဦး</b></div>
+    <div>တစ်ရက် လုပ်သားခ: <b>${dailyWage.toLocaleString()} ကျပ်</b></div>
+    <div>တစ်ရက် စားရိတ်/ခရီးစရိတ်: <b>${dailyAllowance.toLocaleString()} ကျပ်</b></div>
+    <div>တစ်ရက် စုစုပေါင်း: <b>${dailyTotal.toLocaleString()} ကျပ်</b></div>
+    <hr style="border: 0; border-top: 1px solid #555; margin: 8px 0;">
+    <div style="color: #00ff88; font-size: 16px;">
+      ခန့်မှန်း စုစုပေါင်းကုန်ကျစရိတ်:
+      <b>${totalCost.toLocaleString()} ကျပ်</b>
+    </div>
+  `;
+}
+
+window.addEventListener("click", function (event) {
+  const modal = document.getElementById("laborModalPro");
+
+  if (event.target === modal) {
+    closeLaborModal();
+  }
+});
+
+<script>
   function openLaborModal() {
-    const modal = document.getElementById("laborModalPro");
-    if (modal) modal.style.display = "block";
+  const modal = document.getElementById("laborModalPro");
+
+  if (modal) {
+    modal.style.display = "block";
+    updateUnitLabel();
+  }
+}
+
+function closeLaborModal() {
+  const modal = document.getElementById("laborModalPro");
+
+  if (modal) {
+    modal.style.display = "none";
+  }
+}
+
+function updateUnitLabel() {
+  const workType = document.getElementById("workType");
+  const unitLabel = document.getElementById("unitLabel");
+
+  if (!workType || !unitLabel) return;
+
+  const labels = {
+    brick: "၂။ လုပ်မည့် နံရံဧရိယာ (စတုရန်းပေ):",
+    plaster: "၂။ လုပ်မည့် အချောကိုင်ဧရိယာ (စတုရန်းပေ):",
+    concrete: "၂။ လုပ်မည့် ကွန်ကရစ်ပမာဏ (ကုဗပေ):",
+    rebar: "၂။ သံချည်သံကွေးမည့် ပမာဏ (kg):",
+    formwork: "၂။ Formwork ဧရိယာ (စတုရန်းပေ):",
+    tiling: "၂။ ကြွေပြားခင်းမည့် ဧရိယာ (စတုရန်းပေ):",
+    roofing: "၂။ အမိုးမိုးမည့် ဧရိယာ (စတုရန်းပေ):",
+    earthwork: "၂။ မြေတူး/မြေညှိမည့် ပမာဏ (ကုဗပေ):"
+  };
+
+  unitLabel.textContent =
+    labels[workType.value] || "၂။ လုပ်မည့် ပမာဏ:";
+}
+
+function calculateLaborPro() {
+  const getNumber = (id) => {
+    const element = document.getElementById(id);
+    return element ? Number(element.value) : NaN;
+  };
+
+  const workType = document.getElementById("workType").value;
+  const amount = getNumber("workAmount");
+  const skilled = getNumber("customSkilled");
+  const unskilled = getNumber("customUnskilled");
+  const distance = getNumber("distanceOption");
+  const efficiency = getNumber("efficiencyRating");
+  const skilledRate = getNumber("skilledRate");
+  const unskilledRate = getNumber("unskilledRate");
+  const allowance = getNumber("allowanceRate");
+  const resultBox = document.getElementById("resultBoxPro");
+
+  if (!resultBox) return;
+
+  if (
+    !Number.isFinite(amount) ||
+    amount <= 0 ||
+    !Number.isFinite(skilled) ||
+    skilled < 0 ||
+    !Number.isFinite(unskilled) ||
+    unskilled < 0 ||
+    !Number.isFinite(distance) ||
+    !Number.isFinite(efficiency) ||
+    !Number.isFinite(skilledRate) ||
+    !Number.isFinite(unskilledRate) ||
+    !Number.isFinite(allowance)
+  ) {
+    resultBox.style.display = "block";
+    resultBox.innerHTML =
+      "ကျေးဇူးပြု၍ အချက်အလက်များကို မှန်ကန်စွာ ဖြည့်ပါ။";
+    return;
   }
 
-  function closeLaborModal() {
-    const modal = document.getElementById("laborModalPro");
-    if (modal) modal.style.display = "none";
+  const crewSize = skilled + unskilled;
+
+  if (crewSize <= 0) {
+    resultBox.style.display = "block";
+    resultBox.innerHTML = "လုပ်သားဦးရေ အနည်းဆုံး ၁ ဦး ထည့်ပါ။";
+    return;
   }
 
-  // Modal အပြင်ဘက် နေရာလွတ်ကို နှိပ်လျှင် ပိတ်သွားစေရန်
-  window.addEventListener("click", function(event) {
-    const modal = document.getElementById("laborModalPro");
-    if (modal && event.target === modal) {
-      modal.style.display = "none";
-    }
-  });
+  const productivity = {
+    brick: 100,
+    plaster: 120,
+    concrete: 8,
+    rebar: 100,
+    formwork: 80,
+    tiling: 100,
+    roofing: 120,
+    earthwork: 12
+  };
 
-// Unit Label ပြောင်းလဲရန် Function
-  function updateUnitLabel() {
-    const type = document.getElementById("workType").value;
-    const label = document.getElementById("unitLabel");
-    if (!label) return;
+  const dailyOutput = productivity[workType] || 100;
+  const estimatedDays =
+    Math.max(0.5, amount / (dailyOutput * crewSize)) *
+    distance /
+    efficiency;
 
-    if (type === "rebar") {
-      label.innerText = "၂။ သံချည်/သံကွေး အလေးချိန် (တန် / Ton):";
-    } else if (type === "earthwork") {
-      label.innerText = "၂။ မြေကျင်း ပမာဏ (ကျင်းပေ / Cu.ft):";
-    } else {
-      label.innerText = "၂။ လုပ်မည့် အကျယ်အဝန်း (စတုရန်းပေ / Sqft):";
-    }
+  const dailyWage =
+    skilled * skilledRate +
+    unskilled * unskilledRate;
+
+  const dailyAllowance = crewSize * allowance;
+  const dailyTotal = dailyWage + dailyAllowance;
+  const totalCost = Math.ceil(estimatedDays * dailyTotal);
+
+  resultBox.style.display = "block";
+  resultBox.innerHTML = `
+    <div><b>📊 ခန့်မှန်းတွက်ချက်မှု ရလဒ်</b></div>
+    <div>လုပ်ငန်းအမျိုးအစား: <b>${workType}</b></div>
+    <div>လိုအပ်မည့် ကြာချိန်: <b>${estimatedDays.toFixed(1)} ရက်</b></div>
+    <div>လုပ်သားစုစုပေါင်း: <b>${crewSize} ဦး</b></div>
+    <div>တစ်ရက် လုပ်သားခ: <b>${dailyWage.toLocaleString()} ကျပ်</b></div>
+    <div>တစ်ရက် စားရိတ်/ခရီးစရိတ်: <b>${dailyAllowance.toLocaleString()} ကျပ်</b></div>
+    <div>တစ်ရက် စုစုပေါင်း: <b>${dailyTotal.toLocaleString()} ကျပ်</b></div>
+    <hr style="border: 0; border-top: 1px solid #555; margin: 8px 0;">
+    <div style="color: #00ff88; font-size: 16px;">
+      ခန့်မှန်း စုစုပေါင်းကုန်ကျစရိတ်:
+      <b>${totalCost.toLocaleString()} ကျပ်</b>
+    </div>
+  `;
+}
+
+window.addEventListener("click", function (event) {
+  const modal = document.getElementById("laborModalPro");
+
+  if (event.target === modal) {
+    closeLaborModal();
   }
-
-  // Pro+ Labor Calculation Function
-  function calculateLaborPro() {
-    const amount = parseFloat(document.getElementById("workAmount").value) || 0;
-    const workType = document.getElementById("workType").value;
-    const skilledRate = parseFloat(document.getElementById("skilledRate").value) || 0;
-    const unskilledRate = parseFloat(document.getElementById("unskilledRate").value) || 0;
-    const allowanceRate = parseFloat(document.getElementById("allowanceRate").value) || 0;
-    const distanceFactor = parseFloat(document.getElementById("distanceOption").value) || 1;
-    const efficiencyFactor = parseFloat(document.getElementById("efficiencyRating").value) || 1.0;
-
-    const userSkilled = parseInt(document.getElementById("customSkilled").value) || 0;
-    const userUnskilled = parseInt(document.getElementById("customUnskilled").value) || 0;
-
-    if (amount <= 0) {
-      alert("ကျေးဇူးပြု၍ မှန်ကန်သော ပမာဏထည့်သွင်းပါ။");
-      return;
-    }
-
-    if (userSkilled === 0 && userUnskilled === 0) {
-      alert("ကျေးဇူးပြု၍ အနည်းဆုံး လုပ်သား ၁ ဦး ထည့်သွင်းပေးပါ။");
-      return;
-    }
-
-    let masonDailyOutput = 150; 
-    let unitName = "Sqft";
-
-    if (workType === "brick") { masonDailyOutput = 150; unitName = "Sqft"; }
-    else if (workType === "plaster") { masonDailyOutput = 150; unitName = "Sqft"; }
-    else if (workType === "concrete") { masonDailyOutput = 200; unitName = "Sqft"; }
-    else if (workType === "rebar") { masonDailyOutput = 0.3; unitName = "Ton"; }
-    else if (workType === "formwork") { masonDailyOutput = 120; unitName = "Sqft"; }
-    else if (workType === "tiling") { masonDailyOutput = 120; unitName = "Sqft"; }
-    else if (workType === "roofing") { masonDailyOutput = 250; unitName = "Sqft"; }
-    else if (workType === "earthwork") { masonDailyOutput = 150; unitName = "Cu.ft"; }
-
-    let skilledOutput = userSkilled * masonDailyOutput;
-    let unskilledOutput = userUnskilled * (masonDailyOutput * 0.6); 
-    
-    let totalDailyOutput = ((skilledOutput + unskilledOutput) / distanceFactor) * efficiencyFactor;
-
-    let rawDays = amount / totalDailyOutput;
-    let estimatedDays = Math.ceil(rawDays * 2) / 2; 
-    if (estimatedDays < 0.5) estimatedDays = 0.5;
-
-    let totalSkilledCost = userSkilled * skilledRate * estimatedDays;
-    let totalUnskilledCost = userUnskilled * unskilledRate * estimatedDays;
-    let totalAllowanceCost = (userSkilled + userUnskilled) * allowanceRate * estimatedDays;
-    let grandTotalCost = totalSkilledCost + totalUnskilledCost + totalAllowanceCost;
-
-    let timeText = estimatedDays < 1 ? `${Math.round(estimatedDays * 8)} နာရီခန့် (၁ ရက်မပြည့်ပါ)` : `${estimatedDays} ရက်ခန့်`;
-
- let resultHTML = `
-      <b>📊 ဆောက်လုပ်ရေး လုပ်သားနှင့် ကြာမြင့်ချိန် ခန့်မှန်းချက် (Pro+)</b><br><br>
-      👥 <b>ထည့်သွင်းထားသော လုပ်သားအင်အား:</b><br>
-      • ကျွမ်းကျင်လုပ်သား: ${userSkilled} ဦး<br>
-      • အကူလုပ်သား: ${userUnskilled} ဦး<br>
-      ---------------------------------<br>
-      ⏱️ <b>ခန့်မှန်း ကြာမြင့်ချိန်:</b> ${timeText}<br>
-      💰 <b>စုစုပေါင်း လုပ်သားစရိတ်:</b> <b style="color: #00ff88;">${Math.round(grandTotalCost).toLocaleString()} ကျပ်</b><br>
-      <small style="color: #aaa;">(လုပ်ခ + စားရိတ်/ခရီးစရိတ် အပြီးအစီး)</small>
-    `;
-
-    const resultBox = document.getElementById("resultBoxPro");
-    if (resultBox) {
-      resultBox.style.display = "block";
-      resultBox.innerHTML = resultHTML;
-    }
-  }
-  </script>
+});
+</script>
 </body>
 </html>
