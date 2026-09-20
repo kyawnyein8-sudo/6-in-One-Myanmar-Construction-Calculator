@@ -1473,17 +1473,17 @@ window.addEventListener("DOMContentLoaded", () => {
 }
 
 function calculateLaborCost() {
-  const rate = parseFloat(document.getElementById("laborType").value) || 0;
-  const area = parseFloat(document.getElementById("laborArea").value) || 0;
-  const workType = document.getElementById("workType").value;
-  
-  if (area <= 0) {
- document.getElementById("laborResult").innerText = "ကျေးဇူးပြု၍ မှန်ကန်သော အကျယ်အဝန်း ထည့်ပါ။";
-    return;
-  }
+    const rate = parseFloat(document.getElementById("laborType").value) || 0;
+    const area = parseFloat(document.getElementById("laborArea").value) || 0;
 
-  let estimatedTotal = area * (rate / 10); 
-  document.getElementById("laborResult").innerHTML = `ခန့်မှန်းလုပ်သားခ စုစုပေါင်း: ${estimatedTotal.toLocaleString()} ကျပ် ခန့်`;
+    // workType အစား laborType သို့မဟုတ် area ကိုပဲ စစ်ဆေးမည်
+    if (!area || !rate) {
+        alert("ကျေးဇူးပြု၍ အချက်အလက်များကို မှန်ကန်စွာ ဖြည့်သွင်းပါ");
+        return;
+    }
+
+    let estimatedTotal = area * (rate / 10);
+    document.getElementById("laborResult").innerHTML = `ခန့်မှန်းလုပ်သားခ စုစုပေါင်း: ${estimatedTotal.toLocaleString()} ကျပ် ခန့်`;
 }
   </script>
 </body>
