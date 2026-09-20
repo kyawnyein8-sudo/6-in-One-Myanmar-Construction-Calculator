@@ -27,22 +27,38 @@
       --border-color: #e2ede5;
       --accent-blue: #0077b6;
       --accent-orange: #f77f00;
+      --app-bar-bg: #006b3f;
+      --app-bar-text: #ffffff;
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #121212;
+      --text-main: #e0e0e0;
+      --card-bg: #1e1e1e;
+      --border-color: #2c2c2c;
+      --app-bar-bg: #062b1f;
+      --app-bar-text: #ffffff;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-    body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 75px; }
+    body { 
+      background-color: var(--bg-color); 
+      color: var(--text-main); 
+      padding-bottom: 75px; 
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
 
     .app-bar {
-      background-color: var(--primary-green);
-      color: white;
-      padding: 14px;
+      background-color: var(--app-bar-bg) !important;
+      color: var(--app-bar-text) !important;
+      padding: 12px 16px;
       text-align: center;
       font-weight: bold;
       font-size: 1.1rem;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
+      justify-content: flex-start;
+      gap: 10px;
     }
 
     .container { max-width: 480px; margin: 0 auto; padding: 16px; }
@@ -55,8 +71,10 @@
       margin-bottom: 16px;
     }
 
-    .calc-card {
-      background: var(--card-bg);
+    .calc-card, .card {
+      background-color: var(--card-bg) !important;
+      border-color: var(--border-color) !important;
+      color: var(--text-main) !important;
       border-radius: 12px;
       padding: 16px;
       text-align: center;
@@ -77,12 +95,8 @@
     .calc-page.active { display: block; }
 
     .card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 16px;
+      text-align: left;
       margin-bottom: 16px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.03);
-      border: 1px solid var(--border-color);
     }
 
     .form-group { margin-bottom: 12px; }
@@ -196,122 +210,82 @@
 
     .empty-state { text-align: center; padding: 40px 20px; color: #999; }
     .empty-icon { font-size: 3rem; margin-bottom: 12px; }
+
     .mcdh-ticker-container {
-  overflow: hidden;
-  background-color: #0d4a36; /* အစိမ်းရောင် နောက်ခံ */
-  color: #ffffff;
-  padding: 10px 0;
-  white-space: nowrap;
-  width: 100%;
-  box-sizing: border-box;
-}
+      overflow: hidden;
+      background-color: #0d4a36;
+      color: #ffffff;
+      padding: 10px 0;
+      white-space: nowrap;
+      width: 100%;
+      box-sizing: border-box;
+    }
 
-.mcdh-ticker-track {
-  display: inline-block;
-  white-space: nowrap;
-  animation: tickerScroll 40s linear infinite;
-}
+    .mcdh-ticker-track {
+      display: inline-block;
+      white-space: nowrap;
+      animation: tickerScroll 40s linear infinite;
+    }
 
-.mcdh-ticker-track:hover {
-  animation-play-state: paused; /* ပုံပေါ် လက်တင်လိုက်ရင် ရပ်သွားစေရန် */
-}
+    .mcdh-ticker-track:hover {
+      animation-play-state: paused;
+    }
 
-.mcdh-price {
-  display: inline-block;
-  padding: 0 25px;
-  font-size: 14px;
-}
+    .mcdh-price {
+      display: inline-block;
+      padding: 0 25px;
+      font-size: 14px;
+    }
 
-.mcdh-price .up {
-  color: #4ade80; /* တက်နေရင် အစိမ်းရောင် */
-  margin-left: 5px;
-}
+    .mcdh-price .up { color: #4ade80; margin-left: 5px; }
+    .mcdh-price .down { color: #f87171; margin-left: 5px; }
 
-.mcdh-price .down {
-  color: #f87171; /* ကျနေရင် အနီရောင် */
-  margin-left: 5px;
-}
+    @keyframes tickerScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
 
-@keyframes tickerScroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-    /* ================= Dark Mode / Light Mode Styles ================= */
-:root {
-  --bg-color: #f4f8f5;
-  --text-main: #1f2d24;
-  --card-bg: #ffffff;
-  --border-color: #e2ede5;
-  --app-bar-bg: #006b3f;
-  --app-bar-text: #ffffff;
-}
-
-[data-theme="dark"] {
-  --bg-color: #121212;
-  --text-main: #e0e0e0;
-  --card-bg: #1e1e1e;
-  --border-color: #2c2c2c;
-  --app-bar-bg: #062b1f; /* အစိမ်းရောင် Header ရဲ့ အလှကို မပျက်စေသော မှောင်ရိပ်သန်းသောအရောင် */
-  --app-bar-text: #ffffff;
-}
-
-body {
-  background-color: var(--bg-color);
-  color: var(--text-main);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.app-bar {
-  background-color: var(--app-bar-bg) !important;
-  color: var(--app-bar-text) !important;
-}
-
-.card, .calc-card {
-  background-color: var(--card-bg) !important;
-  border-color: var(--border-color) !important;
-  color: var(--text-main) !important;
-}
     /* Modal Pop-up Background */
-.modal-pro {
-  display: none; 
-  position: fixed; 
-  z-index: 1000; 
-  left: 0;
-  top: 0;
-  width: 100%; 
-  height: 100%; 
-  background-color: rgba(0, 0, 0, 0.8); 
-  overflow-y: auto;
-  padding: 10px;
-}
+    .modal-pro {
+      display: none; 
+      position: fixed; 
+      z-index: 1000; 
+      left: 0;
+      top: 0;
+      width: 100%; 
+      height: 100%; 
+      background-color: rgba(0, 0, 0, 0.8); 
+      overflow-y: auto;
+      padding: 10px;
+    }
 
-/* Modal Box */
-.modal-pro-content {
-  background-color: #1e1e1e;
-  color: #ffffff;
-  margin: 5% auto;
-  padding: 20px;
-  border: 1px solid #333;
-  width: 95%;
-  max-width: 550px;
-  border-radius: 12px;
-  position: relative;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-}
+    /* Modal Box */
+    .modal-pro-content {
+      background-color: #1e1e1e;
+      color: #ffffff;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #333;
+      width: 95%;
+      max-width: 550px;
+      border-radius: 12px;
+      position: relative;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
 
-/* Close (X) Button */
-.modal-pro-close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
+    /* Close (X) Button */
+    .modal-pro-close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-.modal-pro-close:hover {
-  color: #00ff88;
-}
- </style>
+    .modal-pro-close:hover {
+      color: #00ff88;
+    }
+  </style>
 
 <script>
   window.addEventListener('appinstalled', () => {
@@ -325,16 +299,18 @@ body {
 </head>
 <body>
 
- <div class="app-bar" style="display: flex; align-items: center; gap: 10px; background-color: #0d4a36; padding: 12px 16px; color: white;">
+ <div class="app-bar">
   <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj_V6R0n5Fw9m8FH5uIcama-AjtxRBpv5ZMVrgvkykywFJJYAaq8NpAELDYLULt3rW4NdiS4R3_761U8KManjVezjxWD51b5cQjIk2R_27Xd1PKyOXZTEW6BPBmNA2e8a8Pl5yy3So5fudnhrXZpzRxGxCFKNxjVECmKQ998x25i0k8PqftqUDlXWG_xC9u/s200/ChatGPT%20Image%20Sep%2015,%202026,%2006_15_38%20PM.png" alt="Logo" style="width: 32px; height: 32px; object-fit: contain; display: block;">
-  <span style="font-weight: bold; font-size: 16px;">Myanmar Construction Calculator</span>
+  <span>Myanmar Construction Calculator</span>
 </div>
-    <div class="mcdh-ticker-container">
+
+<div class="mcdh-ticker-container">
   <div class="mcdh-ticker-track" id="tickerTrack">
-    <!-- Prices from Google Sheet will load here -->
     <span class="mcdh-price"><b>Loading prices...</b></span>
   </div>
 </div>
+
+<div class="container">
     <!-- HOME SCREEN -->
     <div id="homeView" class="calc-page active">
       <div class="calc-grid">
@@ -377,102 +353,6 @@ body {
           <div class="calc-icon">📐</div>
           <div class="calc-title">Unit Converter</div>
         </div>
-       <!-- Labor Cost Estimator Toggle Section -->
-<!-- ပင်မ စာမျက်နှာတွင် ပေါ်နေမည့် ခလုတ်လှလှလေး -->
-<div class="card calc-card" style="padding: 12px; margin: 10px 0;">
-  <button type="button" onclick="openLaborModal()" style="width: 100%; background: #008f52; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
-    👷‍♂️ ဆောက်လုပ်ရေး လုပ်သားခ ခန့်မှန်းတွက်ချက်ရန် (Pro+)
-  </button>
-</div>
-
-<!-- နှိပ်လိုက်မှ ပွင့်လာမည့် Pop-up Modal Window -->
-<div id="laborModalPro" class="modal-pro">
-  <div class="modal-pro-content">
-    <span class="modal-pro-close" onclick="closeLaborModal()">&times;</span>
-    <h3 style="margin-top: 0; color: #00ff88; font-size: 18px;">👷‍♂️ လုပ်သားအင်အားနှင့် ကြာမြင့်ချိန် ခန့်မှန်းတွက်ချက်ရန် (Pro+)</h3>
-    <hr style="border: 0; border-top: 1px solid #333; margin: 12px 0;">
-
-    <!-- ၁။ လုပ်ငန်းအမျိုးအစား -->
-    <div class="form-group" style="margin-bottom: 12px;">
-      <label style="color: #00ff88; display: block; margin-bottom: 6px;">၁။ လုပ်ငန်းအမျိုးအစား ရွေးပါ:</label>
-      <select id="workType" onchange="updateUnitLabel()" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333;">
-        <option value="brick">အုတ်စီလုပ်ငန်း (၄ လက်မ / ၉ လက်မ)</option>
-        <option value="plaster">အချောကိုင် Plastering လုပ်ငန်း</option>
-        <option value="concrete" selected>ကွန်ကရစ်လောင်းခြင်း</option>
-        <option value="rebar">သံချည်သံကွေး (Rebar Fabrication)</option>
-        <option value="formwork">ဖောင်မဝတ် / ပုံစံကွက် (Formwork)</option>
-        <option value="tiling">ကြွေပြား / စပါးအကွက် ခင်းခြင်း</option>
-        <option value="roofing">အမိုးမိုးခြင်း (Roofing Work)</option>
-        <option value="earthwork">မြေကျင်းတူး / မြေညှိခြင်း</option>
-      </select>
-    </div>
-
-    <!-- ၂။ ပမာဏ -->
-    <div class="form-group" style="margin-bottom: 12px;">
-      <label id="unitLabel" for="workAmount" style="color: #00ff88; display: block; margin-bottom: 6px;">၂။ လုပ်မည့် အကျယ်အဝန်း (စတုရန်းပေ / Sqft):</label>
-      <input type="number" id="workAmount" placeholder="ဥပမာ - ၅၀၀" value="500" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333; box-sizing: border-box;">
-    </div>
-
-    <!-- ၃။ မိမိသုံးစွဲမည့် လုပ်သားဦးရေ -->
-    <div style="display: flex; gap: 10px; margin-bottom: 12px;">
-      <div style="flex: 1;">
-        <label style="color: #00ff88; display: block; margin-bottom: 6px; font-size: 12px;">ကျွမ်းကျင် သုံးမည့်ဦးရေ:</label>
-        <input type="number" id="customSkilled" value="1" min="0" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333; box-sizing: border-box;">
-      </div>
-      <div style="flex: 1;">
-        <label style="color: #00ff88; display: block; margin-bottom: 6px; font-size: 12px;">အကူ သုံးမည့်ဦးရေ:</label>
-        <input type="number" id="customUnskilled" value="2" min="0" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333; box-sizing: border-box;">
-      </div>
-    </div>
-
-    <!-- ၄။ ပစ္စည်းသယ်ယူရသည့် အကွာအဝေး -->
-    <div class="form-group" style="margin-bottom: 12px;">
-      <label style="color: #00ff88; display: block; margin-bottom: 6px;">၄။ ပစ္စည်းသယ်ယူရသည့် အကွာအဝေး:</label>
-      <select id="distanceOption" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333;">
-        <option value="1">အနီး (ပေ ၅၀ အတွင်း - ပုံမှန်)</option>
-        <option value="1.2">အသင့်အတင့်ဝေး (ပေ ၅၀ ~ ၂၀၀ - ၂၀% ပို)</option>
-        <option value="1.5">အလွန်ဝေး / အထပ်မြင့် (ပေ ၂၀၀ အထက် - ၅၀% ပို)</option>
-      </select>
-    </div>
-
-    <!-- ၅။ ထိရောက်မှု ရာခိုင်နှုန်း -->
-    <div class="form-group" style="margin-bottom: 12px;">
-      <label style="color: #00ff88; display: block; margin-bottom: 6px;">၅။ လုပ်သားအသင်း၏ ထိရောက်မှု:</label>
-      <select id="efficiencyRating" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333;">
-        <option value="1.2">🚀 အလွန်မြန် (၁၂၀% - အထူးကျွမ်းကျင်)</option>
-        <option value="1.0" selected>✅ ပုံမှန် (၁၀၀% - စံနှုန်းအတိုင်း)</option>
-        <option value="0.8">⚠️ အသင့်အတင့် (၈၀% - သင်ကြားဆဲ)</option>
-        <option value="0.6">🐢 နှေးကွေး (၆၀% - ပင်ပန်း/ရာသီဥတုဆိုး)</option>
-      </select>
-    </div>
-
-    <!-- ၆။ နေ့တွက်ခများ -->
-    <div style="display: flex; gap: 10px; margin-bottom: 12px;">
-      <div style="flex: 1;">
-        <label style="color: #00ff88; display: block; margin-bottom: 6px; font-size: 12px;">ကျွမ်းကျင် နေ့တွက်ခ (ကျပ်):</label>
-        <input type="number" id="skilledRate" value="35000" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333; box-sizing: border-box;">
-      </div>
-      <div style="flex: 1;">
-        <label style="color: #00ff88; display: block; margin-bottom: 6px; font-size: 12px;">အကူ နေ့တွက်ခ (ကျပ်):</label>
-        <input type="number" id="unskilledRate" value="25000" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333; box-sizing: border-box;">
-      </div>
-    </div>
-
-    <!-- ၇။ စားရိတ်/ခရီးစရိတ် -->
-    <div class="form-group" style="margin-bottom: 12px;">
-      <label style="color: #00ff88; display: block; margin-bottom: 6px;">၇။ စားရိတ်/ခရီးစရိတ် (ကျပ်/ရက်/ဦး):</label>
-      <input type="number" id="allowanceRate" value="5000" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333; box-sizing: border-box;">
-    </div>
-
-    <!-- တွက်ချက်မည် Button -->
-    <button type="button" onclick="calculateLaborPro()" style="width: 100%; background: #008f52; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; margin-top: 10px;">
-      ကြာမြင့်ချိန်နှင့် ကုန်ကျစရိတ် တွက်ချက်မည်
-    </button>
-
-    <!-- ရလဒ်ပြသရန် Box -->
-    <div id="resultBoxPro" style="display:none; margin-top: 15px; padding: 14px; background: #1b3323; border: 1px solid #00ff88; border-radius: 8px; line-height: 1.7; font-size: 14px;"></div>
-  </div>
-</div>
 
         <div class="calc-card" onclick="openCalc('notePage')">
           <div class="calc-icon">📝</div>
@@ -483,6 +363,13 @@ body {
           <div class="calc-icon">🌐</div>
           <div class="calc-title">တခြား Apps များ</div>
         </div>
+      </div>
+
+      <!-- Labor Cost Estimator Toggle Section -->
+      <div class="card" style="padding: 12px; margin: 10px 0;">
+        <button type="button" onclick="openLaborModal()" style="width: 100%; background: #008f52; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+          👷‍♂️ ဆောက်လုပ်ရေး လုပ်သားခ ခန့်မှန်းတွက်ချက်ရန် (Pro+)
+        </button>
       </div>
 
       <div class="sponsor-card">
@@ -531,12 +418,13 @@ body {
           <label>သံ 1 kg ဈေး (ကျပ်):</label>
           <input type="number" id="settingSteelPrice" placeholder="3200">
         </div>
-        <div class="settings-item" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--border-color);">
-  <span>🌙 နေ့/ည မုဒ် (Dark Mode)</span>
-  <button id="themeToggleBtn" onclick="toggleTheme()" style="background: var(--primary-green); color: white; border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 14px;">
-    ပြောင်းရန်
-  </button>
-</div>
+
+        <div class="settings-item" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-top: 1px solid var(--border-color); margin-top: 10px;">
+          <span>🌙 နေ့/ည မုဒ် (Dark Mode)</span>
+          <button id="themeToggleBtn" onclick="toggleTheme()" style="background: var(--primary-green); color: white; border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 14px;">
+            ပြောင်းရန်
+          </button>
+        </div>
 
         <div style="display: flex; gap: 8px; margin-top: 15px;">
           <button onclick="saveCustomPrices()" class="btn-calc" style="flex: 2; margin-top: 0;">💾 ဈေးနှုန်းများ သိမ်းမည်</button>
@@ -973,1035 +861,792 @@ body {
         </div>
       </div>
     </div>
+</div>
 
+<!-- Labor Cost Estimator Modal (Pro+) -->
+<div id="laborModalPro" class="modal-pro">
+  <div class="modal-pro-content">
+    <span class="modal-pro-close" onclick="closeLaborModal()">&times;</span>
+    <h3 style="margin-top: 0; color: #00ff88; font-size: 18px;">👷‍♂️ လုပ်သားအင်အားနှင့် ကြာမြင့်ချိန် ခန့်မှန်းတွက်ချက်ရန် (Pro+)</h3>
+    <hr style="border: 0; border-top: 1px solid #333; margin: 12px 0;">
+
+    <!-- ၁။ လုပ်ငန်းအမျိုးအစား -->
+    <div class="form-group" style="margin-bottom: 12px;">
+      <label style="color: #00ff88; display: block; margin-bottom: 6px;">၁။ လုပ်ငန်းအမျိုးအစား ရွေးပါ:</label>
+      <select id="workType" onchange="updateUnitLabel()" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333;">
+        <option value="brick">အုတ်စီလုပ်ငန်း (၄ လက်မ / ၉ လက်မ)</option>
+        <option value="plaster">အချောကိုင် Plastering လုပ်ငန်း</option>
+        <option value="concrete" selected>ကွန်ကရစ်လောင်းခြင်း</option>
+        <option value="rebar">သံချည်သံကွေး (Rebar Fabrication)</option>
+        <option value="formwork">ဖောင်မဝတ် / ပုံစံကွက် (Formwork)</option>
+        <option value="tiling">ကြွေပြား / စပါးအကွက် ခင်းခြင်း</option>
+        <option value="roofing">အမိုးမိုးခြင်း (Roofing Work)</option>
+        <option value="earthwork">မြေကျင်းတူး / မြေညှိခြင်း</option>
+      </select>
+    </div>
+
+    <!-- ၂။ ပမာဏ -->
+    <div class="form-group" style="margin-bottom: 12px;">
+      <label id="unitLabel" for="workAmount" style="color: #00ff88; display: block; margin-bottom: 6px;">၂။ လုပ်မည့် အကျယ်အဝန်း (စတုရန်းပေ / Sqft):</label>
+      <input type="number" id="workAmount" placeholder="ဥပမာ - ၅၀၀" value="500" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333; box-sizing: border-box;">
+    </div>
+
+    <!-- ၃။ မိမိသုံးစွဲမည့် လုပ်သားဦးရေ -->
+    <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+      <div style="flex: 1;">
+        <label style="color: #00ff88; display: block; margin-bottom: 6px; font-size: 12px;">ကျွမ်းကျင် သုံးမည့်ဦးရေ:</label>
+        <input type="number" id="customSkilled" value="1" min="0" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333; box-sizing: border-box;">
+      </div>
+      <div style="flex: 1;">
+        <label style="color: #00ff88; display: block; margin-bottom: 6px; font-size: 12px;">အကူ သုံးမည့်ဦးရေ:</label>
+        <input type="number" id="customUnskilled" value="2" min="0" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333; box-sizing: border-box;">
+      </div>
+    </div>
+
+    <!-- ၄။ ပစ္စည်းသယ်ယူရသည့် အကွာအဝေး -->
+    <div class="form-group" style="margin-bottom: 12px;">
+      <label style="color: #00ff88; display: block; margin-bottom: 6px;">၄။ ပစ္စည်းသယ်ယူရသည့် အကွာအဝေး:</label>
+      <select id="distanceOption" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333;">
+        <option value="1">အနီး (ပေ ၅၀ အတွင်း - ပုံမှန်)</option>
+        <option value="1.2">အသင့်အတင့်ဝေး (ပေ ၅၀ ~ ၂၀၀ - ၂၀% ပို)</option>
+        <option value="1.5">အလွန်ဝေး / အထပ်မြင့် (ပေ ၂၀၀ အထက် - ၅၀% ပို)</option>
+      </select>
+    </div>
+
+    <!-- ၅။ ထိရောက်မှု ရာခိုင်နှုန်း -->
+    <div class="form-group" style="margin-bottom: 12px;">
+      <label style="color: #00ff88; display: block; margin-bottom: 6px;">၅။ လုပ်သားအသင်း၏ ထိရောက်မှု:</label>
+      <select id="efficiencyRating" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333;">
+        <option value="1.2">🚀 အလွန်မြန် (၁၂၀% - အထူးကျွမ်းကျင်)</option>
+        <option value="1.0" selected>✅ ပုံမှန် (၁၀၀% - စံနှုန်းအတိုင်း)</option>
+        <option value="0.8">⚠️ အသင့်အတင့် (၈၀% - သင်ကြားဆဲ)</option>
+        <option value="0.6">🐢 နှေးကွေး (၆၀% - ပင်ပန်း/ရာသီဥတုဆိုး)</option>
+      </select>
+    </div>
+
+    <!-- ၆။ နေ့တွက်ခများ -->
+    <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+      <div style="flex: 1;">
+        <label style="color: #00ff88; display: block; margin-bottom: 6px; font-size: 12px;">ကျွမ်းကျင် နေ့တွက်ခ (ကျပ်):</label>
+        <input type="number" id="skilledRate" value="35000" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333; box-sizing: border-box;">
+      </div>
+      <div style="flex: 1;">
+        <label style="color: #00ff88; display: block; margin-bottom: 6px; font-size: 12px;">အကူ နေ့တွက်ခ (ကျပ်):</label>
+        <input type="number" id="unskilledRate" value="25000" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333; box-sizing: border-box;">
+      </div>
+    </div>
+
+    <!-- ၇။ စားရိတ်/ခရီးစရိတ် -->
+    <div class="form-group" style="margin-bottom: 12px;">
+      <label style="color: #00ff88; display: block; margin-bottom: 6px;">၇။ စားရိတ်/ခရီးစရိတ် (ကျပ်/ရက်/ဦး):</label>
+      <input type="number" id="allowanceRate" value="5000" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333; box-sizing: border-box;">
+    </div>
+
+    <!-- တွက်ချက်မည် Button -->
+    <button type="button" onclick="calculateLaborPro()" style="width: 100%; background: #008f52; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; margin-top: 10px;">
+      ကြာမြင့်ချိန်နှင့် ကုန်ကျစရိတ် တွက်ချက်မည်
+    </button>
+
+    <!-- ရလဒ်ပြသရန် Box -->
+    <div id="resultBoxPro" style="display:none; margin-top: 15px; padding: 14px; background: #1b3323; border: 1px solid #00ff88; border-radius: 8px; line-height: 1.7; font-size: 14px;"></div>
   </div>
+</div>
 
-  <!-- PWA Apps List Modal -->
-  <div id="pwaModal" class="modal">
-    <div class="modal-content">
-      <h3 style="color: var(--primary-green); margin-bottom: 12px;">🌐 ကျွန်ုပ်တို့၏ အခြား Apps များ</h3>
+<!-- PWA Apps List Modal -->
+<div id="pwaModal" class="modal">
+  <div class="modal-content">
+    <h3 style="color: var(--primary-green); margin-bottom: 12px;">🌐 ကျွန်ုပ်တို့၏ အခြား Apps များ</h3>
     <a href="https://kyawnyein8-sudo.github.io/Myanmar-construction-flash/" target="_blank" class="pwa-link-card">
-  <span style="font-size: 1.5rem;">🏠</span>
-  <div>
-    <b style="font-size: 0.9rem;">roof calculator</b>
-    <p style="font-size: 0.75rem; color: #666;">အိမ်ခေါင်မိုးနှင့် သွပ်ပြားကုန်ကျ စရိတ် တွက်ချက်ကိရိယာ PWA</p>
+      <span style="font-size: 1.5rem;">🏠</span>
+      <div>
+        <b style="font-size: 0.9rem;">roof calculator</b>
+        <p style="font-size: 0.75rem; color: #666;">အိမ်ခေါင်မိုးနှင့် သွပ်ပြားကုန်ကျ စရိတ် တွက်ချက်ကိရိယာ PWA</p>
+      </div>
+    </a>
+    <a href="#" class="pwa-link-card">
+      <span style="font-size: 1.5rem;">🚜</span>
+      <div>
+        <b style="font-size: 0.9rem;">Agri Myanmar App</b>
+        <p style="font-size: 0.75rem; color: #666;">စိုက်ပျိုးရေးနှင့် မြေဩဇာတွက်စက် PWA</p>
+      </div>
+    </a>
+    <button class="btn-calc btn-back" onclick="closePwaModal()" style="margin-top: 10px;">ပိတ်မည်</button>
   </div>
-</a>
-      <a href="#" class="pwa-link-card">
-        <span style="font-size: 1.5rem;">🚜</span>
-        <div>
-          <b style="font-size: 0.9rem;">Agri Myanmar App</b>
-          <p style="font-size: 0.75rem; color: #666;">စိုက်ပျိုးရေးနှင့် မြေဩဇာတွက်စက် PWA</p>
-        </div>
-      </a>
-      <button class="btn-calc btn-back" onclick="closePwaModal()" style="margin-top: 10px;">ပိတ်မည်</button>
-    </div>
-  </div>
-
-  <!-- Bottom Navigation -->
-  <div class="bottom-nav">
-    <div class="nav-item active" onclick="goHome()">🏠<br>Home</div>
-    <div class="nav-item" onclick="openHistory()">📋<br>History</div>
-    <div class="nav-item" onclick="openSettings()">⚙️<br>Settings</div>
-  </div>
-
-  <script>
-    fetch("https://script.google.com/macros/s/AKfycbwQTWff2K8bb3wvr5FnaWOYeBU52RkX0EFx4TgD7wZRRB0R-_nWUoItTv-Zh2QYEiLv/exec")
-    .then(response => response.json())
-    .then(data => {
-      let track = document.getElementById("tickerTrack");
-      let html = "";
-      
-      if (!Array.isArray(data) || data.length === 0) {
-        track.innerHTML = "<span class='mcdh-price'><b>No data found in Google Sheet</b></span>";
-        return;
-      }
-
-      // Ticker Animation ချောမွေ့စေရန် နှစ်ခါထပ်ပေးခြင်း
-      for (let k = 0; k < 2; k++) {
-        data.forEach(row => {
-          let name = row.name || "";
-          let price = row.price || "";
-          let unit = row.unit || "";
-          let change = row.change || "";
-          let trend = row.trend || "up";
-          let arrow = trend === "up" ? "▲" : "▼";
-
-          html += `<span class="mcdh-price">
-            <b>${name}:</b> 
-            <b>${price} ${unit}</b>
-            <span class="${trend}">${arrow} ${change}</span>
-          </span>`;
-        });
-      }
-      track.innerHTML = html;
-    })
-    .catch(error => {
-      console.error("Error loading prices:", error);
-      document.getElementById("tickerTrack").innerHTML = "<span class='mcdh-price'><b>Failed to load prices</b></span>";
-    });
-    let currentCalculations = {};
-
-    // Default Material Prices
-    const defaultPrices = {
-      cement: 18000,
-      brick: 650,
-      steel: 3200
-    };
-
-    // Navigation
-    function openCalc(calcId) {
-      document.querySelectorAll('.calc-page').forEach(page => page.classList.remove('active'));
-      const target = document.getElementById(calcId);
-      if(target) target.classList.add('active');
-      if(calcId === 'notePage') loadNotes();
-      window.scrollTo(0, 0);
-    }
-
-    function goHome() {
-      document.querySelectorAll('.calc-page').forEach(page => page.classList.remove('active'));
-      document.getElementById('homeView').classList.add('active');
-      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-      document.querySelectorAll('.nav-item')[0].classList.add('active');
-      window.scrollTo(0, 0);
-    }
-
-    function openHistory() {
-      document.querySelectorAll('.calc-page').forEach(page => page.classList.remove('active'));
-      document.getElementById('historyView').classList.add('active');
-      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-      document.querySelectorAll('.nav-item')[1].classList.add('active');
-      loadHistory();
-      window.scrollTo(0, 0);
-    }
-
-    function openSettings() {
-      document.querySelectorAll('.calc-page').forEach(page => page.classList.remove('active'));
-      document.getElementById('settingsView').classList.add('active');
-      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-      document.querySelectorAll('.nav-item')[2].classList.add('active');
-      loadSettingsUI();
-      window.scrollTo(0, 0);
-    }
-
-    function openPwaModal() { document.getElementById('pwaModal').classList.add('active'); }
-    function closePwaModal() { document.getElementById('pwaModal').classList.remove('active'); }
-
-    // CUSTOM PRICE SETTINGS
-    function loadSettingsUI() {
-      let saved = JSON.parse(localStorage.getItem('myCustomPrices')) || defaultPrices;
-      if(document.getElementById('settingCementPrice')) document.getElementById('settingCementPrice').value = saved.cement;
-      if(document.getElementById('settingBrickPrice')) document.getElementById('settingBrickPrice').value = saved.brick;
-      if(document.getElementById('settingSteelPrice')) document.getElementById('settingSteelPrice').value = saved.steel;
-    }
-
-    function saveCustomPrices() {
-      let customPrices = {
-        cement: parseFloat(document.getElementById('settingCementPrice').value) || defaultPrices.cement,
-        brick: parseFloat(document.getElementById('settingBrickPrice').value) || defaultPrices.brick,
-        steel: parseFloat(document.getElementById('settingSteelPrice').value) || defaultPrices.steel
-      };
-      localStorage.setItem('myCustomPrices', JSON.stringify(customPrices));
-      applyCustomPrices();
-      alert('✅ ဈေးနှုန်းများ အောင်မြင်စွာ သိမ်းဆည်းပြီးပါပြီ။');
-    }
-
-    function resetCustomPrices() {
-      if (confirm("မူလ Default ဈေးနှုန်းများသို့ ပြန်ပြောင်းလိုပါသလား။")) {
-        localStorage.removeItem('myCustomPrices');
-        loadSettingsUI();
-        applyCustomPrices();
-      }
-    }
-
-    function applyCustomPrices() {
-      let saved = JSON.parse(localStorage.getItem('myCustomPrices')) || defaultPrices;
-      if(document.getElementById('cementPrice')) document.getElementById('cementPrice').value = saved.cement;
-      if(document.getElementById('brickPrice')) document.getElementById('brickPrice').value = saved.brick;
-      if(document.getElementById('steelPrice')) document.getElementById('steelPrice').value = saved.steel;
-    }
-
-    // TIMBER CALCULATOR
-    function calcTimber() {
-      let t = parseFloat(document.getElementById('woodThick').value) || 0;
-      let w = parseFloat(document.getElementById('woodWidth').value) || 0;
-      let l = parseFloat(document.getElementById('woodLen').value) || 0;
-      let qty = parseFloat(document.getElementById('woodQty').value) || 0;
-      let pricePerTon = parseFloat(document.getElementById('woodTonPrice').value) || 0;
-
-      let cftPerPiece = (t * w * l) / 144;
-      let totalCft = cftPerPiece * qty;
-      let totalTons = totalCft / 50;
-      let totalCost = totalTons * pricePerTon;
-
-      document.getElementById('resWoodCft').innerText = totalCft.toFixed(2);
-      document.getElementById('resWoodTons').innerText = totalTons.toFixed(3);
-      document.getElementById('resWoodTotal').innerText = Math.ceil(totalCost).toLocaleString() + ' ကျပ်';
-      document.getElementById('timberResult').style.display = 'block';
-      document.getElementById('saveTimberBtn').style.display = 'block';
-
-      currentCalculations['timber'] = {
-        type: 'timber',
-        typeName: 'သစ်တွက်ရန်',
-        total: Math.ceil(totalCost),
-        details: `သစ် ${qty} အုပ်/ချပ်, ${totalCft.toFixed(2)} cft (${totalTons.toFixed(3)} တန်)`,
-        timestamp: new Date().toISOString()
-      };
-    }
-
-    // UNIT CONVERTER
-    function convertFtToM() {
-      let ft = parseFloat(document.getElementById('unitFt').value) || 0;
-      document.getElementById('unitM').innerText = (ft * 0.3048).toFixed(2);
-    }
-    function convertSqftToKyaing() {
-      let sqft = parseFloat(document.getElementById('unitSqft').value) || 0;
-      document.getElementById('unitKyaing').innerText = (sqft / 100).toFixed(2);
-    }
-
-    // NOTES SYSTEM
-    function addNote() {
-      let text = document.getElementById('noteInput').value.trim();
-      if(!text) return;
-      let notes = JSON.parse(localStorage.getItem('siteNotes') || '[]');
-      notes.unshift({ text: text, date: new Date().toLocaleString('my-MM') });
-      localStorage.setItem('siteNotes', JSON.stringify(notes));
-      document.getElementById('noteInput').value = '';
-      loadNotes();
-    }
-
-    function loadNotes() {
-      let notes = JSON.parse(localStorage.getItem('siteNotes') || '[]');
-      let list = document.getElementById('notesList');
-      if(notes.length === 0) {
-        list.innerHTML = '<div class="empty-state">မှတ်စုများ မရှိသေးပါ</div>';
-        return;
-      }
-      let html = '';
-      notes.forEach((n, idx) => {
-        html += `
-          <div class="note-item">
-            <div class="history-item-header">
-              <span class="history-date">${n.date}</span>
-              <button class="btn-delete" onclick="deleteNote(${idx})">🗑️ ဖျက်မည်</button>
-            </div>
-            <div>${n.text}</div>
-          </div>
-        `;
-      });
-      list.innerHTML = html;
-    }
-
-    function deleteNote(idx) {
-      let notes = JSON.parse(localStorage.getItem('siteNotes') || '[]');
-      notes.splice(idx, 1);
-      localStorage.setItem('siteNotes', JSON.stringify(notes));
-      loadNotes();
-    }
-
-    // ROOF CALCULATOR
-    function updateDesignDetails() {
-      let select = document.getElementById('roofDesign');
-      let selectedOption = select.options[select.selectedIndex];
-      let labour = selectedOption.getAttribute('data-labour');
-      document.getElementById('roofLabourRate').value = labour;
-    }
-
-    function calcRoof() {
-      let roofDesign = document.getElementById('roofDesign').value;
-      let l = parseFloat(document.getElementById('roofLen').value) || 0;
-      let w = parseFloat(document.getElementById('roofWid').value) || 0;
-      let overhang = parseFloat(document.getElementById('roofOverhang').value) || 0;
-      let slopeMultiplier = parseFloat(document.getElementById('roofSlope').value) || 1.054;
-      let effWidth = parseFloat(document.getElementById('sheetWidth').value) || 2.5;
-      let pricePerFt = parseFloat(document.getElementById('sheetPricePerFt').value) || 0;
-      let labourRate = parseFloat(document.getElementById('roofLabourRate').value) || 0;
-
-      let totalW = w + (overhang * 2);
-      let totalL = l + (overhang * 2);
-      let oneSideRoofLen = 0;
-      let neededSheetLength = 0;
-      let totalSheets = 0;
-      let roofArea = 0;
-
-      if (roofDesign === 'gable') {
-        oneSideRoofLen = (totalW / 2) * slopeMultiplier;
-        neededSheetLength = Math.ceil(oneSideRoofLen);
-        let sheetsPerSide = Math.ceil(totalL / effWidth);
-        totalSheets = sheetsPerSide * 2;
-        roofArea = totalL * totalW * slopeMultiplier;
-      } else if (roofDesign === 'leanto') {
-        oneSideRoofLen = totalW * slopeMultiplier;
-        neededSheetLength = Math.ceil(oneSideRoofLen);
-        totalSheets = Math.ceil(totalL / effWidth);
-        roofArea = totalL * totalW * slopeMultiplier;
-      } else if (roofDesign === 'hip') {
-        let halfSpan = totalW / 2;
-        oneSideRoofLen = halfSpan * slopeMultiplier;
-        neededSheetLength = Math.ceil(oneSideRoofLen);
-        roofArea = totalL * totalW * slopeMultiplier;
-        let areaPerSheet = effWidth * neededSheetLength;
-        totalSheets = Math.ceil((roofArea / areaPerSheet) * 1.10);
-      }
-
-      let pricePerSheet = pricePerFt * neededSheetLength;
-      let sqft = Math.ceil(roofArea);
-      let totalMat = totalSheets * pricePerSheet;
-      let totalLabour = sqft * labourRate;
-      let grandTotal = totalMat + totalLabour;
-
-      document.getElementById('resRoofSheetLen').innerText = neededSheetLength;
-      document.getElementById('resRoofSheets').innerText = totalSheets.toLocaleString();
-      document.getElementById('resRoofMat').innerText = totalMat.toLocaleString();
-      document.getElementById('resRoofSqft').innerText = sqft.toLocaleString();
-      document.getElementById('resRoofLabour').innerText = totalLabour.toLocaleString();
-      document.getElementById('resRoofTotal').innerText = grandTotal.toLocaleString();
-      document.getElementById('roofResult').style.display = 'block';
-      document.getElementById('saveRoofBtn').style.display = 'block';
-
-      currentCalculations['roof'] = {
-        type: 'roof',
-        typeName: 'ခေါင်းမိုး',
-        total: grandTotal,
-        details: `သွပ်ပြား ${totalSheets} ချပ်, အရှည် ${neededSheetLength} ပေ`,
-        timestamp: new Date().toISOString()
-      };
-    }
-
-    // CONCRETE CALCULATOR
-    function calcConcrete() {
-      let l = parseFloat(document.getElementById('concLen').value) || 0;
-      let w = parseFloat(document.getElementById('concWid').value) || 0;
-      let thickInch = parseFloat(document.getElementById('concThick').value) || 4;
-      let ratio = document.getElementById('concRatio').value.split(',').map(Number);
-      let cementPrice = parseFloat(document.getElementById('cementPrice').value) || 18000;
-
-      let thickFt = thickInch / 12;
-      let volume = l * w * thickFt;
-      let totalRatio = ratio[0] + ratio[1] + ratio[2];
-      let dryVolume = volume * 1.54;
-
-      let cementCft = dryVolume * ratio[0] / totalRatio;
-      let cementBags = cementCft / 1.25;
-      let sand = dryVolume * ratio[1] / totalRatio;
-      let aggregate = dryVolume * ratio[2] / totalRatio;
-
-      let cementCost = Math.ceil(cementBags) * cementPrice;
-      let totalCost = cementCost + (sand * 800) + (aggregate * 1200);
-
-      document.getElementById('resConcVol').innerText = volume.toFixed(2);
-      document.getElementById('resCementBags').innerText = Math.ceil(cementBags);
-      document.getElementById('resSand').innerText = sand.toFixed(2);
-      document.getElementById('resAggregate').innerText = aggregate.toFixed(2);
-      document.getElementById('resCementCost').innerText = cementCost.toLocaleString();
-      document.getElementById('resConcTotal').innerText = Math.ceil(totalCost).toLocaleString();
-      document.getElementById('concResult').style.display = 'block';
-      document.getElementById('saveConcreteBtn').style.display = 'block';
-
-      currentCalculations['concrete'] = {
-        type: 'concrete',
-        typeName: 'ကွန်ကရစ်',
-        total: Math.ceil(totalCost),
-        details: `Cement ${Math.ceil(cementBags)} အိတ်, ${volume.toFixed(2)} cft`,
-        timestamp: new Date().toISOString()
-      };
-    }
-
-    // BRICK CALCULATOR
-    function calcBrick() {
-      let wallLen = parseFloat(document.getElementById('wallLen').value) || 0;
-      let wallHeight = parseFloat(document.getElementById('wallHeight').value) || 0;
-      let wallThick = parseFloat(document.getElementById('wallThick').value) || 4.5;
-      let brickPrice = parseFloat(document.getElementById('brickPrice').value) || 650;
-
-      let wallArea = wallLen * wallHeight;
-      let bricksPerSqft = wallThick === 4.5 ? 13.5 : 27;
-      let bricks = Math.ceil(wallArea * bricksPerSqft);
-
-      let cementBags = Math.ceil(bricks / 500);
-      let sand = (bricks / 1000) * 10;
-      let brickCost = bricks * brickPrice;
-      let totalCost = brickCost + (cementBags * 18000) + (sand * 800);
-
-      document.getElementById('resWallArea').innerText = wallArea.toFixed(2);
-      document.getElementById('resBricks').innerText = bricks;
-      document.getElementById('resBrickCement').innerText = cementBags;
-      document.getElementById('resBrickSand').innerText = sand.toFixed(2);
-      document.getElementById('resBrickCost').innerText = brickCost.toLocaleString();
-      document.getElementById('resBrickTotal').innerText = Math.ceil(totalCost).toLocaleString();
-      document.getElementById('brickResult').style.display = 'block';
-      document.getElementById('saveBrickBtn').style.display = 'block';
-
-      currentCalculations['brick'] = {
-        type: 'brick',
-        typeName: 'အုတ်စီရန်',
-        total: Math.ceil(totalCost),
-        details: `အုတ် ${bricks} ချပ်, ${wallArea.toFixed(2)} sqft`,
-        timestamp: new Date().toISOString()
-      };
-    }
-
-    // STEEL CALCULATOR
-    function calcSteel() {
-      let l = parseFloat(document.getElementById('steelLen').value) || 0;
-      let w = parseFloat(document.getElementById('steelWid').value) || 0;
-      let barDia = parseFloat(document.getElementById('barDiameter').value) || 12;
-      let barSpacing = parseFloat(document.getElementById('barSpacing').value) || 8;
-      let steelPrice = parseFloat(document.getElementById('steelPrice').value) || 3200;
-
-      let bars = Math.ceil((l * 12) / barSpacing) + Math.ceil((w * 12) / barSpacing);
-      let totalLen = bars * Math.max(l, w);
-      let weightPerMeter = (barDia * barDia) / 162;
-      let weightPerFt = weightPerMeter / 3.281;
-      let totalWeight = totalLen * weightPerFt;
-      let totalCost = Math.ceil(totalWeight) * steelPrice;
-
-      document.getElementById('resBars').innerText = bars;
-      document.getElementById('resTotalLen').innerText = totalLen.toFixed(2);
-      document.getElementById('resWeight').innerText = Math.ceil(totalWeight);
-      document.getElementById('resSteelCost').innerText = (Math.ceil(totalWeight) * steelPrice).toLocaleString();
-      document.getElementById('resSteelTotal').innerText = totalCost.toLocaleString();
-      document.getElementById('steelResult').style.display = 'block';
-      document.getElementById('saveSteelBtn').style.display = 'block';
-
-      currentCalculations['steel'] = {
-        type: 'steel',
-        typeName: 'သံချောင်း',
-        total: totalCost,
-        details: `သံချောင်း ${bars} ချောင်း, ${Math.ceil(totalWeight)} kg`,
-        timestamp: new Date().toISOString()
-      };
-    }
-
-    // PAINT CALCULATOR
-    function calcPaint() {
-      let l = parseFloat(document.getElementById('paintLen').value) || 0;
-      let h = parseFloat(document.getElementById('paintHeight').value) || 0;
-      let coats = parseInt(document.getElementById('paintCoats').value) || 2;
-      let paintPrice = parseFloat(document.getElementById('paintPrice').value) || 45000;
-
-      let area = l * h;
-      let gallons = (area * coats) / 350;
-      let totalCost = Math.ceil(gallons) * paintPrice;
-
-      document.getElementById('resPaintArea').innerText = area.toFixed(2);
-      document.getElementById('resPaintGallons').innerText = Math.ceil(gallons);
-      document.getElementById('resPaintCost').innerText = (Math.ceil(gallons) * paintPrice).toLocaleString();
-      document.getElementById('resPaintTotal').innerText = totalCost.toLocaleString();
-      document.getElementById('paintResult').style.display = 'block';
-      document.getElementById('savePaintBtn').style.display = 'block';
-
-      currentCalculations['paint'] = {
-        type: 'paint',
-        typeName: 'ဆေးသုတ်ရန်',
-        total: totalCost,
-        details: `${Math.ceil(gallons)} gallons, ${area.toFixed(2)} sqft`,
-        timestamp: new Date().toISOString()
-      };
-    }
-
-    // TILE CALCULATOR
-    function calcTile() {
-      let l = parseFloat(document.getElementById('tileLen').value) || 0;
-      let w = parseFloat(document.getElementById('tileWid').value) || 0;
-      let tileSize = parseFloat(document.getElementById('tileSize').value) || 1;
-      let tilePrice = parseFloat(document.getElementById('tilePrice').value) || 8500;
-
-      let area = l * w;
-      let tiles = Math.ceil(area / tileSize);
-      let cementBags = Math.ceil(area / 100);
-      let sand = (area / 100) * 3;
-      let tileCost = tiles * tilePrice;
-      let totalCost = tileCost + (cementBags * 18000) + (sand * 800);
-
-      document.getElementById('resTileArea').innerText = area.toFixed(2);
-      document.getElementById('resTiles').innerText = tiles;
-      document.getElementById('resTileCement').innerText = cementBags;
-      document.getElementById('resTileSand').innerText = sand.toFixed(2);
-      document.getElementById('resTileCost').innerText = tileCost.toLocaleString();
-      document.getElementById('resTileTotal').innerText = Math.ceil(totalCost).toLocaleString();
-      document.getElementById('tileResult').style.display = 'block';
-      document.getElementById('saveTileBtn').style.display = 'block';
-
-      currentCalculations['tile'] = {
-        type: 'tile',
-        typeName: 'ကြွေပြားခင်း',
-        total: Math.ceil(totalCost),
-        details: `Tile ${tiles} ချပ်, ${area.toFixed(2)} sqft`,
-        timestamp: new Date().toISOString()
-      };
-    }
-
-    // HISTORY FUNCTIONS
-    function saveToHistory(calcType) {
-      if (!currentCalculations[calcType]) {
-        alert('အရင်ဆုံး တွက်ချက်မှု ပြုလုပ်ပါ!');
-        return;
-      }
-      let history = JSON.parse(localStorage.getItem('calcHistory') || '[]');
-      history.unshift(currentCalculations[calcType]);
-      localStorage.setItem('calcHistory', JSON.stringify(history));
-      alert('✅ မှတ်တမ်းတင်ပြီးပါပြီ!');
-      document.getElementById('save' + calcType.charAt(0).toUpperCase() + calcType.slice(1) + 'Btn').style.display = 'none';
-    }
-
-    function loadHistory() {
-      let history = JSON.parse(localStorage.getItem('calcHistory') || '[]');
-      let historyList = document.getElementById('historyList');
-      
-      if (history.length === 0) {
-        historyList.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-icon">📋</div>
-            <div>မှတ်တမ်းမရှိသေးပါ</div>
-            <div style="font-size: 0.8rem; margin-top: 8px;">Calculator တစ်ခုခုတွက်ပြီး "မှတ်တမ်းတင်မည်" နှိပ်ပါ</div>
-          </div>
-        `;
-        document.getElementById('grandTotal').innerText = '0 ကျပ်';
-        return;
-      }
-
-      let html = '';
-      let grandTotal = 0;
-
-      history.forEach((item, index) => {
-        grandTotal += item.total;
-        let date = new Date(item.timestamp);
-        let dateStr = date.toLocaleDateString('my-MM') + ' ' + date.toLocaleTimeString('my-MM', {hour: '2-digit', minute:'2-digit'});
-        
-        html += `
-          <div class="history-item">
-            <div class="history-item-header">
-              <div class="history-calc-type">${item.typeName}</div>
-              <div class="history-date">${dateStr}</div>
-            </div>
-            <div style="margin-bottom: 6px;">${item.details}</div>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <div class="history-total">${item.total.toLocaleString()} ကျပ်</div>
-              <button class="btn-delete" onclick="deleteHistoryItem(${index})">🗑️ ဖျက်မည်</button>
-            </div>
-          </div>
-        `;
-      });
-
-      historyList.innerHTML = html;
-      document.getElementById('grandTotal').innerText = grandTotal.toLocaleString() + ' ကျပ်';
-    }
-
-    function deleteHistoryItem(index) {
-      if (!confirm('ဒီမှတ်တမ်းကို ဖျက်မှာ သေချာပါသလား?')) return;
-      let history = JSON.parse(localStorage.getItem('calcHistory') || '[]');
-      history.splice(index, 1);
-      localStorage.setItem('calcHistory', JSON.stringify(history));
-      loadHistory();
-    }
-
-    function clearAllHistory() {
-      if (!confirm('မှတ်တမ်းအားလုံးကို ဖျက်မှာ သေချာပါသလား?')) return;
-      localStorage.removeItem('calcHistory');
-      loadHistory();
-    }
-
-    // Auto Apply Custom Prices on Start
-    window.addEventListener('DOMContentLoaded', () => {
-      applyCustomPrices();
-    });
-    let deferredPrompt;
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  // Automatic Banner မပေါ်အောင် တားဆီးသည်
-  e.preventDefault();
-  deferredPrompt = e;
-  
-  // Install ခလုတ် သို့မဟုတ် Pop-up ပြရန်နေရာ
-  console.log('App ကို Install လုပ်ရန် အဆင်သင့်ဖြစ်ပါပြီ');
-});
-
-// App ထဲရှိ Install ခလုတ်တစ်ခုခုကို နှိပ်သည့်အခါ ခေါ်မည့် Function
-function installPWA() {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted the install prompt');
-      }
-      deferredPrompt = null;
-    });
-  } else {
-    alert('Browser Menu (အစက်သုံးစက်) မှ "Add to Home screen" ကို နှိပ်၍ Install လုပ်နိုင်ပါတယ်');
-  }
-}
-    // Theme Toggle Function
-function toggleTheme() {
-  const currentTheme = document.documentElement.getAttribute("data-theme");
-  const newTheme = currentTheme === "dark" ? "light" : "dark";
-  
-  document.documentElement.setAttribute("data-theme", newTheme);
-  localStorage.setItem("mcdh_theme", newTheme);
-  
-  updateThemeButtonText(newTheme);
-}
-
-// ခလုတ်စာသား သို့မဟုတ် ပုံစံကို ချိန်ညှိရန်
-function updateThemeButtonText(theme) {
-  const btn = document.getElementById("themeToggleBtn");
-  if (btn) {
-    btn.innerHTML = theme === "dark" ? "☀️ အလင်းမုဒ်သို့" : "🌙 အမှောင်မုဒ်သို့";
-  }
-}
-
-// App စဖွင့်ချိန်တွင် သိမ်းဆည်းထားသော Theme ကို ဖတ်ရှုရန်
-window.addEventListener("DOMContentLoaded", () => {
-  const savedTheme = localStorage.getItem("mcdh_theme");
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const initialTheme = savedTheme ? savedTheme : (prefersDark ? "dark" : "light");
-  
-  if (initialTheme === "dark") {
-    document.documentElement.setAttribute("data-theme", "dark");
-  }
-  updateThemeButtonText(initialTheme);
-});
- function toggleLaborCalculator() {
-  const body = document.getElementById("laborCalcBody");
-  const icon = document.getElementById("toggleIcon");
-  
-  if (body.style.display === "none" || body.style.display === "") {
-    body.style.display = "block";
-    icon.innerText = "▲";
-  } else {
-    body.style.display = "none";
-    icon.innerText = "▼";
-  }
-}
-
-function calculateLaborCost() {
-    const rate = parseFloat(document.getElementById("laborType").value) || 0;
-    const area = parseFloat(document.getElementById("laborArea").value) || 0;
-
-    // workType အစား laborType သို့မဟုတ် area ကိုပဲ စစ်ဆေးမည်
-    if (!area || !rate) {
-        alert("ကျေးဇူးပြု၍ အချက်အလက်များကို မှန်ကန်စွာ ဖြည့်သွင်းပါ");
-        return;
-    }
-
-    let estimatedTotal = area * (rate / 10);
-    document.getElementById("laborResult").innerHTML = `ခန့်မှန်းလုပ်သားခ စုစုပေါင်း: ${estimatedTotal.toLocaleString()} ကျပ် ခန့်`;
-}
-    // ==========================================
-  // Pro+ Labor Modal Script
-  // ==========================================
-
-  // Modal ဖွင့်ရန်/ပိတ်ရန် Function များ
- function openLaborModal() {
-  const modal = document.getElementById("laborModalPro");
-
-  if (modal) {
-    modal.style.display = "block";
-    updateUnitLabel();
-  }
-}
-
-function closeLaborModal() {
-  const modal = document.getElementById("laborModalPro");
-
-  if (modal) {
-    modal.style.display = "none";
-  }
-}
-
-function updateUnitLabel() {
-  const workType = document.getElementById("workType");
-  const unitLabel = document.getElementById("unitLabel");
-
-  if (!workType || !unitLabel) return;
-
-  const labels = {
-    brick: "၂။ လုပ်မည့် နံရံဧရိယာ (စတုရန်းပေ):",
-    plaster: "၂။ လုပ်မည့် အချောကိုင်ဧရိယာ (စတုရန်းပေ):",
-    concrete: "၂။ လုပ်မည့် ကွန်ကရစ်ပမာဏ (ကုဗပေ):",
-    rebar: "၂။ သံချည်သံကွေးမည့် ပမာဏ (kg):",
-    formwork: "၂။ Formwork ဧရိယာ (စတုရန်းပေ):",
-    tiling: "၂။ ကြွေပြားခင်းမည့် ဧရိယာ (စတုရန်းပေ):",
-    roofing: "၂။ အမိုးမိုးမည့် ဧရိယာ (စတုရန်းပေ):",
-    earthwork: "၂။ မြေတူး/မြေညှိမည့် ပမာဏ (ကုဗပေ):"
-  };
-
-  unitLabel.textContent =
-    labels[workType.value] || "၂။ လုပ်မည့် ပမာဏ:";
-}
-
-function calculateLaborPro() {
-  const getNumber = (id) => {
-    const element = document.getElementById(id);
-    return element ? Number(element.value) : NaN;
-  };
-
-  const workType = document.getElementById("workType").value;
-  const amount = getNumber("workAmount");
-  const skilled = getNumber("customSkilled");
-  const unskilled = getNumber("customUnskilled");
-  const distance = getNumber("distanceOption");
-  const efficiency = getNumber("efficiencyRating");
-  const skilledRate = getNumber("skilledRate");
-  const unskilledRate = getNumber("unskilledRate");
-  const allowance = getNumber("allowanceRate");
-  const resultBox = document.getElementById("resultBoxPro");
-
-  if (!resultBox) return;
-
-  if (
-    !Number.isFinite(amount) ||
-    amount <= 0 ||
-    !Number.isFinite(skilled) ||
-    skilled < 0 ||
-    !Number.isFinite(unskilled) ||
-    unskilled < 0 ||
-    !Number.isFinite(distance) ||
-    !Number.isFinite(efficiency) ||
-    !Number.isFinite(skilledRate) ||
-    !Number.isFinite(unskilledRate) ||
-    !Number.isFinite(allowance)
-  ) {
-    resultBox.style.display = "block";
-    resultBox.innerHTML =
-      "ကျေးဇူးပြု၍ အချက်အလက်များကို မှန်ကန်စွာ ဖြည့်ပါ။";
-    return;
-  }
-
-  const crewSize = skilled + unskilled;
-
-  if (crewSize <= 0) {
-    resultBox.style.display = "block";
-    resultBox.innerHTML = "လုပ်သားဦးရေ အနည်းဆုံး ၁ ဦး ထည့်ပါ။";
-    return;
-  }
-
-  const productivity = {
-    brick: 100,
-    plaster: 120,
-    concrete: 8,
-    rebar: 100,
-    formwork: 80,
-    tiling: 100,
-    roofing: 120,
-    earthwork: 12
-  };
-
-  const dailyOutput = productivity[workType] || 100;
-  const estimatedDays =
-    Math.max(0.5, amount / (dailyOutput * crewSize)) *
-    distance /
-    efficiency;
-
-  const dailyWage =
-    skilled * skilledRate +
-    unskilled * unskilledRate;
-
-  const dailyAllowance = crewSize * allowance;
-  const dailyTotal = dailyWage + dailyAllowance;
-  const totalCost = Math.ceil(estimatedDays * dailyTotal);
-
-  resultBox.style.display = "block";
-  resultBox.innerHTML = `
-    <div><b>📊 ခန့်မှန်းတွက်ချက်မှု ရလဒ်</b></div>
-    <div>လုပ်ငန်းအမျိုးအစား: <b>${workType}</b></div>
-    <div>လိုအပ်မည့် ကြာချိန်: <b>${estimatedDays.toFixed(1)} ရက်</b></div>
-    <div>လုပ်သားစုစုပေါင်း: <b>${crewSize} ဦး</b></div>
-    <div>တစ်ရက် လုပ်သားခ: <b>${dailyWage.toLocaleString()} ကျပ်</b></div>
-    <div>တစ်ရက် စားရိတ်/ခရီးစရိတ်: <b>${dailyAllowance.toLocaleString()} ကျပ်</b></div>
-    <div>တစ်ရက် စုစုပေါင်း: <b>${dailyTotal.toLocaleString()} ကျပ်</b></div>
-    <hr style="border: 0; border-top: 1px solid #555; margin: 8px 0;">
-    <div style="color: #00ff88; font-size: 16px;">
-      ခန့်မှန်း စုစုပေါင်းကုန်ကျစရိတ်:
-      <b>${totalCost.toLocaleString()} ကျပ်</b>
-    </div>
-  `;
-}
-
-window.addEventListener("click", function (event) {
-  const modal = document.getElementById("laborModalPro");
-
-  if (event.target === modal) {
-    closeLaborModal();
-  }
-});
+</div>
+
+<!-- Bottom Navigation -->
+<div class="bottom-nav">
+  <div class="nav-item active" onclick="goHome()">🏠<br>Home</div>
+  <div class="nav-item" onclick="openHistory()">📋<br>History</div>
+  <div class="nav-item" onclick="openSettings()">⚙️<br>Settings</div>
+</div>
 
 <script>
+  let currentCalculations = {};
+
+  // Default Material Prices
+  const defaultPrices = {
+    cement: 18000,
+    brick: 650,
+    steel: 3200
+  };
+
+  // Fetch Live Ticker Data
+  fetch("https://script.google.com/macros/s/AKfycbwQTWff2K8bb3wvr5FnaWOYeBU52RkX0EFx4TgD7wZRRB0R-_nWUoItTv-Zh2QYEiLv/exec")
+  .then(response => response.json())
+  .then(data => {
+    let track = document.getElementById("tickerTrack");
+    let html = "";
+    
+    if (!Array.isArray(data) || data.length === 0) {
+      track.innerHTML = "<span class='mcdh-price'><b>No data found in Google Sheet</b></span>";
+      return;
+    }
+
+    for (let k = 0; k < 2; k++) {
+      data.forEach(row => {
+        let name = row.name || "";
+        let price = row.price || "";
+        let unit = row.unit || "";
+        let change = row.change || "";
+        let trend = row.trend || "up";
+        let arrow = trend === "up" ? "▲" : "▼";
+
+        html += `<span class="mcdh-price">
+          <b>${name}:</b> 
+          <b>${price} ${unit}</b>
+          <span class="${trend}">${arrow} ${change}</span>
+        </span>`;
+      });
+    }
+    track.innerHTML = html;
+  })
+  .catch(error => {
+    console.error("Error loading prices:", error);
+    document.getElementById("tickerTrack").innerHTML = "<span class='mcdh-price'><b>Failed to load prices</b></span>";
+  });
+
+  // Navigation Functions
+  function openCalc(calcId) {
+    document.querySelectorAll('.calc-page').forEach(page => page.classList.remove('active'));
+    const target = document.getElementById(calcId);
+    if(target) target.classList.add('active');
+    if(calcId === 'notePage') loadNotes();
+    window.scrollTo(0, 0);
+  }
+
+  function goHome() {
+    document.querySelectorAll('.calc-page').forEach(page => page.classList.remove('active'));
+    document.getElementById('homeView').classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+    document.querySelectorAll('.nav-item')[0].classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function openHistory() {
+    document.querySelectorAll('.calc-page').forEach(page => page.classList.remove('active'));
+    document.getElementById('historyView').classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+    document.querySelectorAll('.nav-item')[1].classList.add('active');
+    loadHistory();
+    window.scrollTo(0, 0);
+  }
+
+  function openSettings() {
+    document.querySelectorAll('.calc-page').forEach(page => page.classList.remove('active'));
+    document.getElementById('settingsView').classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+    document.querySelectorAll('.nav-item')[2].classList.add('active');
+    loadSettingsUI();
+    window.scrollTo(0, 0);
+  }
+
+  function openPwaModal() { document.getElementById('pwaModal').classList.add('active'); }
+  function closePwaModal() { document.getElementById('pwaModal').classList.remove('active'); }
+
+  // CUSTOM PRICE SETTINGS
+  function loadSettingsUI() {
+    let saved = JSON.parse(localStorage.getItem('myCustomPrices')) || defaultPrices;
+    if(document.getElementById('settingCementPrice')) document.getElementById('settingCementPrice').value = saved.cement;
+    if(document.getElementById('settingBrickPrice')) document.getElementById('settingBrickPrice').value = saved.brick;
+    if(document.getElementById('settingSteelPrice')) document.getElementById('settingSteelPrice').value = saved.steel;
+  }
+
+  function saveCustomPrices() {
+    let customPrices = {
+      cement: parseFloat(document.getElementById('settingCementPrice').value) || defaultPrices.cement,
+      brick: parseFloat(document.getElementById('settingBrickPrice').value) || defaultPrices.brick,
+      steel: parseFloat(document.getElementById('settingSteelPrice').value) || defaultPrices.steel
+    };
+    localStorage.setItem('myCustomPrices', JSON.stringify(customPrices));
+    applyCustomPrices();
+    alert('✅ ဈေးနှုန်းများ အောင်မြင်စွာ သိမ်းဆည်းပြီးပါပြီ။');
+  }
+
+  function resetCustomPrices() {
+    if (confirm("မူလ Default ဈေးနှုန်းများသို့ ပြန်ပြောင်းလိုပါသလား။")) {
+      localStorage.removeItem('myCustomPrices');
+      loadSettingsUI();
+      applyCustomPrices();
+    }
+  }
+
+  function applyCustomPrices() {
+    let saved = JSON.parse(localStorage.getItem('myCustomPrices')) || defaultPrices;
+    if(document.getElementById('cementPrice')) document.getElementById('cementPrice').value = saved.cement;
+    if(document.getElementById('brickPrice')) document.getElementById('brickPrice').value = saved.brick;
+    if(document.getElementById('steelPrice')) document.getElementById('steelPrice').value = saved.steel;
+  }
+
+  // TIMBER CALCULATOR
+  function calcTimber() {
+    let t = parseFloat(document.getElementById('woodThick').value) || 0;
+    let w = parseFloat(document.getElementById('woodWidth').value) || 0;
+    let l = parseFloat(document.getElementById('woodLen').value) || 0;
+    let qty = parseFloat(document.getElementById('woodQty').value) || 0;
+    let pricePerTon = parseFloat(document.getElementById('woodTonPrice').value) || 0;
+
+    let cftPerPiece = (t * w * l) / 144;
+    let totalCft = cftPerPiece * qty;
+    let totalTons = totalCft / 50;
+    let totalCost = totalTons * pricePerTon;
+
+    document.getElementById('resWoodCft').innerText = totalCft.toFixed(2);
+    document.getElementById('resWoodTons').innerText = totalTons.toFixed(3);
+    document.getElementById('resWoodTotal').innerText = Math.ceil(totalCost).toLocaleString() + ' ကျပ်';
+    document.getElementById('timberResult').style.display = 'block';
+    document.getElementById('saveTimberBtn').style.display = 'block';
+
+    currentCalculations['timber'] = {
+      type: 'timber',
+      typeName: 'သစ်တွက်ရန်',
+      total: Math.ceil(totalCost),
+      details: `သစ် ${qty} အုပ်/ချပ်, ${totalCft.toFixed(2)} cft (${totalTons.toFixed(3)} တန်)`,
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  // UNIT CONVERTER
+  function convertFtToM() {
+    let ft = parseFloat(document.getElementById('unitFt').value) || 0;
+    document.getElementById('unitM').innerText = (ft * 0.3048).toFixed(2);
+  }
+  function convertSqftToKyaing() {
+    let sqft = parseFloat(document.getElementById('unitSqft').value) || 0;
+    document.getElementById('unitKyaing').innerText = (sqft / 100).toFixed(2);
+  }
+
+  // NOTES SYSTEM
+  function addNote() {
+    let text = document.getElementById('noteInput').value.trim();
+    if(!text) return;
+    let notes = JSON.parse(localStorage.getItem('siteNotes') || '[]');
+    notes.unshift({ text: text, date: new Date().toLocaleString('my-MM') });
+    localStorage.setItem('siteNotes', JSON.stringify(notes));
+    document.getElementById('noteInput').value = '';
+    loadNotes();
+  }
+
+  function loadNotes() {
+    let notes = JSON.parse(localStorage.getItem('siteNotes') || '[]');
+    let list = document.getElementById('notesList');
+    if(notes.length === 0) {
+      list.innerHTML = '<div class="empty-state">မှတ်စုများ မရှိသေးပါ</div>';
+      return;
+    }
+    let html = '';
+    notes.forEach((n, idx) => {
+      html += `
+        <div class="note-item">
+          <div class="history-item-header">
+            <span class="history-date">${n.date}</span>
+            <button class="btn-delete" onclick="deleteNote(${idx})">🗑️ ဖျက်မည်</button>
+          </div>
+          <div>${n.text}</div>
+        </div>
+      `;
+    });
+    list.innerHTML = html;
+  }
+
+  function deleteNote(idx) {
+    let notes = JSON.parse(localStorage.getItem('siteNotes') || '[]');
+    notes.splice(idx, 1);
+    localStorage.setItem('siteNotes', JSON.stringify(notes));
+    loadNotes();
+  }
+
+  // ROOF CALCULATOR
+  function updateDesignDetails() {
+    let select = document.getElementById('roofDesign');
+    let selectedOption = select.options[select.selectedIndex];
+    let labour = selectedOption.getAttribute('data-labour');
+    document.getElementById('roofLabourRate').value = labour;
+  }
+
+  function calcRoof() {
+    let roofDesign = document.getElementById('roofDesign').value;
+    let l = parseFloat(document.getElementById('roofLen').value) || 0;
+    let w = parseFloat(document.getElementById('roofWid').value) || 0;
+    let overhang = parseFloat(document.getElementById('roofOverhang').value) || 0;
+    let slopeMultiplier = parseFloat(document.getElementById('roofSlope').value) || 1.054;
+    let effWidth = parseFloat(document.getElementById('sheetWidth').value) || 2.5;
+    let pricePerFt = parseFloat(document.getElementById('sheetPricePerFt').value) || 0;
+    let labourRate = parseFloat(document.getElementById('roofLabourRate').value) || 0;
+
+    let totalW = w + (overhang * 2);
+    let totalL = l + (overhang * 2);
+    let oneSideRoofLen = 0;
+    let neededSheetLength = 0;
+    let totalSheets = 0;
+    let roofArea = 0;
+
+    if (roofDesign === 'gable') {
+      oneSideRoofLen = (totalW / 2) * slopeMultiplier;
+      neededSheetLength = Math.ceil(oneSideRoofLen);
+      let sheetsPerSide = Math.ceil(totalL / effWidth);
+      totalSheets = sheetsPerSide * 2;
+      roofArea = totalL * totalW * slopeMultiplier;
+    } else if (roofDesign === 'leanto') {
+      oneSideRoofLen = totalW * slopeMultiplier;
+      neededSheetLength = Math.ceil(oneSideRoofLen);
+      totalSheets = Math.ceil(totalL / effWidth);
+      roofArea = totalL * totalW * slopeMultiplier;
+    } else if (roofDesign === 'hip') {
+      let halfSpan = totalW / 2;
+      oneSideRoofLen = halfSpan * slopeMultiplier;
+      neededSheetLength = Math.ceil(oneSideRoofLen);
+      roofArea = totalL * totalW * slopeMultiplier;
+      let areaPerSheet = effWidth * neededSheetLength;
+      totalSheets = Math.ceil((roofArea / areaPerSheet) * 1.10);
+    }
+
+    let pricePerSheet = pricePerFt * neededSheetLength;
+    let sqft = Math.ceil(roofArea);
+    let totalMat = totalSheets * pricePerSheet;
+    let totalLabour = sqft * labourRate;
+    let grandTotal = totalMat + totalLabour;
+
+    document.getElementById('resRoofSheetLen').innerText = neededSheetLength;
+    document.getElementById('resRoofSheets').innerText = totalSheets.toLocaleString();
+    document.getElementById('resRoofMat').innerText = totalMat.toLocaleString();
+    document.getElementById('resRoofSqft').innerText = sqft.toLocaleString();
+    document.getElementById('resRoofLabour').innerText = totalLabour.toLocaleString();
+    document.getElementById('resRoofTotal').innerText = grandTotal.toLocaleString();
+    document.getElementById('roofResult').style.display = 'block';
+    document.getElementById('saveRoofBtn').style.display = 'block';
+
+    currentCalculations['roof'] = {
+      type: 'roof',
+      typeName: 'ခေါင်းမိုး',
+      total: grandTotal,
+      details: `သွပ်ပြား ${totalSheets} ချပ်, အရှည် ${neededSheetLength} ပေ`,
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  // CONCRETE CALCULATOR
+  function calcConcrete() {
+    let l = parseFloat(document.getElementById('concLen').value) || 0;
+    let w = parseFloat(document.getElementById('concWid').value) || 0;
+    let thickInch = parseFloat(document.getElementById('concThick').value) || 4;
+    let ratio = document.getElementById('concRatio').value.split(',').map(Number);
+    let cementPrice = parseFloat(document.getElementById('cementPrice').value) || 18000;
+
+    let thickFt = thickInch / 12;
+    let volume = l * w * thickFt;
+    let totalRatio = ratio[0] + ratio[1] + ratio[2];
+    let dryVolume = volume * 1.54;
+
+    let cementCft = dryVolume * ratio[0] / totalRatio;
+    let cementBags = cementCft / 1.25;
+    let sand = dryVolume * ratio[1] / totalRatio;
+    let aggregate = dryVolume * ratio[2] / totalRatio;
+
+    let cementCost = Math.ceil(cementBags) * cementPrice;
+    let totalCost = cementCost + (sand * 800) + (aggregate * 1200);
+
+    document.getElementById('resConcVol').innerText = volume.toFixed(2);
+    document.getElementById('resCementBags').innerText = Math.ceil(cementBags);
+    document.getElementById('resSand').innerText = sand.toFixed(2);
+    document.getElementById('resAggregate').innerText = aggregate.toFixed(2);
+    document.getElementById('resCementCost').innerText = cementCost.toLocaleString();
+    document.getElementById('resConcTotal').innerText = Math.ceil(totalCost).toLocaleString();
+    document.getElementById('concResult').style.display = 'block';
+    document.getElementById('saveConcreteBtn').style.display = 'block';
+
+    currentCalculations['concrete'] = {
+      type: 'concrete',
+      typeName: 'ကွန်ကရစ်',
+      total: Math.ceil(totalCost),
+      details: `Cement ${Math.ceil(cementBags)} အိတ်, ${volume.toFixed(2)} cft`,
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  // BRICK CALCULATOR
+  function calcBrick() {
+    let wallLen = parseFloat(document.getElementById('wallLen').value) || 0;
+    let wallHeight = parseFloat(document.getElementById('wallHeight').value) || 0;
+    let wallThick = parseFloat(document.getElementById('wallThick').value) || 4.5;
+    let brickPrice = parseFloat(document.getElementById('brickPrice').value) || 650;
+
+    let wallArea = wallLen * wallHeight;
+    let bricksPerSqft = wallThick === 4.5 ? 13.5 : 27;
+    let bricks = Math.ceil(wallArea * bricksPerSqft);
+
+    let cementBags = Math.ceil(bricks / 500);
+    let sand = (bricks / 1000) * 10;
+    let brickCost = bricks * brickPrice;
+    let totalCost = brickCost + (cementBags * 18000) + (sand * 800);
+
+    document.getElementById('resWallArea').innerText = wallArea.toFixed(2);
+    document.getElementById('resBricks').innerText = bricks;
+    document.getElementById('resBrickCement').innerText = cementBags;
+    document.getElementById('resBrickSand').innerText = sand.toFixed(2);
+    document.getElementById('resBrickCost').innerText = brickCost.toLocaleString();
+    document.getElementById('resBrickTotal').innerText = Math.ceil(totalCost).toLocaleString();
+    document.getElementById('brickResult').style.display = 'block';
+    document.getElementById('saveBrickBtn').style.display = 'block';
+
+    currentCalculations['brick'] = {
+      type: 'brick',
+      typeName: 'အုတ်စီရန်',
+      total: Math.ceil(totalCost),
+      details: `အုတ် ${bricks} ချပ်, ${wallArea.toFixed(2)} sqft`,
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  // STEEL CALCULATOR
+  function calcSteel() {
+    let l = parseFloat(document.getElementById('steelLen').value) || 0;
+    let w = parseFloat(document.getElementById('steelWid').value) || 0;
+    let barDia = parseFloat(document.getElementById('barDiameter').value) || 12;
+    let barSpacing = parseFloat(document.getElementById('barSpacing').value) || 8;
+    let steelPrice = parseFloat(document.getElementById('steelPrice').value) || 3200;
+
+    let bars = Math.ceil((l * 12) / barSpacing) + Math.ceil((w * 12) / barSpacing);
+    let totalLen = bars * Math.max(l, w);
+    let weightPerMeter = (barDia * barDia) / 162;
+    let weightPerFt = weightPerMeter / 3.281;
+    let totalWeight = totalLen * weightPerFt;
+    let totalCost = Math.ceil(totalWeight) * steelPrice;
+
+    document.getElementById('resBars').innerText = bars;
+    document.getElementById('resTotalLen').innerText = totalLen.toFixed(2);
+    document.getElementById('resWeight').innerText = Math.ceil(totalWeight);
+    document.getElementById('resSteelCost').innerText = (Math.ceil(totalWeight) * steelPrice).toLocaleString();
+    document.getElementById('resSteelTotal').innerText = totalCost.toLocaleString();
+    document.getElementById('steelResult').style.display = 'block';
+    document.getElementById('saveSteelBtn').style.display = 'block';
+
+    currentCalculations['steel'] = {
+      type: 'steel',
+      typeName: 'သံချောင်း',
+      total: totalCost,
+      details: `သံချောင်း ${bars} ချောင်း, ${Math.ceil(totalWeight)} kg`,
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  // PAINT CALCULATOR
+  function calcPaint() {
+    let l = parseFloat(document.getElementById('paintLen').value) || 0;
+    let h = parseFloat(document.getElementById('paintHeight').value) || 0;
+    let coats = parseInt(document.getElementById('paintCoats').value) || 2;
+    let paintPrice = parseFloat(document.getElementById('paintPrice').value) || 45000;
+
+    let area = l * h;
+    let gallons = (area * coats) / 350;
+    let totalCost = Math.ceil(gallons) * paintPrice;
+
+    document.getElementById('resPaintArea').innerText = area.toFixed(2);
+    document.getElementById('resPaintGallons').innerText = Math.ceil(gallons);
+    document.getElementById('resPaintCost').innerText = (Math.ceil(gallons) * paintPrice).toLocaleString();
+    document.getElementById('resPaintTotal').innerText = totalCost.toLocaleString();
+    document.getElementById('paintResult').style.display = 'block';
+    document.getElementById('savePaintBtn').style.display = 'block';
+
+    currentCalculations['paint'] = {
+      type: 'paint',
+      typeName: 'ဆေးသုတ်ရန်',
+      total: totalCost,
+      details: `${Math.ceil(gallons)} gallons, ${area.toFixed(2)} sqft`,
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  // TILE CALCULATOR
+  function calcTile() {
+    let l = parseFloat(document.getElementById('tileLen').value) || 0;
+    let w = parseFloat(document.getElementById('tileWid').value) || 0;
+    let tileSize = parseFloat(document.getElementById('tileSize').value) || 1;
+    let tilePrice = parseFloat(document.getElementById('tilePrice').value) || 8500;
+
+    let area = l * w;
+    let tiles = Math.ceil(area / tileSize);
+    let cementBags = Math.ceil(area / 100);
+    let sand = (area / 100) * 3;
+    let tileCost = tiles * tilePrice;
+    let totalCost = tileCost + (cementBags * 18000) + (sand * 800);
+
+    document.getElementById('resTileArea').innerText = area.toFixed(2);
+    document.getElementById('resTiles').innerText = tiles;
+    document.getElementById('resTileCement').innerText = cementBags;
+    document.getElementById('resTileSand').innerText = sand.toFixed(2);
+    document.getElementById('resTileCost').innerText = tileCost.toLocaleString();
+    document.getElementById('resTileTotal').innerText = Math.ceil(totalCost).toLocaleString();
+    document.getElementById('tileResult').style.display = 'block';
+    document.getElementById('saveTileBtn').style.display = 'block';
+
+    currentCalculations['tile'] = {
+      type: 'tile',
+      typeName: 'ကြွေပြားခင်း',
+      total: Math.ceil(totalCost),
+      details: `Tile ${tiles} ချပ်, ${area.toFixed(2)} sqft`,
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  // HISTORY FUNCTIONS
+  function saveToHistory(calcType) {
+    if (!currentCalculations[calcType]) {
+      alert('အရင်ဆုံး တွက်ချက်မှု ပြုလုပ်ပါ!');
+      return;
+    }
+    let history = JSON.parse(localStorage.getItem('calcHistory') || '[]');
+    history.unshift(currentCalculations[calcType]);
+    localStorage.setItem('calcHistory', JSON.stringify(history));
+    alert('✅ မှတ်တမ်းတင်ပြီးပါပြီ!');
+    document.getElementById('save' + calcType.charAt(0).toUpperCase() + calcType.slice(1) + 'Btn').style.display = 'none';
+  }
+
+  function loadHistory() {
+    let history = JSON.parse(localStorage.getItem('calcHistory') || '[]');
+    let historyList = document.getElementById('historyList');
+    
+    if (history.length === 0) {
+      historyList.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          <div>မှတ်တမ်းမရှိသေးပါ</div>
+          <div style="font-size: 0.8rem; margin-top: 8px;">Calculator တစ်ခုခုတွက်ပြီး "မှတ်တမ်းတင်မည်" နှိပ်ပါ</div>
+        </div>
+      `;
+      document.getElementById('grandTotal').innerText = '0 ကျပ်';
+      return;
+    }
+
+    let html = '';
+    let grandTotal = 0;
+
+    history.forEach((item, index) => {
+      grandTotal += item.total;
+      let date = new Date(item.timestamp);
+      let dateStr = date.toLocaleDateString('my-MM') + ' ' + date.toLocaleTimeString('my-MM', {hour: '2-digit', minute:'2-digit'});
+      
+      html += `
+        <div class="history-item">
+          <div class="history-item-header">
+            <div class="history-calc-type">${item.typeName}</div>
+            <div class="history-date">${dateStr}</div>
+          </div>
+          <div style="margin-bottom: 6px;">${item.details}</div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="history-total">${item.total.toLocaleString()} ကျပ်</div>
+            <button class="btn-delete" onclick="deleteHistoryItem(${index})">🗑️ ဖျက်မည်</button>
+          </div>
+        </div>
+      `;
+    });
+
+    historyList.innerHTML = html;
+    document.getElementById('grandTotal').innerText = grandTotal.toLocaleString() + ' ကျပ်';
+  }
+
+  function deleteHistoryItem(index) {
+    if (!confirm('ဒီမှတ်တမ်းကို ဖျက်မှာ သေချာပါသလား?')) return;
+    let history = JSON.parse(localStorage.getItem('calcHistory') || '[]');
+    history.splice(index, 1);
+    localStorage.setItem('calcHistory', JSON.stringify(history));
+    loadHistory();
+  }
+
+  function clearAllHistory() {
+    if (!confirm('မှတ်တမ်းအားလုံးကို ဖျက်မှာ သေချာပါသလား?')) return;
+    localStorage.removeItem('calcHistory');
+    loadHistory();
+  }
+
+  // Dark Mode Functions
+  function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute("data-theme");
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+    
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("mcdh_theme", newTheme);
+    
+    updateThemeButtonText(newTheme);
+  }
+
+  function updateThemeButtonText(theme) {
+    const btn = document.getElementById("themeToggleBtn");
+    if (btn) {
+      btn.innerHTML = theme === "dark" ? "☀️ အလင်းမုဒ်သို့" : "🌙 အမှောင်မုဒ်သို့";
+    }
+  }
+
+  // PRO+ LABOR MODAL FUNCTIONS
   function openLaborModal() {
-  const modal = document.getElementById("laborModalPro");
-
-  if (modal) {
-    modal.style.display = "block";
-    updateUnitLabel();
+    const modal = document.getElementById("laborModalPro");
+    if (modal) {
+      modal.style.display = "block";
+      updateUnitLabel();
+    }
   }
-}
 
-function closeLaborModal() {
-  const modal = document.getElementById("laborModalPro");
-
-  if (modal) {
-    modal.style.display = "none";
+  function closeLaborModal() {
+    const modal = document.getElementById("laborModalPro");
+    if (modal) {
+      modal.style.display = "none";
+    }
   }
-}
 
-function updateUnitLabel() {
-  const workType = document.getElementById("workType");
-  const unitLabel = document.getElementById("unitLabel");
+  function updateUnitLabel() {
+    const workType = document.getElementById("workType");
+    const unitLabel = document.getElementById("unitLabel");
 
-  if (!workType || !unitLabel) return;
+    if (!workType || !unitLabel) return;
 
-  const labels = {
-    brick: "၂။ လုပ်မည့် နံရံဧရိယာ (စတုရန်းပေ):",
-    plaster: "၂။ လုပ်မည့် အချောကိုင်ဧရိယာ (စတုရန်းပေ):",
-    concrete: "၂။ လုပ်မည့် ကွန်ကရစ်ပမာဏ (ကုဗပေ):",
-    rebar: "၂။ သံချည်သံကွေးမည့် ပမာဏ (kg):",
-    formwork: "၂။ Formwork ဧရိယာ (စတုရန်းပေ):",
-    tiling: "၂။ ကြွေပြားခင်းမည့် ဧရိယာ (စတုရန်းပေ):",
-    roofing: "၂။ အမိုးမိုးမည့် ဧရိယာ (စတုရန်းပေ):",
-    earthwork: "၂။ မြေတူး/မြေညှိမည့် ပမာဏ (ကုဗပေ):"
-  };
+    const labels = {
+      brick: "၂။ လုပ်မည့် နံရံဧရိယာ (စတုရန်းပေ):",
+      plaster: "၂။ လုပ်မည့် အချောကိုင်ဧရိယာ (စတုရန်းပေ):",
+      concrete: "၂။ လုပ်မည့် ကွန်ကရစ်ပမာဏ (ကုဗပေ):",
+      rebar: "၂။ သံချည်သံကွေးမည့် ပမာဏ (kg):",
+      formwork: "၂။ Formwork ဧရိယာ (စတုရန်းပေ):",
+      tiling: "၂။ ကြွေပြားခင်းမည့် ဧရိယာ (စတုရန်းပေ):",
+      roofing: "၂။ အမိုးမိုးမည့် ဧရိယာ (စတုရန်းပေ):",
+      earthwork: "၂။ မြေတူး/မြေညှိမည့် ပမာဏ (ကုဗပေ):"
+    };
 
-  unitLabel.textContent =
-    labels[workType.value] || "၂။ လုပ်မည့် ပမာဏ:";
-}
+    unitLabel.textContent = labels[workType.value] || "၂။ လုပ်မည့် ပမာဏ:";
+  }
 
-function calculateLaborPro() {
-  const getNumber = (id) => {
-    const element = document.getElementById(id);
-    return element ? Number(element.value) : NaN;
-  };
+  function calculateLaborPro() {
+    const getNumber = (id) => {
+      const element = document.getElementById(id);
+      return element ? Number(element.value) : NaN;
+    };
 
-  const workType = document.getElementById("workType").value;
-  const amount = getNumber("workAmount");
-  const skilled = getNumber("customSkilled");
-  const unskilled = getNumber("customUnskilled");
-  const distance = getNumber("distanceOption");
-  const efficiency = getNumber("efficiencyRating");
-  const skilledRate = getNumber("skilledRate");
-  const unskilledRate = getNumber("unskilledRate");
-  const allowance = getNumber("allowanceRate");
-  const resultBox = document.getElementById("resultBoxPro");
+    const workType = document.getElementById("workType");
+    const resultBox = document.getElementById("resultBoxPro");
 
-  if (!resultBox) return;
+    if (!workType || !resultBox) return;
 
-  if (
-    !Number.isFinite(amount) ||
-    amount <= 0 ||
-    !Number.isFinite(skilled) ||
-    skilled < 0 ||
-    !Number.isFinite(unskilled) ||
-    unskilled < 0 ||
-    !Number.isFinite(distance) ||
-    !Number.isFinite(efficiency) ||
-    !Number.isFinite(skilledRate) ||
-    !Number.isFinite(unskilledRate) ||
-    !Number.isFinite(allowance)
-  ) {
+    const amount = getNumber("workAmount");
+    const skilled = getNumber("customSkilled");
+    const unskilled = getNumber("customUnskilled");
+    const distance = getNumber("distanceOption");
+    const efficiency = getNumber("efficiencyRating");
+    const skilledRate = getNumber("skilledRate");
+    const unskilledRate = getNumber("unskilledRate");
+    const allowance = getNumber("allowanceRate");
+
+    if (
+      !Number.isFinite(amount) || amount <= 0 ||
+      !Number.isFinite(skilled) || skilled < 0 ||
+      !Number.isFinite(unskilled) || unskilled < 0 ||
+      !Number.isFinite(distance) ||
+      !Number.isFinite(efficiency) ||
+      !Number.isFinite(skilledRate) ||
+      !Number.isFinite(unskilledRate) ||
+      !Number.isFinite(allowance)
+    ) {
+      resultBox.style.display = "block";
+      resultBox.innerHTML = "ကျေးဇူးပြု၍ အချက်အလက်များကို မှန်ကန်စွာ ဖြည့်ပါ။";
+      return;
+    }
+
+    const crewSize = skilled + unskilled;
+
+    if (crewSize <= 0) {
+      resultBox.style.display = "block";
+      resultBox.innerHTML = "လုပ်သားဦးရေ အနည်းဆုံး ၁ ဦး ထည့်ပါ။";
+      return;
+    }
+
+    const productivity = {
+      brick: 100,
+      plaster: 120,
+      concrete: 8,
+      rebar: 100,
+      formwork: 80,
+      tiling: 100,
+      roofing: 120,
+      earthwork: 12
+    };
+
+    const dailyOutput = productivity[workType.value] || 100;
+    const estimatedDays = Math.max(0.5, amount / (dailyOutput * crewSize)) * distance / efficiency;
+    const dailyWage = (skilled * skilledRate) + (unskilled * unskilledRate);
+    const dailyAllowance = crewSize * allowance;
+    const dailyTotal = dailyWage + dailyAllowance;
+    const totalCost = Math.ceil(estimatedDays * dailyTotal);
+
     resultBox.style.display = "block";
-    resultBox.innerHTML =
-      "ကျေးဇူးပြု၍ အချက်အလက်များကို မှန်ကန်စွာ ဖြည့်ပါ။";
-    return;
+    resultBox.innerHTML = `
+      <div><b>📊 ခန့်မှန်းတွက်ချက်မှု ရလဒ်</b></div>
+      <div>လိုအပ်မည့် ကြာချိန်: <b>${estimatedDays.toFixed(1)} ရက်</b></div>
+      <div>လုပ်သားစုစုပေါင်း: <b>${crewSize} ဦး</b></div>
+      <div>တစ်ရက် လုပ်သားခ: <b>${dailyWage.toLocaleString()} ကျပ်</b></div>
+      <div>တစ်ရက် စားရိတ်/ခရီးစရိတ်: <b>${dailyAllowance.toLocaleString()} ကျပ်</b></div>
+      <div>တစ်ရက် စုစုပေါင်း: <b>${dailyTotal.toLocaleString()} ကျပ်</b></div>
+      <hr style="border: 0; border-top: 1px solid #555; margin: 8px 0;">
+      <div style="color: #00ff88; font-size: 16px;">
+        ခန့်မှန်း စုစုပေါင်းကုန်ကျစရိတ်: <b>${totalCost.toLocaleString()} ကျပ်</b>
+      </div>
+    `;
   }
 
-  const crewSize = skilled + unskilled;
+  // Global Event Listeners & Initialization
+  window.addEventListener("DOMContentLoaded", () => {
+    applyCustomPrices();
+    
+    // Theme setup
+    const savedTheme = localStorage.getItem("mcdh_theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const initialTheme = savedTheme ? savedTheme : (prefersDark ? "dark" : "light");
+    
+    if (initialTheme === "dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
+    updateThemeButtonText(initialTheme);
+  });
 
-  if (crewSize <= 0) {
-    resultBox.style.display = "block";
-    resultBox.innerHTML = "လုပ်သားဦးရေ အနည်းဆုံး ၁ ဦး ထည့်ပါ။";
-    return;
+  window.addEventListener("click", function (event) {
+    const modal = document.getElementById("laborModalPro");
+    if (event.target === modal) {
+      closeLaborModal();
+    }
+  });
+
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+  });
+
+  function installPWA() {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        deferredPrompt = null;
+      });
+    } else {
+      alert('Browser Menu မှ "Add to Home screen" ကို နှိပ်၍ Install လုပ်နိုင်ပါတယ်');
+    }
   }
-
-  const productivity = {
-    brick: 100,
-    plaster: 120,
-    concrete: 8,
-    rebar: 100,
-    formwork: 80,
-    tiling: 100,
-    roofing: 120,
-    earthwork: 12
-  };
-
-  const dailyOutput = productivity[workType] || 100;
-  const estimatedDays =
-    Math.max(0.5, amount / (dailyOutput * crewSize)) *
-    distance /
-    efficiency;
-
-  const dailyWage =
-    skilled * skilledRate +
-    unskilled * unskilledRate;
-
-  const dailyAllowance = crewSize * allowance;
-  const dailyTotal = dailyWage + dailyAllowance;
-  const totalCost = Math.ceil(estimatedDays * dailyTotal);
-
-  resultBox.style.display = "block";
-  resultBox.innerHTML = `
-    <div><b>📊 ခန့်မှန်းတွက်ချက်မှု ရလဒ်</b></div>
-    <div>လုပ်ငန်းအမျိုးအစား: <b>${workType}</b></div>
-    <div>လိုအပ်မည့် ကြာချိန်: <b>${estimatedDays.toFixed(1)} ရက်</b></div>
-    <div>လုပ်သားစုစုပေါင်း: <b>${crewSize} ဦး</b></div>
-    <div>တစ်ရက် လုပ်သားခ: <b>${dailyWage.toLocaleString()} ကျပ်</b></div>
-    <div>တစ်ရက် စားရိတ်/ခရီးစရိတ်: <b>${dailyAllowance.toLocaleString()} ကျပ်</b></div>
-    <div>တစ်ရက် စုစုပေါင်း: <b>${dailyTotal.toLocaleString()} ကျပ်</b></div>
-    <hr style="border: 0; border-top: 1px solid #555; margin: 8px 0;">
-    <div style="color: #00ff88; font-size: 16px;">
-      ခန့်မှန်း စုစုပေါင်းကုန်ကျစရိတ်:
-      <b>${totalCost.toLocaleString()} ကျပ်</b>
-    </div>
-  `;
-}
-
-window.addEventListener("click", function (event) {
-  const modal = document.getElementById("laborModalPro");
-
-  if (event.target === modal) {
-    closeLaborModal();
-  }
-});
-    function openLaborModal() {
-  const modal = document.getElementById("laborModalPro");
-
-  if (modal) {
-    modal.style.display = "block";
-    updateUnitLabel();
-  }
-}
-
-function closeLaborModal() {
-  const modal = document.getElementById("laborModalPro");
-
-  if (modal) {
-    modal.style.display = "none";
-  }
-}
-
-function updateUnitLabel() {
-  const workType = document.getElementById("workType");
-  const unitLabel = document.getElementById("unitLabel");
-
-  if (!workType || !unitLabel) return;
-
-  const labels = {
-    brick: "၂။ လုပ်မည့် နံရံဧရိယာ (စတုရန်းပေ):",
-    plaster: "၂။ လုပ်မည့် အချောကိုင်ဧရိယာ (စတုရန်းပေ):",
-    concrete: "၂။ လုပ်မည့် ကွန်ကရစ်ပမာဏ (ကုဗပေ):",
-    rebar: "၂။ သံချည်သံကွေးမည့် ပမာဏ (kg):",
-    formwork: "၂။ Formwork ဧရိယာ (စတုရန်းပေ):",
-    tiling: "၂။ ကြွေပြားခင်းမည့် ဧရိယာ (စတုရန်းပေ):",
-    roofing: "၂။ အမိုးမိုးမည့် ဧရိယာ (စတုရန်းပေ):",
-    earthwork: "၂။ မြေတူး/မြေညှိမည့် ပမာဏ (ကုဗပေ):"
-  };
-
-  unitLabel.textContent =
-    labels[workType.value] || "၂။ လုပ်မည့် ပမာဏ:";
-}
-
-function calculateLaborPro() {
-  const getNumber = (id) => {
-    const element = document.getElementById(id);
-    return element ? Number(element.value) : NaN;
-  };
-
-  const workType = document.getElementById("workType");
-  const resultBox = document.getElementById("resultBoxPro");
-
-  if (!workType || !resultBox) return;
-
-  const amount = getNumber("workAmount");
-  const skilled = getNumber("customSkilled");
-  const unskilled = getNumber("customUnskilled");
-  const distance = getNumber("distanceOption");
-  const efficiency = getNumber("efficiencyRating");
-  const skilledRate = getNumber("skilledRate");
-  const unskilledRate = getNumber("unskilledRate");
-  const allowance = getNumber("allowanceRate");
-
-  if (
-    !Number.isFinite(amount) || amount <= 0 ||
-    !Number.isFinite(skilled) || skilled < 0 ||
-    !Number.isFinite(unskilled) || unskilled < 0 ||
-    !Number.isFinite(distance) ||
-    !Number.isFinite(efficiency) ||
-    !Number.isFinite(skilledRate) ||
-    !Number.isFinite(unskilledRate) ||
-    !Number.isFinite(allowance)
-  ) {
-    resultBox.style.display = "block";
-    resultBox.innerHTML =
-      "ကျေးဇူးပြု၍ အချက်အလက်များကို မှန်ကန်စွာ ဖြည့်ပါ။";
-    return;
-  }
-
-  const crewSize = skilled + unskilled;
-
-  if (crewSize <= 0) {
-    resultBox.style.display = "block";
-    resultBox.innerHTML =
-      "လုပ်သားဦးရေ အနည်းဆုံး ၁ ဦး ထည့်ပါ။";
-    return;
-  }
-
-  const productivity = {
-    brick: 100,
-    plaster: 120,
-    concrete: 8,
-    rebar: 100,
-    formwork: 80,
-    tiling: 100,
-    roofing: 120,
-    earthwork: 12
-  };
-
-  const dailyOutput = productivity[workType.value] || 100;
-
-  const estimatedDays =
-    Math.max(0.5, amount / (dailyOutput * crewSize)) *
-    distance /
-    efficiency;
-
-  const dailyWage =
-    skilled * skilledRate +
-    unskilled * unskilledRate;
-
-  const dailyAllowance = crewSize * allowance;
-  const dailyTotal = dailyWage + dailyAllowance;
-  const totalCost = Math.ceil(estimatedDays * dailyTotal);
-
-  resultBox.style.display = "block";
-  resultBox.innerHTML = `
-    <div><b>📊 ခန့်မှန်းတွက်ချက်မှု ရလဒ်</b></div>
-    <div>လိုအပ်မည့် ကြာချိန်:
-      <b>${estimatedDays.toFixed(1)} ရက်</b>
-    </div>
-    <div>လုပ်သားစုစုပေါင်း:
-      <b>${crewSize} ဦး</b>
-    </div>
-    <div>တစ်ရက် လုပ်သားခ:
-      <b>${dailyWage.toLocaleString()} ကျပ်</b>
-    </div>
-    <div>တစ်ရက် စားရိတ်/ခရီးစရိတ်:
-      <b>${dailyAllowance.toLocaleString()} ကျပ်</b>
-    </div>
-    <div>တစ်ရက် စုစုပေါင်း:
-      <b>${dailyTotal.toLocaleString()} ကျပ်</b>
-    </div>
-    <hr style="border: 0; border-top: 1px solid #555; margin: 8px 0;">
-    <div style="color: #00ff88; font-size: 16px;">
-      ခန့်မှန်း စုစုပေါင်းကုန်ကျစရိတ်:
-      <b>${totalCost.toLocaleString()} ကျပ်</b>
-    </div>
-  `;
-}
-
-window.addEventListener("click", function (event) {
-  const modal = document.getElementById("laborModalPro");
-
-  if (event.target === modal) {
-    closeLaborModal();
-  }
-});
 </script>
 </body>
 </html>
