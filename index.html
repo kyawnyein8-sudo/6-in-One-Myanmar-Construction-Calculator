@@ -1676,7 +1676,7 @@ function calculateLaborCost() {
 
     let timeText = estimatedDays < 1 ? `${Math.round(estimatedDays * 8)} နာရီခန့် (၁ ရက်မပြည့်ပါ)` : `${estimatedDays} ရက်ခန့်`;
 
-    let resultHTML = `
+ let resultHTML = `
       <b>📊 ဆောက်လုပ်ရေး လုပ်သားနှင့် ကြာမြင့်ချိန် ခန့်မှန်းချက် (Pro+)</b><br><br>
       👥 <b>ထည့်သွင်းထားသော လုပ်သားအင်အား:</b><br>
       • ကျွမ်းကျင်လုပ်သား: ${userSkilled} ဦး<br>
@@ -1685,9 +1685,7 @@ function calculateLaborCost() {
       ⏱️ <b>ခန့်မှန်း ကြာမြင့်ချိန်:</b> ${timeText}<br>
       💰 <b>စုစုပေါင်း လုပ်သားစရိတ်:</b> <b style="color: #00ff88;">${Math.round(grandTotalCost).toLocaleString()} ကျပ်</b><br>
       <small style="color: #aaa;">(လုပ်ခ + စားရိတ်/ခရီးစရိတ် အပြီးအစီး)</small>
-   // Line 1687-1688 ကို ဒီလို သပ်သပ်ရပ်ရပ် လေးထားပေးနိုင်ပါတယ်
-  <small style="color: #aaa;">(လုပ်ခ + စားရိတ်/ခရီးစရိတ် အပြီးအစီး)</small>
-`;
+    `;
 
     const resultBox = document.getElementById("resultBoxPro");
     if (resultBox) {
