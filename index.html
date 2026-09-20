@@ -271,6 +271,46 @@ body {
   border-color: var(--border-color) !important;
   color: var(--text-main) !important;
 }
+    /* Modal Pop-up Background */
+.modal-pro {
+  display: none; 
+  position: fixed; 
+  z-index: 1000; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  background-color: rgba(0, 0, 0, 0.8); 
+  overflow-y: auto;
+  padding: 10px;
+}
+
+/* Modal Box */
+.modal-pro-content {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #333;
+  width: 95%;
+  max-width: 550px;
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+/* Close (X) Button */
+.modal-pro-close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal-pro-close:hover {
+  color: #00ff88;
+}
  </style>
 
 <script>
@@ -338,38 +378,100 @@ body {
           <div class="calc-title">Unit Converter</div>
         </div>
        <!-- Labor Cost Estimator Toggle Section -->
-<div class="card calc-card" style="padding: 16px; margin: 10px 0; border-radius: 12px; border: 1px solid var(--border-color); background: var(--card-bg);">
-  
-  <button onclick="toggleLaborCalculator()" style="width: 100%; background: var(--app-bar-bg, #006b3f); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
-    <span>👷‍♂️ ဆောက်လုပ်ရေး လုပ်သားခ ခန့်မှန်းတွက်ချက်ရန်</span>
-    <span id="toggleIcon">▼</span>
+<!-- ပင်မ စာမျက်နှာတွင် ပေါ်နေမည့် ခလုတ်လှလှလေး -->
+<div class="card calc-card" style="padding: 12px; margin: 10px 0;">
+  <button type="button" onclick="openLaborModal()" style="width: 100%; background: #008f52; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+    👷‍♂️ ဆောက်လုပ်ရေး လုပ်သားခ ခန့်မှန်းတွက်ချက်ရန် (Pro+)
   </button>
+</div>
 
-  <div id="laborCalcBody" style="display: none; margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
-    
-    <div style="margin: 10px 0;">
-      <label style="display: block; margin-bottom: 5px; font-size: 14px;">လုပ်ငန်းအမျိုးအစား ရွေးပါ:</label>
-      <select id="laborType" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main); box-sizing: border-box;">
-        <option value="35000">အုတ်စီလုပ်ငန်း (ကျွမ်းကျင် - ၃၅,၀၀၀ ကျပ် / ရက်)</option>
-        <option value="35000">သံချည်လုပ်ငန်း (ကျွမ်းကျင် - ၃၅,၀၀၀ ကျပ် / ရက်)</option>
-        <option value="35000">သစ်သားလုပ်ငန်း (ကျွမ်းကျင် - ၃၅,၀၀၀ ကျပ် / ရက်)</option>
-        <option value="35000">ဆေးသုတ်လုပ်ငန်း (လုပ်သား - ၃၅,၀၀၀ ကျပ် / ရက်)</option>
-        <option value="25000">အကူလုပ်သား (အကူ - ၂၅,၀၀0 ကျပ် / ရက်)</option>
+<!-- နှိပ်လိုက်မှ ပွင့်လာမည့် Pop-up Modal Window -->
+<div id="laborModalPro" class="modal-pro">
+  <div class="modal-pro-content">
+    <span class="modal-pro-close" onclick="closeLaborModal()">&times;</span>
+    <h3 style="margin-top: 0; color: #00ff88; font-size: 18px;">👷‍♂️ လုပ်သားအင်အားနှင့် ကြာမြင့်ချိန် ခန့်မှန်းတွက်ချက်ရန် (Pro+)</h3>
+    <hr style="border: 0; border-top: 1px solid #333; margin: 12px 0;">
+
+    <!-- ၁။ လုပ်ငန်းအမျိုးအစား -->
+    <div class="form-group" style="margin-bottom: 12px;">
+      <label style="color: #00ff88; display: block; margin-bottom: 6px;">၁။ လုပ်ငန်းအမျိုးအစား ရွေးပါ:</label>
+      <select id="workType" onchange="updateUnitLabel()" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333;">
+        <option value="brick">အုတ်စီလုပ်ငန်း (၄ လက်မ / ၉ လက်မ)</option>
+        <option value="plaster">အချောကိုင် Plastering လုပ်ငန်း</option>
+        <option value="concrete" selected>ကွန်ကရစ်လောင်းခြင်း</option>
+        <option value="rebar">သံချည်သံကွေး (Rebar Fabrication)</option>
+        <option value="formwork">ဖောင်မဝတ် / ပုံစံကွက် (Formwork)</option>
+        <option value="tiling">ကြွေပြား / စပါးအကွက် ခင်းခြင်း</option>
+        <option value="roofing">အမိုးမိုးခြင်း (Roofing Work)</option>
+        <option value="earthwork">မြေကျင်းတူး / မြေညှိခြင်း</option>
       </select>
     </div>
 
-    <div style="margin: 10px 0;">
-      <label style="display: block; margin-bottom: 5px; font-size: 14px;">လုပ်မည့် အကျယ်အဝန်း (စတုရန်းပေ / Sqft):</label>
-      <input type="number" id="laborArea" placeholder="ဥပမာ - ၁၀၀၀" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main); box-sizing: border-box;">
+    <!-- ၂။ ပမာဏ -->
+    <div class="form-group" style="margin-bottom: 12px;">
+      <label id="unitLabel" for="workAmount" style="color: #00ff88; display: block; margin-bottom: 6px;">၂။ လုပ်မည့် အကျယ်အဝန်း (စတုရန်းပေ / Sqft):</label>
+      <input type="number" id="workAmount" placeholder="ဥပမာ - ၅၀၀" value="500" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333; box-sizing: border-box;">
     </div>
 
-    <button onclick="calculateLaborCost()" style="width: 100%; background: var(--primary-green, #008f52); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 5px;">
-      ခန့်မှန်းလုပ်သားခ တွက်မည်
+    <!-- ၃။ မိမိသုံးစွဲမည့် လုပ်သားဦးရေ -->
+    <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+      <div style="flex: 1;">
+        <label style="color: #00ff88; display: block; margin-bottom: 6px; font-size: 12px;">ကျွမ်းကျင် သုံးမည့်ဦးရေ:</label>
+        <input type="number" id="customSkilled" value="1" min="0" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333; box-sizing: border-box;">
+      </div>
+      <div style="flex: 1;">
+        <label style="color: #00ff88; display: block; margin-bottom: 6px; font-size: 12px;">အကူ သုံးမည့်ဦးရေ:</label>
+        <input type="number" id="customUnskilled" value="2" min="0" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333; box-sizing: border-box;">
+      </div>
+    </div>
+
+    <!-- ၄။ ပစ္စည်းသယ်ယူရသည့် အကွာအဝေး -->
+    <div class="form-group" style="margin-bottom: 12px;">
+      <label style="color: #00ff88; display: block; margin-bottom: 6px;">၄။ ပစ္စည်းသယ်ယူရသည့် အကွာအဝေး:</label>
+      <select id="distanceOption" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333;">
+        <option value="1">အနီး (ပေ ၅၀ အတွင်း - ပုံမှန်)</option>
+        <option value="1.2">အသင့်အတင့်ဝေး (ပေ ၅၀ ~ ၂၀၀ - ၂၀% ပို)</option>
+        <option value="1.5">အလွန်ဝေး / အထပ်မြင့် (ပေ ၂၀၀ အထက် - ၅၀% ပို)</option>
+      </select>
+    </div>
+
+    <!-- ၅။ ထိရောက်မှု ရာခိုင်နှုန်း -->
+    <div class="form-group" style="margin-bottom: 12px;">
+      <label style="color: #00ff88; display: block; margin-bottom: 6px;">၅။ လုပ်သားအသင်း၏ ထိရောက်မှု:</label>
+      <select id="efficiencyRating" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333;">
+        <option value="1.2">🚀 အလွန်မြန် (၁၂၀% - အထူးကျွမ်းကျင်)</option>
+        <option value="1.0" selected>✅ ပုံမှန် (၁၀၀% - စံနှုန်းအတိုင်း)</option>
+        <option value="0.8">⚠️ အသင့်အတင့် (၈၀% - သင်ကြားဆဲ)</option>
+        <option value="0.6">🐢 နှေးကွေး (၆၀% - ပင်ပန်း/ရာသီဥတုဆိုး)</option>
+      </select>
+    </div>
+
+    <!-- ၆။ နေ့တွက်ခများ -->
+    <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+      <div style="flex: 1;">
+        <label style="color: #00ff88; display: block; margin-bottom: 6px; font-size: 12px;">ကျွမ်းကျင် နေ့တွက်ခ (ကျပ်):</label>
+        <input type="number" id="skilledRate" value="35000" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333; box-sizing: border-box;">
+      </div>
+      <div style="flex: 1;">
+        <label style="color: #00ff88; display: block; margin-bottom: 6px; font-size: 12px;">အကူ နေ့တွက်ခ (ကျပ်):</label>
+        <input type="number" id="unskilledRate" value="25000" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333; box-sizing: border-box;">
+      </div>
+    </div>
+
+    <!-- ၇။ စားရိတ်/ခရီးစရိတ် -->
+    <div class="form-group" style="margin-bottom: 12px;">
+      <label style="color: #00ff88; display: block; margin-bottom: 6px;">၇။ စားရိတ်/ခရီးစရိတ် (ကျပ်/ရက်/ဦး):</label>
+      <input type="number" id="allowanceRate" value="5000" style="width: 100%; padding: 10px; border-radius: 8px; background: #2a2a2a; color: white; border: 1px solid #333; box-sizing: border-box;">
+    </div>
+
+    <!-- တွက်ချက်မည် Button -->
+    <button type="button" onclick="calculateLaborPro()" style="width: 100%; background: #008f52; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; margin-top: 10px;">
+      ကြာမြင့်ချိန်နှင့် ကုန်ကျစရိတ် တွက်ချက်မည်
     </button>
 
-    <div id="laborResult" style="margin-top: 12px; font-weight: bold; color: var(--primary-green, #008f52); text-align: center;"></div>
+    <!-- ရလဒ်ပြသရန် Box -->
+    <div id="resultBoxPro" style="display:none; margin-top: 15px; padding: 14px; background: #1b3323; border: 1px solid #00ff88; border-radius: 8px; line-height: 1.7; font-size: 14px;"></div>
   </div>
-
 </div>
 
         <div class="calc-card" onclick="openCalc('notePage')">
@@ -1485,6 +1587,114 @@ function calculateLaborCost() {
     let estimatedTotal = area * (rate / 10);
     document.getElementById("laborResult").innerHTML = `ခန့်မှန်းလုပ်သားခ စုစုပေါင်း: ${estimatedTotal.toLocaleString()} ကျပ် ခန့်`;
 }
+    // ==========================================
+  // Pro+ Labor Modal Script
+  // ==========================================
+
+  // Modal ဖွင့်ရန်/ပိတ်ရန် Function များ
+  function openLaborModal() {
+    const modal = document.getElementById("laborModalPro");
+    if (modal) modal.style.display = "block";
+  }
+
+  function closeLaborModal() {
+    const modal = document.getElementById("laborModalPro");
+    if (modal) modal.style.display = "none";
+  }
+
+  // Modal အပြင်ဘက် နေရာလွတ်ကို နှိပ်လျှင် ပိတ်သွားစေရန်
+  window.addEventListener("click", function(event) {
+    const modal = document.getElementById("laborModalPro");
+    if (modal && event.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+
+// Unit Label ပြောင်းလဲရန် Function
+  function updateUnitLabel() {
+    const type = document.getElementById("workType").value;
+    const label = document.getElementById("unitLabel");
+    if (!label) return;
+
+    if (type === "rebar") {
+      label.innerText = "၂။ သံချည်/သံကွေး အလေးချိန် (တန် / Ton):";
+    } else if (type === "earthwork") {
+      label.innerText = "၂။ မြေကျင်း ပမာဏ (ကျင်းပေ / Cu.ft):";
+    } else {
+      label.innerText = "၂။ လုပ်မည့် အကျယ်အဝန်း (စတုရန်းပေ / Sqft):";
+    }
+  }
+
+  // Pro+ Labor Calculation Function
+  function calculateLaborPro() {
+    const amount = parseFloat(document.getElementById("workAmount").value) || 0;
+    const workType = document.getElementById("workType").value;
+    const skilledRate = parseFloat(document.getElementById("skilledRate").value) || 0;
+    const unskilledRate = parseFloat(document.getElementById("unskilledRate").value) || 0;
+    const allowanceRate = parseFloat(document.getElementById("allowanceRate").value) || 0;
+    const distanceFactor = parseFloat(document.getElementById("distanceOption").value) || 1;
+    const efficiencyFactor = parseFloat(document.getElementById("efficiencyRating").value) || 1.0;
+
+    const userSkilled = parseInt(document.getElementById("customSkilled").value) || 0;
+    const userUnskilled = parseInt(document.getElementById("customUnskilled").value) || 0;
+
+    if (amount <= 0) {
+      alert("ကျေးဇူးပြု၍ မှန်ကန်သော ပမာဏထည့်သွင်းပါ။");
+      return;
+    }
+
+    if (userSkilled === 0 && userUnskilled === 0) {
+      alert("ကျေးဇူးပြု၍ အနည်းဆုံး လုပ်သား ၁ ဦး ထည့်သွင်းပေးပါ။");
+      return;
+    }
+
+    let masonDailyOutput = 150; 
+    let unitName = "Sqft";
+
+    if (workType === "brick") { masonDailyOutput = 150; unitName = "Sqft"; }
+    else if (workType === "plaster") { masonDailyOutput = 150; unitName = "Sqft"; }
+    else if (workType === "concrete") { masonDailyOutput = 200; unitName = "Sqft"; }
+    else if (workType === "rebar") { masonDailyOutput = 0.3; unitName = "Ton"; }
+    else if (workType === "formwork") { masonDailyOutput = 120; unitName = "Sqft"; }
+    else if (workType === "tiling") { masonDailyOutput = 120; unitName = "Sqft"; }
+    else if (workType === "roofing") { masonDailyOutput = 250; unitName = "Sqft"; }
+    else if (workType === "earthwork") { masonDailyOutput = 150; unitName = "Cu.ft"; }
+
+    let skilledOutput = userSkilled * masonDailyOutput;
+    let unskilledOutput = userUnskilled * (masonDailyOutput * 0.6); 
+    
+    let totalDailyOutput = ((skilledOutput + unskilledOutput) / distanceFactor) * efficiencyFactor;
+
+    let rawDays = amount / totalDailyOutput;
+    let estimatedDays = Math.ceil(rawDays * 2) / 2; 
+    if (estimatedDays < 0.5) estimatedDays = 0.5;
+
+    let totalSkilledCost = userSkilled * skilledRate * estimatedDays;
+    let totalUnskilledCost = userUnskilled * unskilledRate * estimatedDays;
+    let totalAllowanceCost = (userSkilled + userUnskilled) * allowanceRate * estimatedDays;
+    let grandTotalCost = totalSkilledCost + totalUnskilledCost + totalAllowanceCost;
+
+    let timeText = estimatedDays < 1 ? `${Math.round(estimatedDays * 8)} နာရီခန့် (၁ ရက်မပြည့်ပါ)` : `${estimatedDays} ရက်ခန့်`;
+
+    let resultHTML = `
+      <b>📊 ဆောက်လုပ်ရေး လုပ်သားနှင့် ကြာမြင့်ချိန် ခန့်မှန်းချက် (Pro+)</b><br><br>
+      👥 <b>ထည့်သွင်းထားသော လုပ်သားအင်အား:</b><br>
+      • ကျွမ်းကျင်လုပ်သား: ${userSkilled} ဦး<br>
+      • အကူလုပ်သား: ${userUnskilled} ဦး<br>
+      ---------------------------------<br>
+      ⏱️ <b>ခန့်မှန်း ကြာမြင့်ချိန်:</b> ${timeText}<br>
+      💰 <b>စုစုပေါင်း လုပ်သားစရိတ်:</b> <b style="color: #00ff88;">${Math.round(grandTotalCost).toLocaleString()} ကျပ်</b><br>
+      <small style="color: #aaa;">(လုပ်ခ + စားရိတ်/ခရီးစရိတ် အပြီးအစီး)</small>
+   // Line 1687-1688 ကို ဒီလို သပ်သပ်ရပ်ရပ် လေးထားပေးနိုင်ပါတယ်
+  <small style="color: #aaa;">(လုပ်ခ + စားရိတ်/ခရီးစရိတ် အပြီးအစီး)</small>
+`;
+
+    const resultBox = document.getElementById("resultBoxPro");
+    if (resultBox) {
+      resultBox.style.display = "block";
+      resultBox.innerHTML = resultHTML;
+    }
+  }
   </script>
 </body>
 </html>
