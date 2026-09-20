@@ -1860,6 +1860,148 @@ window.addEventListener("click", function (event) {
     closeLaborModal();
   }
 });
+    function openLaborModal() {
+  const modal = document.getElementById("laborModalPro");
+
+  if (modal) {
+    modal.style.display = "block";
+    updateUnitLabel();
+  }
+}
+
+function closeLaborModal() {
+  const modal = document.getElementById("laborModalPro");
+
+  if (modal) {
+    modal.style.display = "none";
+  }
+}
+
+function updateUnitLabel() {
+  const workType = document.getElementById("workType");
+  const unitLabel = document.getElementById("unitLabel");
+
+  if (!workType || !unitLabel) return;
+
+  const labels = {
+    brick: "၂။ လုပ်မည့် နံရံဧရိယာ (စတုရန်းပေ):",
+    plaster: "၂။ လုပ်မည့် အချောကိုင်ဧရိယာ (စတုရန်းပေ):",
+    concrete: "၂။ လုပ်မည့် ကွန်ကရစ်ပမာဏ (ကုဗပေ):",
+    rebar: "၂။ သံချည်သံကွေးမည့် ပမာဏ (kg):",
+    formwork: "၂။ Formwork ဧရိယာ (စတုရန်းပေ):",
+    tiling: "၂။ ကြွေပြားခင်းမည့် ဧရိယာ (စတုရန်းပေ):",
+    roofing: "၂။ အမိုးမိုးမည့် ဧရိယာ (စတုရန်းပေ):",
+    earthwork: "၂။ မြေတူး/မြေညှိမည့် ပမာဏ (ကုဗပေ):"
+  };
+
+  unitLabel.textContent =
+    labels[workType.value] || "၂။ လုပ်မည့် ပမာဏ:";
+}
+
+function calculateLaborPro() {
+  const getNumber = (id) => {
+    const element = document.getElementById(id);
+    return element ? Number(element.value) : NaN;
+  };
+
+  const workType = document.getElementById("workType");
+  const resultBox = document.getElementById("resultBoxPro");
+
+  if (!workType || !resultBox) return;
+
+  const amount = getNumber("workAmount");
+  const skilled = getNumber("customSkilled");
+  const unskilled = getNumber("customUnskilled");
+  const distance = getNumber("distanceOption");
+  const efficiency = getNumber("efficiencyRating");
+  const skilledRate = getNumber("skilledRate");
+  const unskilledRate = getNumber("unskilledRate");
+  const allowance = getNumber("allowanceRate");
+
+  if (
+    !Number.isFinite(amount) || amount <= 0 ||
+    !Number.isFinite(skilled) || skilled < 0 ||
+    !Number.isFinite(unskilled) || unskilled < 0 ||
+    !Number.isFinite(distance) ||
+    !Number.isFinite(efficiency) ||
+    !Number.isFinite(skilledRate) ||
+    !Number.isFinite(unskilledRate) ||
+    !Number.isFinite(allowance)
+  ) {
+    resultBox.style.display = "block";
+    resultBox.innerHTML =
+      "ကျေးဇူးပြု၍ အချက်အလက်များကို မှန်ကန်စွာ ဖြည့်ပါ။";
+    return;
+  }
+
+  const crewSize = skilled + unskilled;
+
+  if (crewSize <= 0) {
+    resultBox.style.display = "block";
+    resultBox.innerHTML =
+      "လုပ်သားဦးရေ အနည်းဆုံး ၁ ဦး ထည့်ပါ။";
+    return;
+  }
+
+  const productivity = {
+    brick: 100,
+    plaster: 120,
+    concrete: 8,
+    rebar: 100,
+    formwork: 80,
+    tiling: 100,
+    roofing: 120,
+    earthwork: 12
+  };
+
+  const dailyOutput = productivity[workType.value] || 100;
+
+  const estimatedDays =
+    Math.max(0.5, amount / (dailyOutput * crewSize)) *
+    distance /
+    efficiency;
+
+  const dailyWage =
+    skilled * skilledRate +
+    unskilled * unskilledRate;
+
+  const dailyAllowance = crewSize * allowance;
+  const dailyTotal = dailyWage + dailyAllowance;
+  const totalCost = Math.ceil(estimatedDays * dailyTotal);
+
+  resultBox.style.display = "block";
+  resultBox.innerHTML = `
+    <div><b>📊 ခန့်မှန်းတွက်ချက်မှု ရလဒ်</b></div>
+    <div>လိုအပ်မည့် ကြာချိန်:
+      <b>${estimatedDays.toFixed(1)} ရက်</b>
+    </div>
+    <div>လုပ်သားစုစုပေါင်း:
+      <b>${crewSize} ဦး</b>
+    </div>
+    <div>တစ်ရက် လုပ်သားခ:
+      <b>${dailyWage.toLocaleString()} ကျပ်</b>
+    </div>
+    <div>တစ်ရက် စားရိတ်/ခရီးစရိတ်:
+      <b>${dailyAllowance.toLocaleString()} ကျပ်</b>
+    </div>
+    <div>တစ်ရက် စုစုပေါင်း:
+      <b>${dailyTotal.toLocaleString()} ကျပ်</b>
+    </div>
+    <hr style="border: 0; border-top: 1px solid #555; margin: 8px 0;">
+    <div style="color: #00ff88; font-size: 16px;">
+      ခန့်မှန်း စုစုပေါင်းကုန်ကျစရိတ်:
+      <b>${totalCost.toLocaleString()} ကျပ်</b>
+    </div>
+  `;
+}
+
+window.addEventListener("click", function (event) {
+  const modal = document.getElementById("laborModalPro");
+
+  if (event.target === modal) {
+    closeLaborModal();
+  }
+});
 </script>
 </body>
 </html>
