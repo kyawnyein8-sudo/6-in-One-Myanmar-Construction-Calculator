@@ -119,6 +119,27 @@
     .btn-back { background: #6c757d; margin-bottom: 12px; }
     .btn-save { background: var(--accent-blue); margin-top: 8px; }
 
+    .btn-shop-search {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      background: #4285F4;
+      color: white;
+      text-decoration: none;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin-top: 12px;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .btn-shop-search:hover {
+      background: #3367d6;
+    }
+
     .result-box {
       background: #f0f7f2;
       border-left: 4px solid var(--primary-green);
@@ -470,6 +491,7 @@
           <div class="result-item">စုစုပေါင်း ကုဗပေ (CFT): <b id="resWoodCft" style="color: var(--primary-green);">0</b> cft</div>
           <div class="result-item">စုစုပေါင်း သစ်တန်: <b id="resWoodTons" style="color: var(--primary-green);">0</b> တန်</div>
           <div class="result-total">ခန့်မှန်း စုစုပေါင်း: <span id="resWoodTotal">0</span> ကျပ်</div>
+          <a href="https://www.google.com/maps/search/timber+shop+near+me" target="_blank" class="btn-shop-search">📍 အနီးအနားရှိ သစ်ဆိုင် ရှာရန်</a>
         </div>
       </div>
     </div>
@@ -581,6 +603,7 @@
           <div class="result-item">သွပ်ပြား ကုန်ကျစရိတ်: <b id="resRoofMat">0</b> ကျပ်</div>
           <div class="result-item">လက်ခ (<span id="resRoofSqft">0</span> စတုရန်းပေ): <b id="resRoofLabour">0</b> ကျပ်</div>
           <div class="result-total">စုစုပေါင်း: <span id="resRoofTotal">0</span> ကျပ်</div>
+          <a href="https://www.google.com/maps/search/roofing+sheet+shop+near+me" target="_blank" class="btn-shop-search">📍 အနီးအနားရှိ သွပ်ဆိုင် ရှာရန်</a>
         </div>
       </div>
     </div>
@@ -640,6 +663,7 @@
           <div class="result-item">Aggregate: <b id="resAggregate">0</b> cubic feet</div>
           <div class="result-item">Cement ကုန်ကျ: <b id="resCementCost">0</b> ကျပ်</div>
           <div class="result-total">ခန့်မှန်း စုစုပေါင်း: <span id="resConcTotal">0</span> ကျပ်</div>
+          <a href="https://www.google.com/maps/search/cement+and+building+materials+near+me" target="_blank" class="btn-shop-search">📍 အနီးအနားရှိ ဘိလပ်မြေ/သဲ/ကျောက် ဆိုင် ရှာရန်</a>
         </div>
       </div>
     </div>
@@ -697,6 +721,7 @@
           <div class="result-item">Sand: <b id="resBrickSand">0</b> cubic feet</div>
           <div class="result-item">အုတ်ကုန်ကျ: <b id="resBrickCost">0</b> ကျပ်</div>
           <div class="result-total">ခန့်မှန်း စုစုပေါင်း: <span id="resBrickTotal">0</span> ကျပ်</div>
+          <a href="https://www.google.com/maps/search/brick+shop+near+me" target="_blank" class="btn-shop-search">📍 အနီးအနားရှိ အုတ်ဆိုင် ရှာရန်</a>
         </div>
       </div>
     </div>
@@ -761,6 +786,7 @@
           <div class="result-item">Total Weight: <b id="resWeight" style="color: var(--primary-green);">0</b> kg</div>
           <div class="result-item">Steel ကုန်ကျ: <b id="resSteelCost">0</b> ကျပ်</div>
           <div class="result-total">ခန့်မှန်း စုစုပေါင်း: <span id="resSteelTotal">0</span> ကျပ်</div>
+          <a href="https://www.google.com/maps/search/steel+shop+near+me" target="_blank" class="btn-shop-search">📍 အနီးအနားရှိ သံချောင်း ရောင်းဝယ်ရေးဆိုင် ရှာရန်</a>
         </div>
       </div>
     </div>
@@ -813,6 +839,7 @@
           <div class="result-item">လိုအပ်မည့် Paint: <b id="resPaintGallons" style="color: var(--primary-green);">0</b> Gallons</div>
           <div class="result-item">Paint ကုန်ကျ: <b id="resPaintCost">0</b> ကျပ်</div>
           <div class="result-total">ခန့်မှန်း စုစုပေါင်း: <span id="resPaintTotal">0</span> ကျပ်</div>
+          <a href="https://www.google.com/maps/search/paint+shop+near+me" target="_blank" class="btn-shop-search">📍 အနီးအနားရှိ ဆေးဆိုင် ရှာရန်</a>
         </div>
       </div>
     </div>
@@ -858,6 +885,7 @@
           <div class="result-item">Sand: <b id="resTileSand">0</b> cubic feet</div>
           <div class="result-item">Tile ကုန်ကျ: <b id="resTileCost">0</b> ကျပ်</div>
           <div class="result-total">ခန့်မှန်း စုစုပေါင်း: <span id="resTileTotal">0</span> ကျပ်</div>
+          <a href="https://www.google.com/maps/search/tile+shop+near+me" target="_blank" class="btn-shop-search">📍 အနီးအနားရှိ ကြွေပြားဆိုင် ရှာရန်</a>
         </div>
       </div>
     </div>
