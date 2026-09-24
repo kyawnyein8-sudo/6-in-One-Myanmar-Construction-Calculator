@@ -393,16 +393,53 @@
         </button>
       </div>
 
-      <div class="sponsor-card">
-        <div>
-          <span class="sponsor-tag">📢 Sponsor</span>
-          <div class="sponsor-title">ဆောက်လုပ်ရေးဆိုင်များ ကြော်ငြာနိုင်သည်</div>
-          <div class="sponsor-desc">ကြော်ငြာထည့်သွင်းရန် Viber မှ ဆက်သွယ်ပါ</div>
+    <!-- Dynamic Firebase Sponsor Ad Card -->
+      <div class="sponsor-card" id="sponsorCard" style="display: none;">
+        <span class="sponsor-badge">Sponsor</span>
+        <a id="adMainLink" href="#" target="_blank" onclick="trackAdClick('banner')">
+          <img id="adImage" src="" class="ad-img" alt="Ad Banner" />
+        </a>
+        <div class="ad-actions">
+          <a id="adViberBtn" href="#" target="_blank" class="btn-ad btn-viber" onclick="trackAdClick('viber')">💬 Viber ဖြင့် ဆက်သွယ်ရန်</a>
+          <a id="adMapBtn" href="#" target="_blank" class="btn-ad btn-map" onclick="trackAdClick('map')">📍 Google Maps</a>
         </div>
-        <a href="viber://chat?number=959264134142" onclick="setTimeout(() => { window.location.href='https://page.viber.com/'; }, 2500); return true;" class="btn-contact" style="background: #7360f2;">Viber ဖြင့် ဆက်သွယ်ရန်</a>
       </div>
-    </div>
+        <!-- Sponsor Ad Firebase & Tracking Script -->
+      <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
+        const firebaseConfig = {
+          databaseURL: "https://kn-blog-counter-default-rtdb.firebaseio.com"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Firebase မှ Sponsor Ad Data ဖတ်ခြင်း
+        const adRef = ref(db, 'posts/sponsor_ad');
+        onValue(adRef, (snapshot) => {
+          const data = snapshot.val();
+          if (data && data.is_active) {
+            document.getElementById('sponsorCard').style.display = 'block';
+            document.getElementById('adImage').src = data.image_url;
+            document.getElementById('adMainLink').href = data.viber_url;
+            document.getElementById('adViberBtn').href = data.viber_url;
+            document.getElementById('adMapBtn').href = data.map_url;
+          } else {
+            document.getElementById('sponsorCard').style.display = 'none';
+          }
+        });
+
+        // Click Tracking Function
+        window.trackAdClick = function(clickType) {
+          const totalRef = ref(db, 'posts/sponsor_ad/clicks/total');
+          runTransaction(totalRef, (curr) => (curr || 0) + 1);
+
+          const typeRef = ref(db, `posts/sponsor_ad/clicks/${clickType}`);
+          runTransaction(typeRef, (curr) => (curr || 0) + 1);
+        };
+      </script>
     <!-- HISTORY VIEW -->
     <div id="historyView" class="calc-page">
       <h3 style="margin-bottom: 16px; color: var(--primary-green);">📋 တွက်ချက်မှု မှတ်တမ်း</h3>
