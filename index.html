@@ -156,25 +156,69 @@
       margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ccc;
     }
 
-    /* Sponsor Banner */
-    .sponsor-card {
-      background: var(--light-green);
-      border: 1px dashed var(--primary-green);
-      border-radius: 12px;
-      padding: 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-    .sponsor-tag { font-size: 0.7rem; background: var(--primary-green); color: white; padding: 2px 6px; border-radius: 4px; }
-    .sponsor-title { font-weight: bold; font-size: 0.9rem; margin-top: 4px; }
-    .sponsor-desc { font-size: 0.75rem; color: #555; }
-    .btn-contact {
-      background: var(--primary-green); color: white; border: none;
-      padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; text-decoration: none;
-    }
+   /* Sponsor Card Layout Fix */
+.sponsor-card {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+  margin: 16px 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+  width: 100%;
+  overflow: hidden; /* ပုံအပြင်ဘက် လျှံမထွက်အောင် ထိန်းပေးသည် */
+}
 
+.sponsor-badge {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  background: rgba(0, 0, 0, 0.65);
+  color: #ffffff;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+.ad-img {
+  width: 100% !important;   /* Card မျက်နှာပြင် အပြည့် ဖြစ်စေရန် */
+  max-width: 100% !important;
+  height: auto !important;  /* Aspect Ratio အချိုးအစား မပျက်စေရန် */
+  border-radius: 8px;
+  display: block;
+  object-fit: contain;
+}
+
+.ad-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.btn-ad {
+  flex: 1;
+  text-align: center;
+  padding: 10px 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #ffffff !important;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.btn-viber {
+  background-color: #7360f2 !important;
+  flex: 1.5;
+}
+
+.btn-map {
+  background-color: #ea4335 !important;
+}
     /* History & Notes Items */
     .history-item, .note-item {
       background: var(--card-bg);
